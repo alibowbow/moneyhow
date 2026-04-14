@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GamsGo — 수익의 구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F0F4FF;--bg2:#E8EDFC;--sur:#FFFFFF;--sur2:#F7F9FF;
+  --bor:#DDE3F5;--bor2:#C8D0EE;
+  --t1:#111827;--t2:#5B6480;--t3:#9BA4C0;
+  --acc:#4F46E5;--acc2:rgba(79,70,229,.1);--acc3:rgba(79,70,229,.2);
+  --grn:#059669;--grn2:rgba(5,150,105,.1);
+  --amb:#D97706;--amb2:rgba(217,119,6,.1);
+  --red:#DC2626;--red2:rgba(220,38,38,.1);
+  --pur:#7C3AED;--pur2:rgba(124,58,237,.1);
+  --sky:#0284C7;--sky2:rgba(2,132,199,.1);
+  --rad:10px;--rad2:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;background:var(--bg);color:var(--t1);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--bor) 1px,transparent 1px),linear-gradient(90deg,var(--bor) 1px,transparent 1px);background-size:40px 40px;opacity:.4;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 20px 80px;}
+.hero{padding:52px 0 40px;}
+.hero-inner{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:32px 36px;display:flex;gap:32px;align-items:center;position:relative;overflow:hidden;}
+.hero-inner::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--acc2) 0%,transparent 70%);pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--acc2);border:1px solid var(--acc3);border-radius:100px;font-size:11px;font-weight:700;color:var(--acc);letter-spacing:.04em;margin-bottom:14px;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:bdot 2s ease-in-out infinite;}
+@keyframes bdot{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,4.5vw,46px);font-weight:800;letter-spacing:-.025em;line-height:1.1;color:var(--t1);margin-bottom:10px;}
+.hero-title span{color:var(--acc);}
+.hero-sub{font-size:13.5px;color:var(--t2);line-height:1.65;max-width:420px;font-weight:300;}
+.h-pill-stack{display:flex;flex-direction:column;gap:8px;width:200px;flex-shrink:0;}
+.h-pill{background:var(--sur2);border:1px solid var(--bor);border-radius:100px;padding:8px 14px;display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:500;transition:all .2s;}
+.h-pill:hover{border-color:var(--acc);background:var(--acc2);}
+.h-pill-icon{font-size:16px;width:24px;text-align:center;}
+.h-pill-name{flex:1;color:var(--t1);}
+.h-pill-price{font-size:10.5px;font-weight:700;color:var(--grn);}
+.paradox{background:var(--acc);border-radius:var(--rad2);padding:24px 28px;margin-bottom:24px;display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:20px;align-items:center;color:#fff;}
+.px-divider{background:rgba(255,255,255,.2);align-self:stretch;}
+.px-item{text-align:center;}
+.px-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:6px;font-weight:600;}
+.px-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;line-height:1;}
+.px-sub{font-size:10.5px;opacity:.65;margin-top:4px;}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.met{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:15px 16px;transition:all .2s;}
+.met:hover{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc2);}
+.met-icon{font-size:20px;margin-bottom:7px;}
+.met-lbl{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:.04em;margin-bottom:4px;}
+.met-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--t1);}
+.met-val.acc{color:var(--acc);}
+.met-val.grn{color:var(--grn);}
+.met-sub{font-size:10px;color:var(--t3);margin-top:4px;}
+.sec{margin-bottom:24px;}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sec-chip{background:var(--acc);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.06em;font-family:'Plus Jakarta Sans',sans-serif;}
+.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--t1);}
+.sec-line{flex:1;height:1px;background:var(--bor);}
+.sec-note{font-size:10.5px;color:var(--t3);}
+.card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;}
+.card-t{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.card-d{font-size:11px;color:var(--t3);margin-bottom:14px;line-height:1.5;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.flow{display:flex;align-items:stretch;overflow:hidden;border-radius:var(--rad2);border:1px solid var(--bor);margin-bottom:24px;}
+.flow-step{flex:1;background:var(--sur);padding:18px 16px;position:relative;}
+.flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--t3);z-index:2;}
+.flow-step:not(:first-child){border-left:1px solid var(--bor);}
+.fs-icon{font-size:26px;margin-bottom:8px;}
+.fs-num{font-size:9px;font-weight:700;color:var(--acc);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;font-family:'Plus Jakarta Sans',sans-serif;}
+.fs-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.fs-desc{font-size:11px;color:var(--t2);line-height:1.5;}
+.fs-tag{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:6px;}
+.bd{display:flex;flex-direction:column;gap:6px;}
+.bd-row{display:flex;align-items:center;gap:8px;}
+.bd-lbl{font-size:11px;color:var(--t2);min-width:155px;text-align:right;}
+.bd-bg{flex:1;background:var(--bg2);border-radius:3px;height:14px;overflow:hidden;}
+.bd-bar{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.bd-val{font-size:11px;font-weight:700;min-width:75px;text-align:right;}
+.share-math{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+.sm-card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:16px;text-align:center;transition:all .2s;}
+.sm-card:hover{border-color:var(--acc);transform:translateY(-2px);}
+.sm-service{font-size:18px;margin-bottom:6px;}
+.sm-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:var(--t1);margin-bottom:8px;}
+.sm-full{font-size:11px;color:var(--t3);text-decoration:line-through;margin-bottom:4px;}
+.sm-shared{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--grn);line-height:1;}
+.sm-per{font-size:10px;color:var(--t3);margin-bottom:6px;}
+.sm-margin{font-size:10px;font-weight:700;color:var(--acc);}
+.sm-bar-wrap{background:var(--bg2);border-radius:4px;height:6px;margin-top:8px;overflow:hidden;}
+.sm-bar{height:100%;border-radius:4px;background:var(--acc);}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.lv{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);padding:12px 10px;text-align:center;transition:all .2s;cursor:default;}
+.lv:hover{transform:translateY(-2px);}
+.lv-crown{font-size:18px;margin-bottom:4px;}
+.lv-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:var(--t1);margin-bottom:6px;}
+.lv-rows{display:flex;flex-direction:column;gap:3px;}
+.lv-row{display:flex;justify-content:space-between;font-size:9.5px;}
+.lv-row span:first-child{color:var(--t3);}
+.fee-table{width:100%;border-collapse:collapse;font-size:12px;}
+.fee-table th{background:var(--bg2);padding:8px 12px;text-align:left;font-size:10.5px;font-weight:700;color:var(--t2);letter-spacing:.04em;border-bottom:1px solid var(--bor);}
+.fee-table td{padding:9px 12px;border-bottom:1px solid var(--bor);vertical-align:middle;}
+.fee-table tr:last-child td{border-bottom:none;}
+.fee-table tr:hover td{background:var(--sur2);}
+.fee-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;display:inline-block;}
+.sim{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;margin-bottom:12px;}
+.sl-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.sl-lbl{font-size:11.5px;color:var(--t2);min-width:120px;font-weight:500;}
+.sl-row input[type=range]{flex:1;accent-color:var(--acc);cursor:pointer;}
+.sl-val{font-size:12px;font-weight:700;min-width:72px;text-align:right;color:var(--t1);}
+.sim-outs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.so{background:var(--bg);border-radius:var(--rad);padding:10px 12px;border:1px solid var(--bor);}
+.so-l{font-size:10px;color:var(--t3);margin-bottom:4px;font-weight:600;}
+.so-v{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--t1);}
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.ins{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:14px 15px;transition:all .2s;}
+.ins:hover{box-shadow:0 4px 16px rgba(79,70,229,.1);transform:translateY(-2px);}
+.ins-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:var(--acc);line-height:1;margin-bottom:5px;}
+.ins-num.grn{color:var(--grn);}
+.ins-num.amb{color:var(--amb);}
+.ins-t{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.ins-b{font-size:11px;color:var(--t3);line-height:1.5;}
+.risk-box{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.2);border-radius:var(--rad2);padding:16px 18px;margin-bottom:24px;}
+.risk-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.risk-items{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.risk-item{font-size:11.5px;color:var(--t2);display:flex;gap:6px;line-height:1.5;}
+.tl{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--bor);}
+.tl-item:last-child{border-bottom:none;}
+.tl-yr{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:var(--acc);min-width:38px;padding-top:2px;}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);flex-shrink:0;margin-top:4px;opacity:.5;}
+.tl-body{flex:1;}
+.tl-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.tl-d{font-size:11.5px;color:var(--t2);line-height:1.5;}
+.tl-tag{display:inline-block;font-size:9.5px;padding:2px 7px;border-radius:4px;font-weight:700;margin-top:4px;letter-spacing:.04em;}
+.footer{text-align:center;padding:24px 0 0;border-top:1px solid var(--bor);font-size:11px;color:var(--t3);}
+@media(max-width:700px){
+  .mets,.ins-grid,.levels{grid-template-columns:repeat(2,1fr);}
+  .g2,.share-math{grid-template-columns:1fr;}
+  .sim-outs{grid-template-columns:repeat(2,1fr);}
+  .flow{flex-direction:column;}
+  .flow-step:not(:last-child)::after{content:'↓';right:50%;top:auto;bottom:-14px;transform:translateX(50%);}
+  .flow-step:not(:first-child){border-left:none;border-top:1px solid var(--bor);}
+  .paradox{grid-template-columns:1fr;}
+  .hero-inner{flex-direction:column;}
+  .h-pill-stack{width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="hero-inner">
+    <div style="flex:1;">
+      <div class="hero-badge"><span class="badge-dot"></span>수익의 구조 분석</div>
+      <div class="hero-title">GamsGo는<br>어떻게 <span>돈을 버나</span></div>
+      <div class="hero-sub">넷플릭스·ChatGPT를 최대 70% 싸게 — "구독의 카풀" 모델로 중간에서 수수료를 챙기는 영국 스타트업의 수익 해부</div>
+    </div>
+    <div class="h-pill-stack">
+      <div class="h-pill"><span class="h-pill-icon">🎬</span><span class="h-pill-name">Netflix 4K</span><span class="h-pill-price">-60%</span></div>
+      <div class="h-pill"><span class="h-pill-icon">🤖</span><span class="h-pill-name">ChatGPT Plus</span><span class="h-pill-price">-50%</span></div>
+      <div class="h-pill"><span class="h-pill-icon">▶</span><span class="h-pill-name">YouTube Premium</span><span class="h-pill-price">-55%</span></div>
+      <div class="h-pill"><span class="h-pill-icon">🎵</span><span class="h-pill-name">Spotify Family</span><span class="h-pill-price">-40%</span></div>
+      <div class="h-pill"><span class="h-pill-icon">🎨</span><span class="h-pill-name">Canva Pro</span><span class="h-pill-price">-65%</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="paradox">
+  <div class="px-item"><div class="px-label">설립 연도 · 본사</div><div class="px-val">2020</div><div class="px-sub">영국 런던</div></div>
+  <div class="px-divider"></div>
+  <div class="px-item"><div class="px-label">글로벌 등록 사용자</div><div class="px-val">100만+</div><div class="px-sub">180개국 이상</div></div>
+  <div class="px-divider"></div>
+  <div class="px-item"><div class="px-label">취급 구독 서비스</div><div class="px-val">100+</div><div class="px-sub">스트리밍·AI·생산성</div></div>
+</div>
+
+<div class="mets">
+  <div class="met"><div class="met-icon">💰</div><div class="met-lbl">핵심 수익원</div><div class="met-val acc">플랫폼 수수료</div><div class="met-sub">거래 금액의 15~25%</div></div>
+  <div class="met"><div class="met-icon">🔄</div><div class="met-lbl">비즈니스 모델</div><div class="met-val">마켓플레이스</div><div class="met-sub">판매자 ↔ 구매자 중개</div></div>
+  <div class="met"><div class="met-icon">💸</div><div class="met-lbl">구매자 절감률</div><div class="met-val grn">최대 70%</div><div class="met-sub">정가 대비 할인</div></div>
+  <div class="met"><div class="met-icon">⭐</div><div class="met-lbl">Trustpilot 평점</div><div class="met-val">4.1 / 5</div><div class="met-sub">지속 상승 중</div></div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">01</span><span class="sec-title">돈이 움직이는 방식 — 3자 구조</span><div class="sec-line"></div></div>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="fs-icon">🏢</div>
+      <div class="fs-num">Step 1</div>
+      <div class="fs-title">판매자 (Seller)</div>
+      <div class="fs-desc">구독 계정 보유자가 남는 슬롯을 GamsGo에 등록. 가족 요금제의 빈 자리를 공유해 부수입 창출.</div>
+      <span class="fs-tag" style="background:var(--sky2);color:var(--sky);">계정 공유자</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-icon">🎮</div>
+      <div class="fs-num">Step 2</div>
+      <div class="fs-title">GamsGo 플랫폼</div>
+      <div class="fs-desc">매칭·결제·보증·CS를 처리. 거래 완료 시 판매가의 15~25%를 플랫폼 수수료로 차감.</div>
+      <span class="fs-tag" style="background:var(--acc2);color:var(--acc);">수수료 수취</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-icon">👤</div>
+      <div class="fs-num">Step 3</div>
+      <div class="fs-title">구매자 (Buyer)</div>
+      <div class="fs-desc">정가보다 40~70% 저렴하게 구독 슬롯 구매. 보증 기간 동안 불량 시 교체·환불 보장.</div>
+      <span class="fs-tag" style="background:var(--grn2);color:var(--grn);">비용 절감</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-icon">💵</div>
+      <div class="fs-num">결과</div>
+      <div class="fs-title">수익 흐름</div>
+      <div class="fs-desc">구매자 결제 → GamsGo 수수료 차감 → 판매자 정산 (보증 기간 후 단계적 해제).</div>
+      <span class="fs-tag" style="background:var(--amb2);color:var(--amb);">정산 구조</span>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">02</span><span class="sec-title">공유 수학 — 서비스별 마진 구조</span><div class="sec-line"></div><span class="sec-note">정가 대비 GamsGo 판매가 기준</span></div>
+  <div class="share-math" id="shareMath"></div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">03</span><span class="sec-title">거래 1건 — 돈이 어디로 가나</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">ChatGPT Plus 1개월 슬롯 (약 ₩10,000) 분해</div>
+      <div class="card-d">구매자 결제 → GamsGo → 판매자의 돈 흐름</div>
+      <div class="bd" id="bdBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">수수료 구성 2가지</div>
+      <div class="card-d">수수료율 + 고정 수수료 혼합 구조</div>
+      <div style="height:210px;position:relative;"><canvas id="feeChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">04</span><span class="sec-title">판매자 등급 시스템 — Lv.1~5</span><div class="sec-line"></div><span class="sec-note">등급이 높을수록 수수료↓ · 출금한도↑</span></div>
+  <div class="levels" id="levels"></div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">05</span><span class="sec-title">서비스 카테고리별 수수료 구조 (추정)</span><div class="sec-line"></div></div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="fee-table">
+      <thead><tr><th>카테고리</th><th>대표 상품</th><th>정가 (월)</th><th>GamsGo 판매가</th><th>추정 수수료율</th></tr></thead>
+      <tbody id="feeTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">06</span><span class="sec-title">GamsGo 수익 시뮬레이터</span><div class="sec-line"></div></div>
+  <div class="sim">
+    <div class="card-t" style="margin-bottom:3px;">거래량과 수수료율을 바꿔보세요</div>
+    <div class="card-d" style="margin-bottom:14px;">플랫폼 관점에서 월 예상 수익을 계산합니다</div>
+    <div class="sl-row"><label class="sl-lbl">월 거래 건수</label><input type="range" min="1000" max="200000" value="50000" step="1000" id="sl-tx" oninput="calc()"><span class="sl-val" id="v-tx">5만건</span></div>
+    <div class="sl-row"><label class="sl-lbl">평균 거래 단가 ($)</label><input type="range" min="5" max="50" value="12" step="1" id="sl-amt" oninput="calc()"><span class="sl-val" id="v-amt">$12</span></div>
+    <div class="sl-row"><label class="sl-lbl">플랫폼 수수료율 (%)</label><input type="range" min="5" max="35" value="18" step="1" id="sl-fee" oninput="calc()"><span class="sl-val" id="v-fee">18%</span></div>
+    <div class="sl-row"><label class="sl-lbl">제휴(Affiliate) 비중 (%)</label><input type="range" min="0" max="50" value="20" step="5" id="sl-aff" oninput="calc()"><span class="sl-val" id="v-aff">20%</span></div>
+    <div class="sim-outs">
+      <div class="so"><div class="so-l">월 총 거래액 (GMV)</div><div class="so-v" id="s-gmv" style="color:var(--acc);">$600K</div></div>
+      <div class="so"><div class="so-l">플랫폼 수수료 수익</div><div class="so-v" id="s-fee" style="color:var(--grn);">$108K</div></div>
+      <div class="so"><div class="so-l">제휴 커미션</div><div class="so-v" id="s-aff">$6K</div></div>
+      <div class="so"><div class="so-l">월 총 추정 수익</div><div class="so-v" id="s-total" style="color:var(--acc);">$114K</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">GMV 규모별 수익 시나리오</div>
+      <div class="card-d">수수료율 18% 가정 — 거래량이 수익을 결정</div>
+      <div style="height:200px;position:relative;"><canvas id="sceneChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-t">수익원 구성 (추정)</div>
+      <div class="card-d">마켓플레이스 수수료가 압도적 1위</div>
+      <div style="height:200px;position:relative;"><canvas id="mixChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="risk-box">
+  <div class="risk-title">⚠️ 비즈니스 리스크 — 이 모델의 취약점</div>
+  <div class="risk-items">
+    <div class="risk-item"><span>🚫</span><span>넷플릭스·유튜브가 가족 요금제 공유 정책을 강화하면 핵심 상품이 사라질 수 있다.</span></div>
+    <div class="risk-item"><span>⚖️</span><span>구독 공유의 합법성 경계가 불명확 — 서비스 약관 위반 소지가 있는 회색지대.</span></div>
+    <div class="risk-item"><span>🏆</span><span>GoSplit·Spliiit 등 유사 경쟁사 다수. 수수료 인하 경쟁 심화 가능.</span></div>
+    <div class="risk-item"><span>📉</span><span>판매자 등급 시스템으로 출금 지연 — 판매자 이탈 시 공급 감소 리스크.</span></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">07</span><span class="sec-title">성장 타임라인</span><div class="sec-line"></div></div>
+  <div class="card"><div class="tl" id="tl"></div></div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-chip">08</span><span class="sec-title">핵심 인사이트</span><div class="sec-line"></div></div>
+  <div class="ins-grid">
+    <div class="ins"><div class="ins-num">18%</div><div class="ins-t">추정 수수료율</div><div class="ins-b">물건을 팔지도, 만들지도 않고 중간에서 챙기는 중개 마진.</div></div>
+    <div class="ins"><div class="ins-num grn">70%</div><div class="ins-t">구매자 절감률</div><div class="ins-b">구매자가 싸게 사고, 판매자도 추가 수익. GamsGo만 수수료 취득.</div></div>
+    <div class="ins"><div class="ins-num amb">$0</div><div class="ins-t">재고·콘텐츠 비용</div><div class="ins-b">넷플릭스에 1원도 안 낸다. 다른 사람의 계정을 연결만 한다.</div></div>
+    <div class="ins"><div class="ins-num">Lv.5</div><div class="ins-t">판매자 록인 전략</div><div class="ins-b">등급이 높을수록 수수료↓. 오래 팔수록 혜택 증가로 이탈 방지.</div></div>
+  </div>
+</div>
+
+<div class="footer">데이터 출처: GamsGo 공식 헬프센터, 언론 보도, 사용자 후기 종합 (2024~2025) · 비공개 기업 특성상 수수료율 등은 추정치</div>
+</div>
+
+<script>
+const tc='#9BA4C0', gc='rgba(0,0,0,.05)';
+
+const SERVICES=[
+  {icon:'🎬',name:'Netflix 4K UHD',full:'₩17,000/월',shared:'₩6,800',discount:60,members:4,fee:18},
+  {icon:'🤖',name:'ChatGPT Plus',full:'$20/월',shared:'$9',discount:55,members:2,fee:18},
+  {icon:'▶',name:'YouTube Premium',full:'₩14,900/월',shared:'₩6,700',discount:55,members:3,fee:15},
+  {icon:'🎵',name:'Spotify Family',full:'₩16,350/월',shared:'₩9,800',discount:40,members:2,fee:15},
+  {icon:'🎨',name:'Canva Pro',full:'$17/월',shared:'$5.9',discount:65,members:3,fee:20},
+  {icon:'🔒',name:'NordVPN',full:'$13.99/월',shared:'$5.5',discount:61,members:2,fee:20},
+];
+document.getElementById('shareMath').innerHTML=SERVICES.map(s=>`
+  <div class="sm-card">
+    <div class="sm-service">${s.icon}</div>
+    <div class="sm-name">${s.name}</div>
+    <div class="sm-full">정가 ${s.full}</div>
+    <div class="sm-shared">${s.shared}</div>
+    <div class="sm-per">${s.members}인 공유 · GamsGo 판매가</div>
+    <div class="sm-margin">플랫폼 수수료 ~${s.fee}%</div>
+    <div class="sm-bar-wrap"><div class="sm-bar" style="width:${s.discount}%;"></div></div>
+  </div>`).join('');
+
+const BD=[
+  {lbl:'구매자 결제액',v:10000,col:'#4F46E5',s:'+'},
+  {lbl:'오리지널 구독 원가 배분',v:-5500,col:'#DC2626',s:'-'},
+  {lbl:'PG사 결제 수수료 (2.5%)',v:-250,col:'#DC2626',s:'-'},
+  {lbl:'고객지원·운영비',v:-800,col:'#9BA4C0',s:'-'},
+  {lbl:'판매자 정산액',v:-2650,col:'#9BA4C0',s:'-'},
+  {lbl:'GamsGo 순수익',v:800,col:'#059669',s:'='},
+];
+document.getElementById('bdBars').innerHTML=BD.map(i=>{
+  const pct=Math.min(100,Math.round(Math.abs(i.v)/10000*100));
+  const col=i.lbl.includes('순수익')?'var(--grn)':i.v<0?'var(--red)':'var(--acc)';
+  return`<div class="bd-row"><span class="bd-lbl">${i.lbl}</span><div class="bd-bg"><div class="bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="bd-val" style="color:${col};">${i.s} ₩${Math.abs(i.v).toLocaleString()}</span></div>`;
+}).join('');
+
+new Chart(document.getElementById('feeChart'),{
+  type:'doughnut',
+  data:{labels:['수수료율 (거래액 %)','고정 수수료 (건당)','결제 처리비 (PG)','운영·CS 비용'],
+    datasets:[{data:[55,20,15,10],backgroundColor:['#4F46E5','#7C3AED','#0284C7','#9BA4C0'],borderWidth:0,hoverOffset:5}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+    plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:8}}}}
+});
+
+const LVS=[
+  {crown:'🌱',name:'Lv.1 신입',fee:'~25%',limit:'$50/월',warranty:'7일',col:'#9BA4C0'},
+  {crown:'🥉',name:'Lv.2 브론즈',fee:'~22%',limit:'$200/월',warranty:'14일',col:'#C9A84C'},
+  {crown:'🥈',name:'Lv.3 실버',fee:'~18%',limit:'$500/월',warranty:'21일',col:'#4F46E5'},
+  {crown:'🥇',name:'Lv.4 골드',fee:'~14%',limit:'$1,500/월',warranty:'30일',col:'#059669'},
+  {crown:'💎',name:'Lv.5 다이아',fee:'~10%',limit:'무제한',warranty:'60일',col:'#7C3AED'},
+];
+document.getElementById('levels').innerHTML=LVS.map(l=>`
+  <div class="lv" style="border-top:3px solid ${l.col};">
+    <div class="lv-crown">${l.crown}</div>
+    <div class="lv-name">${l.name}</div>
+    <div class="lv-rows">
+      <div class="lv-row"><span>수수료</span><span style="color:${l.col};">${l.fee}</span></div>
+      <div class="lv-row"><span>출금한도</span><span>${l.limit}</span></div>
+      <div class="lv-row"><span>보증기간</span><span>${l.warranty}</span></div>
+    </div>
+  </div>`).join('');
+
+const FEE_DATA=[
+  {cat:'동영상 스트리밍',item:'Netflix·Disney+·Crunchyroll',orig:'$15~22',gams:'$5~9',rate:'15~20%',col:'#DC2626',colBg:'rgba(220,38,38,.1)'},
+  {cat:'AI 도구',item:'ChatGPT Plus·Perplexity·Midjourney',orig:'$10~30',gams:'$4~14',rate:'18~25%',col:'#4F46E5',colBg:'rgba(79,70,229,.1)'},
+  {cat:'음악 스트리밍',item:'Spotify·Deezer·Tidal',orig:'$10~18',gams:'$4~9',rate:'12~18%',col:'#059669',colBg:'rgba(5,150,105,.1)'},
+  {cat:'생산성·디자인',item:'Canva Pro·Autodesk·Office 365',orig:'$15~60',gams:'$5~25',rate:'18~25%',col:'#0284C7',colBg:'rgba(2,132,199,.1)'},
+  {cat:'VPN·보안',item:'NordVPN·1Password',orig:'$4~14',gams:'$1.5~6',rate:'15~22%',col:'#7C3AED',colBg:'rgba(124,58,237,.1)'},
+  {cat:'언어·교육',item:'Duolingo Super·Scribd',orig:'$6~12',gams:'$2.5~5',rate:'15~20%',col:'#D97706',colBg:'rgba(217,119,6,.1)'},
+];
+document.getElementById('feeTable').innerHTML=FEE_DATA.map(r=>`
+  <tr>
+    <td><span class="fee-badge" style="background:${r.colBg};color:${r.col};">${r.cat}</span></td>
+    <td style="color:var(--t2);font-size:11px;">${r.item}</td>
+    <td style="color:var(--t3);">${r.orig}</td>
+    <td style="color:var(--grn);font-weight:700;">${r.gams}</td>
+    <td><span class="fee-badge" style="background:var(--acc2);color:var(--acc);">${r.rate}</span></td>
+  </tr>`).join('');
+
+function calc(){
+  const tx=parseInt(document.getElementById('sl-tx').value);
+  const amt=parseInt(document.getElementById('sl-amt').value);
+  const fee=parseInt(document.getElementById('sl-fee').value);
+  const aff=parseInt(document.getElementById('sl-aff').value);
+  document.getElementById('v-tx').textContent=tx>=10000?(tx/10000).toFixed(1)+'만건':tx.toLocaleString()+'건';
+  document.getElementById('v-amt').textContent='$'+amt;
+  document.getElementById('v-fee').textContent=fee+'%';
+  document.getElementById('v-aff').textContent=aff+'%';
+  const gmv=tx*amt;
+  const feeRev=Math.round(gmv*fee/100);
+  const affRev=Math.round(gmv*aff/100*0.03);
+  const total=feeRev+affRev;
+  const fmt=n=>{if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M';if(n>=1000)return'$'+(n/1000).toFixed(0)+'K';return'$'+n;};
+  document.getElementById('s-gmv').textContent=fmt(gmv);
+  document.getElementById('s-fee').textContent=fmt(feeRev);
+  document.getElementById('s-aff').textContent=fmt(affRev);
+  document.getElementById('s-total').textContent=fmt(total);
+}
+calc();
+
+new Chart(document.getElementById('sceneChart'),{
+  type:'bar',
+  data:{labels:['1만건','5만건','10만건','50만건','100만건'],
+    datasets:[
+      {label:'수수료 수익($K)',data:[22,108,216,1080,2160],backgroundColor:'rgba(79,70,229,.65)',borderRadius:4,borderSkipped:false},
+      {label:'제휴 수익($K)',data:[0.4,1.8,3.6,18,36],backgroundColor:'rgba(5,150,105,.55)',borderRadius:4,borderSkipped:false},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},
+    scales:{x:{ticks:{color:tc,font:{size:10}},grid:{display:false}},
+      y:{ticks:{color:tc,callback:v=>v>=1000?'$'+(v/1000).toFixed(0)+'M':'$'+v+'K'},grid:{color:gc}}}}
+});
+
+new Chart(document.getElementById('mixChart'),{
+  type:'doughnut',
+  data:{labels:['마켓플레이스 수수료 75%','제휴(Affiliate) 15%','GamsGo AI 구독 7%','기타 3%'],
+    datasets:[{data:[75,15,7,3],backgroundColor:['#4F46E5','#059669','#7C3AED','#9BA4C0'],borderWidth:0,hoverOffset:5}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'60%',
+    plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:10},boxWidth:10,padding:6}}}}
+});
+
+const TL=[
+  {yr:'2020',t:'설립 — 영국 런던',d:'디지털 구독 공유 플랫폼 창업. "구독의 카풀" 컨셉 적용. 차량공유(ride-sharing)에서 영감.',tag:{c:'var(--acc2)',tc:'var(--acc)',l:'창업'}},
+  {yr:'2021',t:'서비스 확장 — 100개 이상 구독 취급',d:'Netflix·Spotify 중심에서 ChatGPT·Canva·Midjourney 등 AI 도구로 카테고리 확장.',tag:{c:'var(--grn2)',tc:'var(--grn)',l:'확장'}},
+  {yr:'2022',t:'판매자 등급제 도입',d:'Lv.1~5 판매자 등급 시스템 출시. 수수료 차등 + 출금 보증 기간으로 플랫폼 신뢰도 강화.',tag:{c:'var(--pur2)',tc:'var(--pur)',l:'신뢰'}},
+  {yr:'2023',t:'글로벌 100만 사용자 돌파',d:'180개국 이상 진출, Trustpilot 4.1점 획득. PCI DSS v4.0 결제 보안 인증 획득.',tag:{c:'var(--acc2)',tc:'var(--acc)',l:'마일스톤'}},
+  {yr:'2024',t:'GamsGo AI 자체 서비스 출시',d:'타사 AI 구독 공유 외 자체 AI 도구 구독 상품 출시. 수수료 외 직접 구독 수익 다각화.',tag:{c:'var(--amb2)',tc:'var(--amb)',l:'다각화'}},
+  {yr:'2025',t:'마켓플레이스 수익 정책 고도화',d:'보증기간 세분화, 판매자 수익 해제 규정 업데이트(2026년 3월 시행). 분쟁 해결 시스템 강화.',tag:{c:'var(--grn2)',tc:'var(--grn)',l:'성숙'}},
+];
+document.getElementById('tl').innerHTML=TL.map(t=>`
+  <div class="tl-item">
+    <div class="tl-yr">${t.yr}</div>
+    <div class="tl-dot"></div>
+    <div class="tl-body">
+      <div class="tl-t">${t.t}</div>
+      <div class="tl-d">${t.d}</div>
+      <span class="tl-tag" style="background:${t.tag.c};color:${t.tag.tc};">${t.tag.l}</span>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>
