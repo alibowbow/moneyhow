@@ -571,29 +571,56 @@ function buildEmbeddedSrc(filePath){
   return `${filePath}${sep}embed=1`;
 }
 
-const EMBED_LAYOUT_FIX_CSS = `
-  html.embedded body{display:block;height:auto;overflow:auto;}
-  html.embedded .sb,
-  html.embedded .topbar,
-  html.embedded .sb-ov{display:none !important;}
-  html.embedded .main{flex:1;width:100%;min-width:0;}
-  html.embedded .content{padding:0 !important;overflow:visible !important;}
-  html.embedded .page-frame{height:auto;min-height:0;border:0;}
-  html.embedded .wrap,
-  html.embedded .dg-wrap-outer,
-  html.embedded .dg-wrap,
-  html.embedded .lb2-page,
-  html.embedded .lb2-wrap,
-  html.embedded .nv-wrap,
-  html.embedded .gg-wrap,
-  html.embedded .ss-wrap,
-  html.embedded .ne-wrap{
-    max-width:none !important;
-    width:100% !important;
-    margin-left:0 !important;
-    margin-right:0 !important;
+function getEmbeddedLayoutFixCss(doc){
+  const parts = [
+    'html.embedded body{display:block;height:auto;overflow:auto;}'
+  ];
+
+  const hasShell = doc.querySelector('.sb') && doc.querySelector('.topbar') && doc.querySelector('.content');
+  if(hasShell) {
+    parts.push(`
+      html.embedded .sb,
+      html.embedded .topbar,
+      html.embedded .sb-ov{display:none !important;}
+      html.embedded .main{flex:1;width:100%;min-width:0;}
+      html.embedded .content{padding:32px 28px 60px !important;overflow:visible !important;}
+      html.embedded .page-frame{height:auto;min-height:0;border:0;}
+      @media(max-width:900px){
+        html.embedded .content{padding:20px 16px 40px !important;}
+      }
+    `);
   }
-`;
+
+  if(doc.querySelector('.lb2-page')) {
+    parts.push(`
+      html.embedded .lb2-page{
+        margin:0 !important;
+        padding:24px 24px 56px !important;
+        background:linear-gradient(180deg,#FCFBF8 0%,#F5F1E8 100%) !important;
+      }
+      html.embedded .lb2-wrap{max-width:980px !important;margin:0 auto !important;}
+      @media(max-width:700px){
+        html.embedded .lb2-page{padding:24px 18px 58px !important;}
+      }
+    `);
+  }
+
+  if(doc.querySelector('.dg-wrap-outer')) {
+    parts.push(`
+      html.embedded .dg-wrap-outer{
+        margin:0 !important;
+        padding:32px 28px 60px !important;
+        min-height:auto !important;
+      }
+      html.embedded .dg-wrap{max-width:940px !important;margin:0 auto !important;}
+      @media(max-width:700px){
+        html.embedded .dg-wrap-outer{padding:24px 18px 52px !important;}
+      }
+    `);
+  }
+
+  return parts.join('\n');
+}
 
 function applyEmbeddedLayoutFix(frame){
   try {
@@ -601,7 +628,7 @@ function applyEmbeddedLayoutFix(frame){
     if(!doc || doc.getElementById('embed-layout-fix')) return;
     const style = doc.createElement('style');
     style.id = 'embed-layout-fix';
-    style.textContent = EMBED_LAYOUT_FIX_CSS;
+    style.textContent = getEmbeddedLayoutFixCss(doc);
     doc.head.appendChild(style);
   } catch (err) {
     // Same-origin pages should accept the style injection; if not, keep the page functional.
