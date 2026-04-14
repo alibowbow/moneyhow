@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>대원전선 — 어떻게 돈을 버나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F5F7FB;--bg2:#EAF0F6;--sur:#FFFFFF;--sur2:#FBFCFE;
+  --bor:#D9E2EC;--bor2:#B8C6D6;
+  --t1:#172231;--t2:#5D6A79;--t3:#8C97A5;
+  --navy:#183A63;--navy2:rgba(24,58,99,.10);--navy3:rgba(24,58,99,.16);
+  --copper:#B87333;--copper2:rgba(184,115,51,.10);--copper3:rgba(184,115,51,.18);
+  --teal:#1E8C83;--teal2:rgba(30,140,131,.10);
+  --steel:#718096;--steel2:rgba(113,128,150,.10);
+  --red:#C94B47;--red2:rgba(201,75,71,.10);
+  --rad:10px;--rad2:18px;--rad3:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;background:var(--bg);color:var(--t1);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:
+  radial-gradient(circle at 15% 18%, rgba(24,58,99,.055) 0%, transparent 35%),
+  radial-gradient(circle at 85% 10%, rgba(184,115,51,.07) 0%, transparent 28%),
+  radial-gradient(circle at 70% 78%, rgba(30,140,131,.045) 0%, transparent 32%);
+  pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 20px 84px;}
+.hero{padding:54px 0 44px;display:flex;align-items:center;gap:34px;}
+.hero-left{flex:1;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:var(--navy2);border:1px solid var(--navy3);border-radius:999px;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:.04em;margin-bottom:14px;}
+.hero-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.028em;color:var(--t1);margin-bottom:12px;}
+.hero-title em{font-style:italic;color:var(--copper);}
+.hero-sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:470px;font-weight:300;}
+.hero-right{flex-shrink:0;width:230px;height:230px;position:relative;}
+.hero-device{width:100%;height:100%;border-radius:30px;border:1px solid var(--bor2);background:linear-gradient(160deg,#fff 0%, #F6F9FC 100%);box-shadow:0 18px 42px rgba(23,34,49,.10);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.coil{width:154px;height:154px;border-radius:50%;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.85) 0 18%, transparent 18%),repeating-radial-gradient(circle at 50% 50%, rgba(184,115,51,.95) 0 7px, rgba(155,90,33,.95) 7px 13px, rgba(210,146,79,.95) 13px 18px);position:relative;box-shadow:inset 0 0 0 12px rgba(24,58,99,.08);}
+.coil::before,.coil::after{content:'';position:absolute;border-radius:999px;background:linear-gradient(90deg, var(--navy) 0%, #2D5D92 100%);}
+.coil::before{width:92px;height:14px;right:-36px;top:52px;transform:rotate(-18deg);box-shadow:0 0 0 3px rgba(255,255,255,.8);}
+.coil::after{width:74px;height:14px;left:-18px;bottom:36px;transform:rotate(24deg);box-shadow:0 0 0 3px rgba(255,255,255,.8);}
+.hero-chip{position:absolute;padding:6px 10px;border-radius:12px;background:#fff;border:1px solid var(--bor);font-size:10px;font-weight:700;box-shadow:0 8px 20px rgba(23,34,49,.08);}
+.hero-chip.one{top:26px;left:16px;color:var(--navy);}
+.hero-chip.two{bottom:20px;right:18px;color:var(--copper);}
+.hero-chip.three{right:18px;top:36px;color:var(--teal);}
+.paradox{background:linear-gradient(135deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:22px 24px;margin-bottom:28px;display:flex;gap:24px;align-items:center;}
+.px-left{flex:1;}
+.px-title{font-family:'DM Serif Display',Georgia,serif;font-size:24px;color:var(--t1);margin-bottom:8px;line-height:1.16;}
+.px-title em{font-style:italic;color:var(--copper);}
+.px-body{font-size:13px;color:var(--t2);line-height:1.7;font-weight:300;}
+.px-right{flex-shrink:0;text-align:center;min-width:180px;}
+.px-big{font-family:'DM Serif Display',Georgia,serif;font-size:52px;color:var(--navy);line-height:1;}
+.px-big-sub{font-size:11px;color:var(--t3);margin-top:4px;}
+.px-arrow{font-size:26px;margin:6px 0;opacity:.25;}
+.px-small{font-size:13px;font-weight:700;color:var(--copper);}
+.mets{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px;}
+.met{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:16px 18px;transition:all .22s;}
+.met:hover{border-color:var(--navy);box-shadow:0 4px 18px rgba(24,58,99,.09);transform:translateY(-1px);}
+.met-icon{font-size:20px;margin-bottom:8px;}
+.met-lbl{font-size:10px;color:var(--t3);letter-spacing:.05em;margin-bottom:5px;font-weight:500;}
+.met-val{font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.02em;line-height:1;}
+.met-val.navy{color:var(--navy);} .met-val.copper{color:var(--copper);} .met-val.teal{color:var(--teal);}
+.met-sub{font-size:10.5px;color:var(--t3);margin-top:5px;line-height:1.4;}
+.sec{margin-bottom:28px;}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-num{font-family:'DM Serif Display',Georgia,serif;font-size:13px;color:var(--navy);opacity:.62;}
+.sec-title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);}
+.sec-line{flex:1;height:1px;background:var(--bor);}
+.card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;transition:border-color .2s;}
+.card:hover{border-color:var(--navy3);}
+.card-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.card-d{font-size:11px;color:var(--t3);margin-bottom:14px;line-height:1.55;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.rev-stream{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.rs-item{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:16px 18px;cursor:pointer;transition:all .2s;display:flex;gap:14px;align-items:flex-start;}
+.rs-item:hover,.rs-item.on{border-color:var(--navy);background:var(--sur2);} .rs-item.on{box-shadow:0 6px 18px rgba(24,58,99,.09);}
+.rs-icon-wrap{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.rs-body{flex:1;}
+.rs-head{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
+.rs-name{font-size:13px;font-weight:700;color:var(--t1);}
+.rs-share{font-size:11px;font-weight:700;padding:1px 8px;border-radius:100px;}
+.rs-desc{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:6px;}
+.rs-bar-bg{background:var(--bg2);border-radius:4px;height:6px;overflow:hidden;}
+.rs-bar{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.rs-detail{overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1);font-size:12px;color:var(--t2);}
+.rs-detail.open{max-height:260px;}
+.rs-detail-inner{padding-top:12px;border-top:1px solid var(--bor);margin-top:10px;}
+.bd{display:flex;flex-direction:column;gap:7px;}
+.bd-row{display:flex;align-items:center;gap:8px;}
+.bd-lbl{font-size:11px;color:var(--t2);min-width:120px;text-align:right;font-weight:400;}
+.bd-bg{flex:1;background:var(--bg2);border-radius:3px;height:14px;overflow:hidden;}
+.bd-bar{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.bd-val{font-size:11px;font-weight:700;min-width:74px;text-align:right;}
+.note-box{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--bg2);font-size:11px;color:var(--t2);line-height:1.6;border:1px solid var(--bor);}
+.flow{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;}
+.fn{display:flex;flex-direction:column;align-items:center;width:100%;}
+.fn-box{border-radius:7px;height:40px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:#fff;transition:width .8s cubic-bezier(.4,0,.2,1);position:relative;}
+.fn-lbl{font-size:10.5px;color:var(--t2);margin-top:4px;text-align:center;}
+.fn-arrow{font-size:14px;color:var(--bor2);line-height:1.2;}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.cmp-col{border:1px solid var(--bor);border-radius:var(--rad2);padding:14px;background:var(--sur);}
+.cmp-col.hl{border:2px solid var(--navy);background:linear-gradient(180deg, rgba(24,58,99,.04), rgba(24,58,99,.01));}
+.cmp-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
+.cmp-name{font-size:12.5px;font-weight:700;margin-bottom:10px;color:var(--t1);}
+.cmp-row{display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid var(--bor);gap:8px;}
+.cmp-row:last-child{border:none;font-weight:700;padding-top:6px;}
+.map-visual{background:linear-gradient(180deg,#EEF3F8 0%, #E7EEF5 100%);border-radius:var(--rad2);padding:20px;position:relative;overflow:hidden;height:210px;display:flex;align-items:center;justify-content:center;}
+.copper-line{position:absolute;height:10px;border-radius:999px;background:linear-gradient(90deg, #C78344 0%, #B87333 55%, #8E541F 100%);box-shadow:0 0 0 3px rgba(255,255,255,.65), 0 14px 28px rgba(184,115,51,.18);}
+.copper-line.l1{width:180px;transform:rotate(22deg);left:18%;top:28%;}
+.copper-line.l2{width:220px;transform:rotate(-18deg);right:12%;top:44%;}
+.copper-line.l3{width:130px;transform:rotate(35deg);left:24%;bottom:24%;}
+.map-center{text-align:center;position:relative;z-index:2;background:rgba(255,255,255,.72);backdrop-filter:blur(4px);padding:14px 18px;border-radius:16px;border:1px solid rgba(255,255,255,.8);}
+.map-big{font-family:'DM Serif Display',Georgia,serif;font-size:36px;color:var(--navy);}
+.map-sub{font-size:12px;color:var(--t2);margin-top:4px;line-height:1.55;}
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.ins{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:14px 16px;transition:all .2s;}
+.ins:hover{box-shadow:0 6px 18px rgba(23,34,49,.08);transform:translateY(-2px);}
+.ins-num{font-family:'DM Serif Display',Georgia,serif;font-size:28px;color:var(--navy);line-height:1;margin-bottom:5px;}
+.ins-num.copper{color:var(--copper);} .ins-num.teal{color:var(--teal);} .ins-num.red{color:var(--red);}
+.ins-t{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.ins-b{font-size:11px;color:var(--t3);line-height:1.55;}
+.tl{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--bor);} .tl-item:last-child{border-bottom:none;}
+.tl-yr{font-size:11px;font-weight:700;color:var(--navy);min-width:48px;padding-top:2px;font-family:'DM Serif Display',Georgia,serif;}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--copper);flex-shrink:0;margin-top:4px;opacity:.75;}
+.tl-body{flex:1;}
+.tl-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.tl-d{font-size:11.5px;color:var(--t2);line-height:1.55;}
+.tl-tag{display:inline-block;font-size:9.5px;padding:2px 7px;border-radius:4px;font-weight:700;margin-top:5px;letter-spacing:.04em;}
+.source-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.src{background:var(--bg2);border:1px solid var(--bor);border-radius:12px;padding:12px 13px;}
+.src-t{font-size:11px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.src-d{font-size:10.5px;color:var(--t2);line-height:1.55;}
+.footer{text-align:center;padding:24px 0 0;border-top:1px solid var(--bor);font-size:11px;color:var(--t3);line-height:1.6;}
+@media(max-width:780px){
+  .hero{flex-direction:column;gap:20px;}
+  .hero-right{width:190px;height:190px;}
+  .mets{grid-template-columns:repeat(2,1fr);} 
+  .g2,.g3,.cmp,.ins-grid,.source-list{grid-template-columns:1fr;} 
+  .paradox{flex-direction:column;text-align:center;} 
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-title">대원전선은<br>어떻게 <em>돈을 버나</em></div>
+    <div class="hero-sub">대원전선은 <strong>절연전선·전력전선·자동차부품</strong>을 만드는 전선 제조 기업입니다. 돈을 버는 구조는 단순합니다. 전선을 팔아 매출을 만들고, 그중 얼마나 남기느냐는 <strong>구리 가격</strong>, <strong>판가 전가</strong>, <strong>제품 믹스</strong>에 따라 달라집니다. 그래서 이 회사는 매출 숫자만보다 원가와 마진 흐름을 함께 봐야 합니다.</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-device"><div class="coil"></div></div>
+  </div>
+</div>
+
+<div class="paradox">
+  <div class="px-left">
+    <div class="px-title">매출은 <em>늘었는데</em><br>왜 이익은 줄었을까?</div>
+    <div class="px-body">2025년 대원전선의 연결 매출은 6,245억원으로 전년보다 늘었습니다. 그런데 영업이익은 줄었습니다. 회사가 공시에서 밝힌 이유는 세 가지입니다. <strong>동(구리) 가격 상승</strong>, <strong>종속회사 편입에 따른 매출 증가</strong>, 그리고 <strong>동가 상승에 따른 원가 부담 확대</strong>입니다. 즉, 겉으로는 외형이 커졌지만, 안쪽에서는 원가 압박이 더 강해졌다는 뜻입니다.</div>
+  </div>
+  <div class="px-right">
+    <div class="px-big">1.5%</div>
+    <div class="px-big-sub">2025 연결 영업이익률</div>
+    <div class="px-arrow">↓</div>
+    <div class="px-small">원가와 제품 믹스가 이익률을 좌우</div>
+  </div>
+</div>
+
+<div class="mets">
+  <div class="met">
+    <div class="met-icon">💰</div>
+    <div class="met-lbl">2025 연결 매출</div>
+    <div class="met-val navy">6,245억</div>
+    <div class="met-sub">전년 대비 +13.0%</div>
+  </div>
+  <div class="met">
+    <div class="met-icon">🏭</div>
+    <div class="met-lbl">2025 영업이익</div>
+    <div class="met-val copper">93억</div>
+    <div class="met-sub">전년 대비 -34.9%</div>
+  </div>
+  <div class="met">
+    <div class="met-icon">🧾</div>
+    <div class="met-lbl">2025 순이익</div>
+    <div class="met-val teal">129억</div>
+    <div class="met-sub">전년 대비 +90.3%</div>
+  </div>
+  <div class="met">
+    <div class="met-icon">🧵</div>
+    <div class="met-lbl">전선부문 매출 비중</div>
+    <div class="met-val navy">84.4%</div>
+    <div class="met-sub">연결 기준 핵심 축</div>
+  </div>
+  <div class="met">
+    <div class="met-icon">🚗</div>
+    <div class="met-lbl">자동차부품 비중</div>
+    <div class="met-val">15.6%</div>
+    <div class="met-sub">신규 연결 축</div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">돈 버는 구조 — 제품과 연결 구조</span><div class="sec-line"></div></div>
+  <div class="rev-stream" id="revStreams"></div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">실적 해부 — 100원 팔면 얼마나 남나</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">2025년 100원 매출의 남는 몫</div>
+      <div class="card-d">연결 기준 매출 6,245억원을 100원으로 놓고 보면</div>
+      <div class="bd" id="bdBars"></div>
+      <div class="note-box">순이익률이 영업이익률보다 높게 보이는 이유는, 회사가 공시에서 설명한 것처럼 종속회사 이연법인세자산 증가로 법인세 비용이 줄어든 영향이 반영됐기 때문입니다.</div>
+    </div>
+    <div class="card">
+      <div class="card-t">2024 → 2025, 무엇이 달라졌나</div>
+      <div class="card-d">매출은 커졌지만 영업이익은 오히려 줄어든 해</div>
+      <div style="height:220px;position:relative;"><canvas id="yearChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">핵심 제품과 매출 흐름</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">대원전선의 돈 버는 길</div>
+      <div class="card-d">원재료에서 고객 매출로 이어지는 아주 단순한 구조</div>
+      <div class="flow" id="moneyFlow"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">케이블 제품 믹스 스냅샷</div>
+      <div class="card-d">2025년 9월 기준 공개된 주요제품 구성</div>
+      <div style="height:220px;position:relative;"><canvas id="mixChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">내수·수출 힌트 — 어디서 팔리나</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">제품별 내수 / 수출 성격</div>
+      <div class="card-d">2025년 공개 스냅샷 기준, 통신전선은 상대적으로 수출 비중이 높고 절연전선은 내수 비중이 매우 높습니다.</div>
+      <div style="height:230px;position:relative;"><canvas id="exportChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="map-visual">
+        <div class="copper-line l1"></div><div class="copper-line l2"></div><div class="copper-line l3"></div>
+        <div class="map-center">
+          <div class="map-big">구리</div>
+          <div class="map-sub">대원전선 비즈니스의 가장 중요한 입력값<br>매출도, 원가도, 마진도 이 변수의 영향을 크게 받습니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">산일전기와 비교하면 왜 다르게 보일까</span><div class="sec-line"></div></div>
+  <div class="cmp">
+    <div class="cmp-col hl">
+      <span class="cmp-badge" style="background:var(--navy2);color:var(--navy);">DAEWON CABLE</span>
+      <div class="cmp-name">대원전선</div>
+      <div class="cmp-row"><span style="color:var(--t2);">2025 매출</span><span>6,245억</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">2025 영업이익</span><span style="color:var(--copper);">93억</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">영업이익률</span><span>1.5%</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">돈 버는 핵심</span><span>전선 판매량 × 판가</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">민감한 변수</span><span>구리 가격, 제품 믹스</span></div>
+      <div class="cmp-row"><span>한 줄 요약</span><span>외형형 제조업</span></div>
+    </div>
+    <div class="cmp-col">
+      <span class="cmp-badge" style="background:var(--copper2);color:var(--copper);">SANIL ELECTRIC</span>
+      <div class="cmp-name">산일전기</div>
+      <div class="cmp-row"><span style="color:var(--t2);">2025 매출</span><span>5,019억</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">2025 영업이익</span><span style="color:var(--teal);">1,786억</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">영업이익률</span><span>35.6%</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">돈 버는 핵심</span><span>특수변압기·수출</span></div>
+      <div class="cmp-row"><span style="color:var(--t2);">민감한 변수</span><span>미국 전력망·DC/ESS 수요</span></div>
+      <div class="cmp-row"><span>한 줄 요약</span><span>고마진 특수장비</span></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">숫자로 보면</div>
+      <div class="card-d">매출 크기는 비슷한데 이익 체력은 크게 다릅니다.</div>
+      <div style="height:220px;position:relative;"><canvas id="compareChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-t">왜 차이가 날까</div>
+      <div class="card-d">케이블과 특수변압기는 같은 전력 밸류체인 안에 있어도 수익 구조가 다릅니다.</div>
+      <div class="tl" id="tl"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><span class="sec-title">핵심 인사이트</span><div class="sec-line"></div></div>
+  <div class="ins-grid">
+    <div class="ins">
+      <div class="ins-num">56%</div>
+      <div class="ins-t">절연전선 중심</div>
+      <div class="ins-b">대원전선의 공개 제품 구성에서 가장 큰 축은 절연전선입니다. 건설·산업·자동차 배선 쪽이 핵심입니다.</div>
+    </div>
+    <div class="ins">
+      <div class="ins-num copper">84%</div>
+      <div class="ins-t">아직은 전선 회사</div>
+      <div class="ins-b">연결 기준으로 자동차부품이 편입됐지만, 매출의 대부분은 여전히 전선부문에서 나옵니다.</div>
+    </div>
+    <div class="ins">
+      <div class="ins-num red">1.5%</div>
+      <div class="ins-t">얇은 영업마진</div>
+      <div class="ins-b">2025년 영업이익률은 1.5% 수준입니다. 원재료 가격이 흔들리면 마진이 쉽게 눌립니다.</div>
+    </div>
+    <div class="ins">
+      <div class="ins-num teal">35.6%</div>
+      <div class="ins-t">산일전기와의 차이</div>
+      <div class="ins-b">산일전기는 특수변압기와 수출 덕분에 훨씬 높은 마진을 냅니다. 대원전선과 같은 전력 테마여도 성격이 다릅니다.</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">07</span><span class="sec-title">데이터 메모</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div class="card-t">이 페이지에 사용한 기준점</div>
+    <div class="card-d">숫자는 공시·IR·회사 공개 페이지를 바탕으로 정리했습니다.</div>
+    <div class="source-list">
+      <div class="src">
+        <div class="src-t">대원전선 2025 실적</div>
+        <div class="src-d">2026년 1월 30일 및 3월 공시 반영. 연결 매출 6,245억원, 영업이익 93억원, 순이익 129억원, 실적 변동 사유는 동가 상승·종속회사 편입·법인세 비용 감소 설명을 사용.</div>
+      </div>
+      <div class="src">
+        <div class="src-t">대원전선 제품/사업 구조</div>
+        <div class="src-d">회사 제품정보와 2025년 9월 공개된 주요제품 구성 스냅샷을 반영. 절연전선·전력전선·나선·통신전선 중심 구조.</div>
+      </div>
+      <div class="src">
+        <div class="src-t">연결 세그먼트 해석</div>
+        <div class="src-d">2025 사업보고서 검색 결과에 나온 전선부문/자동차부품부문 매출 값을 이용해 연결 매출 비중을 계산했습니다.</div>
+      </div>
+      <div class="src">
+        <div class="src-t">산일전기 비교치</div>
+        <div class="src-d">2025 연결 매출 5,019억원, 영업이익 1,786억원(정정 공시 기준), 데이터센터·ESS용 특수변압기와 수주잔고 설명을 반영했습니다.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">데이터 출처: 대원전선 공시·IR·제품 자료, 산일전기 공시·IR 자료 종합</footer>
+</div>
+
+<script>
+const tc='#8C97A5', gc='rgba(23,34,49,.07)';
+
+const STREAMS=[
+  {
+    icon:'🧵',iconBg:'rgba(24,58,99,.08)',name:'절연전선',share:'56.0%',shareCol:'#183A63',shareBg:'rgba(24,58,99,.10)',
+    desc:'대원전선 공개 제품 구성에서 가장 큰 축입니다. 건물 배선, 산업용 배선, 자동차용 와이어 등 일상과 산업 현장에 가장 넓게 깔리는 제품군입니다.',barW:56,barCol:'#183A63',
+    detail:`<div style="font-size:12px;line-height:1.65;color:var(--t2);">
+      <strong style="color:var(--t1);">왜 중요할까?</strong> 많이 팔리는 기본 체력입니다. 대원전선이 "꾸준히 돈을 버는 바닥" 역할을 합니다. 제품 믹스가 좋아지면 수익성도 함께 개선될 수 있습니다.
+    </div>`
+  },
+  {
+    icon:'⚡',iconBg:'rgba(184,115,51,.10)',name:'전력전선',share:'34.9%',shareCol:'#B87333',shareBg:'rgba(184,115,51,.12)',
+    desc:'송배전·산업 설비·건설 현장에 들어가는 전력 케이블입니다. 구리 가격, 수주 단가, 프로젝트 성격의 영향을 크게 받습니다.',barW:34.86,barCol:'#B87333',
+    detail:`<div style="font-size:12px;line-height:1.65;color:var(--t2);">
+      <strong style="color:var(--t1);">돈 버는 포인트</strong>는 물량과 판가입니다. 다만 원재료 비중이 높아, 구리 가격이 급하게 움직이면 매출은 커져도 영업이익은 얇아질 수 있습니다.
+    </div>`
+  },
+  {
+    icon:'📡',iconBg:'rgba(30,140,131,.10)',name:'나선·통신전선',share:'8.2%',shareCol:'#1E8C83',shareBg:'rgba(30,140,131,.12)',
+    desc:'나선과 통신전선은 전체에서 비중이 크진 않지만 포트폴리오 다변화 역할을 합니다. 통신전선은 공개 스냅샷에서 상대적으로 수출 비중이 높게 나타났습니다.',barW:8.21,barCol:'#1E8C83',
+    detail:`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">비중</div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--bor);font-size:11px;"><span>나선</span><span style="font-weight:700;color:var(--teal);">5.48%</span></div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--bor);font-size:11px;"><span>통신전선</span><span style="font-weight:700;color:var(--teal);">2.73%</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6;">작지만 무시하기 어려운 보조 축입니다. 매출 안정성과 고객 접점을 넓히는 역할을 합니다.</div>
+    </div>`
+  },
+  {
+    icon:'🚗',iconBg:'rgba(113,128,150,.12)',name:'자동차부품(연결 신규 축)',share:'15.6%',shareCol:'#718096',shareBg:'rgba(113,128,150,.12)',
+    desc:'2025년 연결 실적에는 자동차부품부문 매출 972억원이 반영됐습니다. 전선 회사 위에 새 매출 기둥이 하나 더 얹힌 모양입니다.',barW:15.57,barCol:'#718096',
+    detail:`<div style="font-size:12px;line-height:1.65;color:var(--t2);">
+      이 수치는 <strong style="color:var(--t1);">연결 세그먼트 비중</strong>입니다. 그래서 위의 케이블 제품 비중과 기준이 다릅니다. 쉽게 말해, "원래 하던 전선 사업"에 "새로 묶인 자동차부품 매출"이 더해졌다고 보면 됩니다.
+    </div>`
+  }
+];
+let openIdx=0;
+function renderStreams(){
+  document.getElementById('revStreams').innerHTML=STREAMS.map((s,i)=>`
+    <div class="rs-item${i===openIdx?' on':''}" onclick="toggleStream(${i})">
+      <div class="rs-icon-wrap" style="background:${s.iconBg};">${s.icon}</div>
+      <div class="rs-body">
+        <div class="rs-head">
+          <span class="rs-name">${s.name}</span>
+          <span class="rs-share" style="color:${s.shareCol};background:${s.shareBg};">${s.share}</span>
+        </div>
+        <div class="rs-desc">${s.desc}</div>
+        <div class="rs-bar-bg"><div class="rs-bar" style="width:${Math.min(s.barW,100)}%;background:${s.barCol};"></div></div>
+        <div class="rs-detail${i===openIdx?' open':''}"><div class="rs-detail-inner">${s.detail}</div></div>
+      </div>
+    </div>`).join('');
+}
+function toggleStream(i){openIdx=openIdx===i?-1:i;renderStreams();}
+renderStreams();
+
+const BD=[
+  {lbl:'매출',v:100,col:'#183A63',txt:'100.0원'},
+  {lbl:'영업이익',v:1.5,col:'#B87333',txt:'1.5원'},
+  {lbl:'순이익',v:2.1,col:'#1E8C83',txt:'2.1원'},
+  {lbl:'원가·판관비',v:98.5,col:'#C94B47',txt:'98.5원'}
+];
+document.getElementById('bdBars').innerHTML=BD.map(i=>`<div class="bd-row"><span class="bd-lbl">${i.lbl}</span><div class="bd-bg"><div class="bd-bar" style="width:${i.v}%;background:${i.col};"></div></div><span class="bd-val" style="color:${i.col};">${i.txt}</span></div>`).join('');
+
+new Chart(document.getElementById('yearChart'),{
+  type:'bar',
+  data:{
+    labels:['2024','2025'],
+    datasets:[
+      {label:'매출(억원)',data:[5528,6245],backgroundColor:['rgba(24,58,99,.45)','rgba(24,58,99,.82)'],borderRadius:6,yAxisID:'y'},
+      {label:'영업이익(억원)',data:[143,93],backgroundColor:['rgba(184,115,51,.42)','rgba(184,115,51,.92)'],borderRadius:6,yAxisID:'y'},
+      {label:'순이익(억원)',data:[68,129],backgroundColor:['rgba(30,140,131,.38)','rgba(30,140,131,.88)'],borderRadius:6,yAxisID:'y'}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},
+    scales:{
+      x:{ticks:{color:tc},grid:{display:false}},
+      y:{ticks:{color:tc,callback:v=>v+'억'},grid:{color:gc},beginAtZero:true}
+    }
+  }
+});
+
+const FLOW=[
+  {lbl:'구리·알루미늄 원재료',val:'원가의 핵심',w:100,col:'rgba(24,58,99,.88)'},
+  {lbl:'압출·절연·가공',val:'전선 제조 공정',w:78,col:'rgba(24,58,99,.72)'},
+  {lbl:'절연/전력/통신 제품',val:'제품 포트폴리오',w:56,col:'rgba(184,115,51,.76)'},
+  {lbl:'건설·배전·산업 고객',val:'내수 중심 + 일부 수출',w:38,col:'rgba(184,115,51,.56)'},
+  {lbl:'매출 인식',val:'2025 매출 6,245억',w:24,col:'rgba(30,140,131,.75)'}
+];
+document.getElementById('moneyFlow').innerHTML=FLOW.map((f,i)=>`
+  <div class="fn"><div class="fn-box" style="width:${f.w}%;background:${f.col};">${f.lbl}</div><div class="fn-lbl">${f.val}</div></div>${i<FLOW.length-1?'<div class="fn-arrow">▼</div>':''}`
+).join('');
+
+new Chart(document.getElementById('mixChart'),{
+  type:'doughnut',
+  data:{
+    labels:['절연전선 56.04%','전력전선 34.86%','나선 5.48%','통신전선 2.73%','기타 0.89%'],
+    datasets:[{data:[56.04,34.86,5.48,2.73,0.89],backgroundColor:['#183A63','#B87333','#1E8C83','#718096','#D2D9E1'],borderWidth:0,hoverOffset:6}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'60%',
+    plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:10}}}
+  }
+});
+
+new Chart(document.getElementById('exportChart'),{
+  type:'bar',indexAxis:'y',
+  data:{
+    labels:['절연전선','전력전선','나선','통신전선'],
+    datasets:[
+      {label:'내수',data:[98.46,75.89,98.74,46.11],backgroundColor:'rgba(24,58,99,.78)',borderRadius:5},
+      {label:'수출',data:[1.54,24.11,1.26,53.89],backgroundColor:'rgba(184,115,51,.82)',borderRadius:5}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},
+    scales:{
+      x:{stacked:true,max:100,ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc}},
+      y:{stacked:true,ticks:{color:tc,font:{size:11}},grid:{display:false}}
+    }
+  }
+});
+
+new Chart(document.getElementById('compareChart'),{
+  type:'bar',
+  data:{
+    labels:['대원전선','산일전기'],
+    datasets:[
+      {label:'매출(억원)',data:[6245,5019],backgroundColor:['rgba(24,58,99,.8)','rgba(24,58,99,.35)'],borderRadius:6},
+      {label:'영업이익(억원)',data:[93,1786],backgroundColor:['rgba(184,115,51,.85)','rgba(30,140,131,.72)'],borderRadius:6}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},
+    scales:{x:{ticks:{color:tc},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v+'억'},grid:{color:gc},beginAtZero:true}}
+  }
+});
+
+const TL=[
+  {yr:'대원',t:'케이블은 매출이 크지만 마진은 얇다',d:'전선은 원재료 비중이 높고 경쟁도 치열합니다. 많이 팔아도 이익률이 두껍지 않을 수 있습니다.',tag:{c:'rgba(24,58,99,.10)',tc:'#183A63',l:'볼륨형'}},
+  {yr:'산일',t:'특수변압기는 ASP가 높다',d:'산일전기는 데이터센터·ESS용 특수변압기 판매가 성장의 중심입니다. 제품 자체가 더 고부가입니다.',tag:{c:'rgba(30,140,131,.10)',tc:'#1E8C83',l:'고부가'}},
+  {yr:'산일',t:'수출과 수주잔고가 이익의 방패',d:'2025년 연간 신규수주는 5,660억원, 4분기 수주잔고는 4,489억원으로 공개됐습니다. 주문 기반 가시성이 더 큽니다.',tag:{c:'rgba(184,115,51,.10)',tc:'#B87333',l:'수주형'}},
+  {yr:'대원',t:'대원전선은 구리 가격 해석이 중요하다',d:'대원전선을 볼 때는 단순 매출 증가보다, 구리 가격과 판가 전가 그리고 제품 믹스를 함께 봐야 합니다.',tag:{c:'rgba(201,75,71,.10)',tc:'#C94B47',l:'원가민감'}}
+];
+document.getElementById('tl').innerHTML=TL.map(t=>`
+  <div class="tl-item"><div class="tl-yr">${t.yr}</div><div class="tl-dot"></div><div class="tl-body"><div class="tl-t">${t.t}</div><div class="tl-d">${t.d}</div><span class="tl-tag" style="background:${t.tag.c};color:${t.tag.tc};">${t.tag.l}</span></div></div>`).join('');
+</script>
+</body>
+</html>
