@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>쿠팡파트너스는 어떻게 돈을 버나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gmarket+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#FFF8F5;--bg2:#FFF0EA;--bg3:#FFE5D8;
+  --sur:#FFFFFF;--sur2:#FFFBF9;
+  --bor:#F0DDD4;--bor2:#DEC0B0;
+  --t1:#1A1210;--t2:#6B5048;--t3:#B09080;
+  --cp:#E5421A;--cp2:rgba(229,66,26,.1);--cp3:rgba(229,66,26,.2);
+  --grn:#1A7A40;--grn2:rgba(26,122,64,.09);
+  --blu:#1A5AA0;--blu2:rgba(26,90,160,.09);
+  --amb:#8A5800;--amb2:rgba(138,88,0,.09);
+  --pur:#5A30A0;--pur2:rgba(90,48,160,.09);
+  --rad:9px;--rad2:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;background:var(--bg);color:var(--t1);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(229,66,26,.04) 0%,transparent 60%),radial-gradient(ellipse at 10% 90%,rgba(229,66,26,.03) 0%,transparent 50%);pointer-events:none;z-index:0;}
+
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 22px 80px;}
+
+/* HERO */
+.hero{padding:44px 0 32px;display:flex;gap:28px;align-items:center;}
+.hero-left{flex:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:var(--cp2);border:1px solid var(--cp3);border-radius:100px;font-size:11px;font-weight:700;color:var(--cp);letter-spacing:.04em;margin-bottom:14px;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--cp);animation:bp 2s ease-in-out infinite;}
+@keyframes bp{0%,100%{opacity:1;}50%{opacity:.2;}}
+.hero-title{font-family:'Gmarket Sans',sans-serif;font-size:clamp(30px,5vw,56px);font-weight:700;line-height:1.08;letter-spacing:-.02em;color:var(--t1);margin-bottom:10px;}
+.hero-title em{font-style:normal;color:var(--cp);}
+.hero-sub{font-size:14px;color:var(--t2);line-height:1.65;max-width:460px;font-weight:300;}
+.hero-right{flex-shrink:0;}
+.hero-visual{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:20px 22px;min-width:200px;box-shadow:0 4px 24px rgba(229,66,26,.06);}
+.hv-label{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:.06em;margin-bottom:6px;}
+.hv-val{font-family:'Gmarket Sans',sans-serif;font-size:36px;font-weight:700;color:var(--cp);line-height:1;}
+.hv-sub{font-size:11px;color:var(--t2);margin-top:4px;}
+.hv-tag{display:inline-block;font-size:10.5px;font-weight:700;color:var(--grn);background:var(--grn2);padding:2px 8px;border-radius:4px;margin-top:7px;}
+
+/* KEY STATS */
+.kstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:26px;}
+.ks{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:14px 16px;transition:all .18s;border-top:3px solid;}
+.ks:hover{box-shadow:0 2px 14px rgba(0,0,0,.07);}
+.ks-lbl{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:.04em;margin-bottom:5px;}
+.ks-val{font-family:'Gmarket Sans',sans-serif;font-size:21px;font-weight:700;color:var(--t1);line-height:1;}
+.ks-sub{font-size:10px;color:var(--t3);margin-top:4px;}
+
+/* SECTION */
+.sec{margin-bottom:26px;}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.sec-num{background:var(--cp);color:#fff;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.06em;}
+.sec-title{font-size:13px;font-weight:700;color:var(--t1);}
+.sec-line{flex:1;height:1px;background:var(--bor);}
+.sec-note{font-size:10px;color:var(--t3);}
+
+/* CARD */
+.card{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;transition:border-color .18s;}
+.card:hover{border-color:var(--bor2);}
+.card-t{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.card-d{font-size:11px;color:var(--t3);margin-bottom:14px;line-height:1.5;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* FLOW DIAGRAM */
+.flow{display:flex;align-items:stretch;border-radius:var(--rad2);border:1px solid var(--bor);overflow:hidden;margin-bottom:24px;}
+.flow-step{flex:1;background:var(--sur);padding:16px 14px;position:relative;}
+.flow-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--t3);z-index:2;}
+.flow-step:not(:first-child){border-left:1px solid var(--bor);}
+.fs-num{font-size:9px;font-weight:700;color:var(--cp);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.fs-icon{font-size:22px;margin-bottom:7px;display:block;}
+.fs-title{font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.fs-desc{font-size:11px;color:var(--t2);line-height:1.5;}
+.fs-tag{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:6px;}
+
+/* PARADOX */
+.paradox-box{background:linear-gradient(135deg,var(--cp2),rgba(229,66,26,.04));border:1px solid var(--cp3);border-radius:var(--rad2);padding:20px 24px;margin-bottom:24px;display:flex;gap:24px;align-items:center;}
+.px-left{flex:1;}
+.px-title{font-family:'Gmarket Sans',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:8px;line-height:1.3;}
+.px-title em{font-style:normal;color:var(--cp);}
+.px-body{font-size:13px;color:var(--t2);line-height:1.65;font-weight:300;}
+.px-right{flex-shrink:0;text-align:center;}
+.px-big{font-family:'Gmarket Sans',sans-serif;font-size:52px;font-weight:700;color:var(--cp);line-height:1;}
+.px-sub{font-size:11px;color:var(--t3);margin-top:4px;}
+.px-arrow{font-size:22px;opacity:.3;margin:5px 0;}
+.px-result{font-size:12px;font-weight:700;color:var(--grn);}
+
+/* FEE TABLE */
+.fee-tbl{width:100%;border-collapse:collapse;}
+.fee-tbl th{padding:8px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);border-bottom:2px solid var(--bor);background:var(--bg2);}
+.fee-tbl td{padding:9px 13px;border-bottom:1px solid var(--bor);font-size:12.5px;vertical-align:middle;}
+.fee-tbl tr:hover td{background:var(--sur2);}
+.fee-tbl tr:last-child td{border-bottom:none;}
+.fee-bar-wrap{background:var(--bg3);border-radius:3px;height:12px;overflow:hidden;display:inline-block;width:80px;vertical-align:middle;margin-left:6px;}
+.fee-bar{height:100%;border-radius:3px;background:var(--cp);}
+.fee-pct{font-family:'Gmarket Sans',sans-serif;font-weight:700;color:var(--cp);}
+
+/* BD BARS */
+.bd{display:flex;flex-direction:column;gap:6px;}
+.bd-row{display:flex;align-items:center;gap:8px;}
+.bd-lbl{font-size:11px;color:var(--t2);min-width:155px;text-align:right;}
+.bd-bg{flex:1;background:var(--bg2);border-radius:2px;height:14px;overflow:hidden;}
+.bd-bar{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.bd-val{font-size:11px;font-weight:700;min-width:76px;text-align:right;}
+
+/* 3-PARTY MONEY FLOW */
+.money-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:center;background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);overflow:hidden;margin-bottom:12px;}
+.mf-node{padding:18px 16px;text-align:center;}
+.mf-node.coupang{background:var(--cp2);}
+.mf-arr{padding:0 10px;font-size:20px;color:var(--t3);text-align:center;}
+.mf-icon{font-size:26px;margin-bottom:8px;display:block;}
+.mf-name{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:5px;}
+.mf-items{display:flex;flex-direction:column;gap:4px;}
+.mf-item{font-size:10.5px;color:var(--t2);display:flex;align-items:center;gap:5px;}
+.mf-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
+
+/* SIM */
+.sim{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;margin-bottom:12px;}
+.sl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.sl-lbl{font-size:11.5px;color:var(--t2);min-width:120px;font-weight:400;}
+.sl-row input[type=range]{flex:1;accent-color:var(--cp);cursor:pointer;}
+.sl-val{font-size:12px;font-weight:700;min-width:70px;text-align:right;color:var(--t1);}
+.sim-outs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.so{background:var(--bg2);border-radius:var(--rad);padding:10px 12px;border:1px solid var(--bor);}
+.so-l{font-size:10px;color:var(--t3);margin-bottom:4px;font-weight:500;letter-spacing:.02em;}
+.so-v{font-family:'Gmarket Sans',sans-serif;font-size:16px;font-weight:700;color:var(--t1);}
+
+/* COMPARE */
+.cmp{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+.cmp-col{border:1px solid var(--bor);border-radius:var(--rad2);padding:14px 15px;}
+.cmp-col.hl{border-color:var(--cp);border-width:2px;background:var(--cp2);}
+.cmp-badge{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:7px;letter-spacing:.04em;text-transform:uppercase;}
+.cmp-name{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--t1);}
+.cmp-row{display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;border-bottom:1px solid var(--bor);}
+.cmp-row:last-child{border:none;font-weight:700;padding-top:6px;}
+
+/* INS */
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.ins{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad2);padding:14px 15px;transition:all .18s;border-top:3px solid var(--cp);}
+.ins:hover{box-shadow:0 3px 14px rgba(0,0,0,.07);transform:translateY(-2px);}
+.ins-num{font-family:'Gmarket Sans',sans-serif;font-size:26px;font-weight:700;color:var(--cp);line-height:1;margin-bottom:5px;}
+.ins-num.g{color:var(--grn);}
+.ins-num.a{color:var(--amb);}
+.ins-num.b{color:var(--blu);}
+.ins-t{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.ins-b{font-size:11px;color:var(--t3);line-height:1.5;}
+
+/* COOKIE */
+.cookie-vis{background:var(--bg2);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;}
+.cv-title{font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.cv-timeline{display:flex;align-items:center;gap:0;position:relative;padding:10px 0;}
+.cv-timeline::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:var(--bor2);z-index:0;transform:translateY(-50%);}
+.cv-point{flex:1;text-align:center;position:relative;z-index:1;}
+.cv-dot{width:20px;height:20px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid;}
+.cv-dot.active{background:var(--cp);border-color:var(--cp);color:#fff;}
+.cv-dot.money{background:var(--grn);border-color:var(--grn);color:#fff;}
+.cv-dot.idle{background:var(--sur);border-color:var(--bor2);color:var(--t3);}
+.cv-label{font-size:10px;font-weight:600;color:var(--t2);}
+.cv-time{font-size:9.5px;color:var(--t3);margin-top:2px;}
+
+/* PAYOUT */
+.payout-flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px;}
+.pf{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);padding:12px 14px;text-align:center;}
+.pf-icon{font-size:20px;margin-bottom:5px;}
+.pf-title{font-size:11px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.pf-body{font-size:10.5px;color:var(--t3);line-height:1.45;}
+.pf-arrow{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--t3);}
+
+/* TAX NOTE */
+.tax-box{background:var(--amb2);border:1px solid rgba(138,88,0,.2);border-radius:var(--rad);padding:12px 16px;margin-top:12px;font-size:12px;color:var(--t2);line-height:1.6;}
+.tax-box strong{color:var(--amb);}
+
+.footer{text-align:center;padding:22px 0 0;border-top:1px solid var(--bor);font-size:11px;color:var(--t3);}
+
+@media(max-width:700px){
+  .hero{flex-direction:column;gap:16px;}
+  .kstats,.ins-grid{grid-template-columns:repeat(2,1fr);}
+  .g2,.g3,.cmp,.payout-flow{grid-template-columns:1fr;}
+  .sim-outs{grid-template-columns:repeat(2,1fr);}
+  .money-flow{grid-template-columns:1fr;}
+  .mf-arr{display:none;}
+  .flow{flex-direction:column;}
+  .flow-step:not(:last-child)::after{content:'↓';right:50%;top:auto;bottom:-14px;transform:translateX(50%);}
+  .flow-step:not(:first-child){border-left:none;border-top:1px solid var(--bor);}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-dot"></span>제휴마케팅 수익 구조 분석</div>
+    <div class="hero-title">쿠팡파트너스는<br>어떻게 <em>돈을 버나</em></div>
+    <div class="hero-sub">국내 최대 어필리에이트 프로그램 — 링크 하나로 쿠팡·파트너·콘텐츠 크리에이터가 동시에 이득을 보는 삼중 수익 구조의 해부</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hv-label">파트너 활동 인원</div>
+      <div class="hv-val">50만+</div>
+      <div class="hv-sub">블로거·유튜버·인플루언서</div>
+      <div class="hv-tag">월 수수료 지급 100억+</div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY STATS -->
+<div class="kstats">
+  <div class="ks" style="border-top-color:var(--cp);">
+    <div class="ks-lbl">파트너 기본 수수료율</div>
+    <div class="ks-val" style="color:var(--cp);">1~8%</div>
+    <div class="ks-sub">카테고리별 차등 적용</div>
+  </div>
+  <div class="ks" style="border-top-color:var(--grn);">
+    <div class="ks-lbl">쿠팡 쿠키 유효기간</div>
+    <div class="ks-val" style="color:var(--grn);">24시간</div>
+    <div class="ks-sub">클릭 후 24시간 내 구매 인정</div>
+  </div>
+  <div class="ks" style="border-top-color:var(--blu);">
+    <div class="ks-lbl">가입 비용</div>
+    <div class="ks-val" style="color:var(--blu);">₩0</div>
+    <div class="ks-sub">누구나 무료 가입</div>
+  </div>
+  <div class="ks" style="border-top-color:var(--amb);">
+    <div class="ks-lbl">수익 지급 방식</div>
+    <div class="ks-val" style="color:var(--amb);">익월 확정</div>
+    <div class="ks-sub">다음달 25일 확정 → 다다음달 15일 지급</div>
+  </div>
+</div>
+
+<!-- PARADOX -->
+<div class="paradox-box">
+  <div class="px-left">
+    <div class="px-title">쿠팡은 왜 <em>광고비 대신 수수료</em>를 주나?</div>
+    <div class="px-body">TV·배너 광고는 노출당 비용이 발생합니다. 반면 파트너스는 <strong>실제 구매가 일어날 때만</strong> 비용이 발생합니다. 구매 전환이 불확실한 광고비와 달리, 쿠팡이 이미 수수료를 받은 거래에서만 파트너에게 일부를 돌려주는 구조 — 쿠팡 입장에서는 <strong>100% 성과형 마케팅</strong>입니다. 파트너의 블로그·유튜브 트래픽을 광고비 없이 쿠팡으로 유입시키는 효율적인 장치입니다.</div>
+  </div>
+  <div class="px-right">
+    <div class="px-big">CPS</div>
+    <div class="px-sub">Cost Per Sale</div>
+    <div class="px-arrow">↓</div>
+    <div class="px-result">구매 발생 시에만<br>수수료 지급</div>
+  </div>
+</div>
+
+<!-- 3자 돈 흐름 -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">3자 구조 — 돈이 어떻게 흐르나</span><div class="sec-line"></div></div>
+  <div class="money-flow">
+    <div class="mf-node">
+      <span class="mf-icon">👤</span>
+      <div class="mf-name">구매자</div>
+      <div class="mf-items">
+        <div class="mf-item"><div class="mf-dot" style="background:var(--cp);"></div>파트너 링크 클릭</div>
+        <div class="mf-item"><div class="mf-dot" style="background:var(--cp);"></div>24시간 내 쿠팡 구매</div>
+        <div class="mf-item"><div class="mf-dot" style="background:var(--t3);"></div>가격 차이 없음 (동일 가격)</div>
+      </div>
+    </div>
+    <div class="mf-arr">→</div>
+    <div class="mf-node coupang">
+      <span class="mf-icon">🛒</span>
+      <div class="mf-name">쿠팡 (중심)</div>
+      <div class="mf-items">
+        <div class="mf-item"><div class="mf-dot" style="background:var(--grn);"></div>판매자 수수료 4~15% 수취</div>
+        <div class="mf-item"><div class="mf-dot" style="background:var(--cp);"></div>파트너에게 1~8% 지급</div>
+        <div class="mf-item"><div class="mf-dot" style="background:var(--grn);"></div>차액이 쿠팡 마진</div>
+      </div>
+    </div>
+    <div class="mf-arr">↔</div>
+    <div class="mf-node">
+      <span class="mf-icon">✍️</span>
+      <div class="mf-name">파트너 (크리에이터)</div>
+      <div class="mf-items">
+        <div class="mf-item"><div class="mf-dot" style="background:var(--blu);"></div>링크 생성 후 콘텐츠에 삽입</div>
+        <div class="mf-item"><div class="mf-dot" style="background:var(--grn);"></div>구매 발생 시 수수료 수령</div>
+        <div class="mf-item"><div class="mf-dot" style="background:var(--amb);"></div>3.3% 원천징수 후 정산</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS FLOW -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">수익 발생 과정 — 링크 하나가 돈이 되는 순간</span><div class="sec-line"></div></div>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="fs-num">Step 1</div>
+      <span class="fs-icon">🔗</span>
+      <div class="fs-title">링크 생성</div>
+      <div class="fs-desc">파트너센터에서 홍보할 상품의 파트너스 전용 URL 생성. 내 파트너 ID가 포함된 추적 링크.</div>
+      <span class="fs-tag" style="background:var(--blu2);color:var(--blu);">무료</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">Step 2</div>
+      <span class="fs-icon">📝</span>
+      <div class="fs-title">콘텐츠 게시</div>
+      <div class="fs-desc">블로그·유튜브·인스타에 링크 삽입. "이 포스팅은 쿠팡파트너스 활동으로 수수료를 제공받습니다" 고지 필수.</div>
+      <span class="fs-tag" style="background:var(--cp2);color:var(--cp);">고지 의무</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">Step 3</div>
+      <span class="fs-icon">👆</span>
+      <div class="fs-title">클릭 & 쿠키 발동</div>
+      <div class="fs-desc">독자가 링크를 클릭하는 순간 쿠팡 쿠키 24시간 시작. 이 시간 내 어떤 상품이든 구매 시 수수료 인정.</div>
+      <span class="fs-tag" style="background:var(--grn2);color:var(--grn);">24시간 트래킹</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">Step 4</div>
+      <span class="fs-icon">💳</span>
+      <div class="fs-title">구매 발생</div>
+      <div class="fs-desc">클릭 후 24시간 내 구매 완료. 소개한 상품이 아니어도 됨. 단, 쿠팡 쿠폰·적립금 사용분 제외.</div>
+      <span class="fs-tag" style="background:var(--amb2);color:var(--amb);">CPS 방식</span>
+    </div>
+    <div class="flow-step">
+      <div class="fs-num">Step 5</div>
+      <span class="fs-icon">💰</span>
+      <div class="fs-title">수수료 정산</div>
+      <div class="fs-desc">당월 실적 → 익월 25일 확정 → 그다음 달 15일 지급. 3.3% 원천징수 후 지급.</div>
+      <span class="fs-tag" style="background:var(--grn2);color:var(--grn);">약 45일 후</span>
+    </div>
+  </div>
+</div>
+
+<!-- FEE TABLE -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">카테고리별 수수료율 — 어떤 상품이 유리한가</span><div class="sec-line"></div><span class="sec-note">파트너 지급 기준 (2024~2025)</span></div>
+  <div class="g2">
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="fee-tbl">
+        <thead><tr><th>카테고리</th><th>수수료율</th><th>시각화</th></tr></thead>
+        <tbody id="feeTbl"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-t">카테고리별 수수료율 비교</div>
+      <div class="card-d">높을수록 파트너에게 유리 — 패션·뷰티가 최고</div>
+      <div style="height:220px;position:relative;"><canvas id="feeChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- 상품 10만원 구매 시 돈의 흐름 -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">₩100,000 상품 구매 — 돈이 어디로 가나</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">의류 카테고리 ₩100,000 구매 시</div>
+      <div class="card-d">파트너 수수료율 5% 기준 — 수수료가 어떻게 쪼개지나</div>
+      <div class="bd" id="bdBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">쿠팡 관점 — 같은 거래에서 쿠팡이 버는 돈</div>
+      <div class="card-d">판매자 수수료와 파트너 수수료의 관계</div>
+      <div style="height:210px;position:relative;"><canvas id="coChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- COOKIE WINDOW -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">24시간 쿠키 — 가장 중요한 규칙</span><div class="sec-line"></div></div>
+  <div class="cookie-vis">
+    <div class="cv-title">클릭 후 24시간 이내 구매한 모든 상품에 수수료 발생 (소개 상품이 아니어도 됨)</div>
+    <div class="cv-timeline">
+      <div class="cv-point"><div class="cv-dot active">▶</div><div class="cv-label">링크 클릭</div><div class="cv-time">0시간</div></div>
+      <div class="cv-point"><div class="cv-dot money">₩</div><div class="cv-label">즉시 구매</div><div class="cv-time">수수료 ✓</div></div>
+      <div class="cv-point"><div class="cv-dot money">₩</div><div class="cv-label">6시간 후 구매</div><div class="cv-time">수수료 ✓</div></div>
+      <div class="cv-point"><div class="cv-dot money">₩</div><div class="cv-label">18시간 후 구매</div><div class="cv-time">수수료 ✓</div></div>
+      <div class="cv-point"><div class="cv-dot active">⚑</div><div class="cv-label">23시간 59분</div><div class="cv-time">마지막 기회</div></div>
+      <div class="cv-point"><div class="cv-dot idle">✗</div><div class="cv-label">24시간 초과</div><div class="cv-time">수수료 없음</div></div>
+    </div>
+    <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:var(--grn2);border:1px solid rgba(26,122,64,.15);border-radius:var(--rad);padding:12px 14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--grn);margin-bottom:5px;">✓ 수수료 인정되는 경우</div>
+        <div style="font-size:11.5px;color:var(--t2);line-height:1.55;">링크 클릭 후 24시간 내 어떤 상품이든 구매. 소개한 상품과 다른 상품도 포함. 여러 상품 동시 구매 시 전체 적용.</div>
+      </div>
+      <div style="background:var(--cp2);border:1px solid var(--cp3);border-radius:var(--rad);padding:12px 14px;">
+        <div style="font-size:11px;font-weight:700;color:var(--cp);margin-bottom:5px;">✗ 수수료 미인정 경우</div>
+        <div style="font-size:11.5px;color:var(--t2);line-height:1.55;">24시간 초과 후 구매. 쿠팡 쿠폰·적립금 사용분. 반품·취소 시 차감. 링크 생성 제한 품목 구매.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATOR -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><span class="sec-title">수익 시뮬레이터 — 내 채널에서 얼마 벌 수 있나</span><div class="sec-line"></div></div>
+  <div class="sim">
+    <div class="card-t" style="margin-bottom:3px;">조건을 바꿔 예상 수익을 계산해보세요</div>
+    <div class="card-d" style="margin-bottom:12px;">실제 수수료는 카테고리·반품률·쿠폰 사용에 따라 달라질 수 있습니다</div>
+    <div class="sl-row"><label class="sl-lbl">월 방문자 수 (명)</label><input type="range" min="100" max="200000" value="10000" step="100" id="sl-vis" oninput="calc()"><span class="sl-val" id="v-vis">1만명</span></div>
+    <div class="sl-row"><label class="sl-lbl">링크 클릭률 (%)</label><input type="range" min="0.5" max="15" value="3" step="0.5" id="sl-ctr" oninput="calc()"><span class="sl-val" id="v-ctr">3%</span></div>
+    <div class="sl-row"><label class="sl-lbl">구매 전환율 (%)</label><input type="range" min="1" max="20" value="5" step="0.5" id="sl-cvr" oninput="calc()"><span class="sl-val" id="v-cvr">5%</span></div>
+    <div class="sl-row"><label class="sl-lbl">평균 구매액 (원)</label><input type="range" min="10000" max="200000" value="50000" step="5000" id="sl-aov" oninput="calc()"><span class="sl-val" id="v-aov">5만원</span></div>
+    <div class="sl-row"><label class="sl-lbl">평균 수수료율 (%)</label><input type="range" min="1" max="8" value="3" step="0.5" id="sl-fee" oninput="calc()"><span class="sl-val" id="v-fee">3%</span></div>
+    <div class="sim-outs">
+      <div class="so"><div class="so-l">월 링크 클릭 수</div><div class="so-v" id="s-click" style="color:var(--blu);">300명</div></div>
+      <div class="so"><div class="so-l">월 구매 건수</div><div class="so-v" id="s-orders">15건</div></div>
+      <div class="so"><div class="so-l">월 총 판매액</div><div class="so-v" id="s-gmv">75만원</div></div>
+      <div class="so"><div class="so-l">월 수수료 (세전)</div><div class="so-v" id="s-fee" style="color:var(--cp);">2.25만원</div></div>
+    </div>
+  </div>
+  <div class="tax-box"><strong>세금 계산:</strong> 파트너스 수수료는 사업소득 또는 기타소득으로 신고. 지급 시 <strong>3.3% 원천징수</strong> (소득세 3% + 지방소득세 0.3%). 연간 수입이 일정 수준 이상이면 종합소득세 신고 필요.</div>
+</div>
+
+<!-- COMPARE WITH COMPETITORS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">07</span><span class="sec-title">타 어필리에이트 프로그램 비교</span><div class="sec-line"></div></div>
+  <div class="cmp">
+    <div class="cmp-col hl">
+      <span class="cmp-badge" style="background:var(--cp2);color:var(--cp);">쿠팡파트너스</span>
+      <div class="cmp-name">쿠팡파트너스</div>
+      <div class="cmp-row"><span style="color:var(--t3);">수수료율</span><span style="color:var(--cp);font-weight:700;">1~8%</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">쿠키 기간</span><span>24시간</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">가입 조건</span><span style="color:var(--grn);">누구나 무료</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">상품 수</span><span>수백만 개</span></div>
+      <div class="cmp-row"><span>강점</span><span>국내 최대 이커머스 트래픽</span></div>
+    </div>
+    <div class="cmp-col">
+      <span class="cmp-badge" style="background:rgba(3,199,90,.1);color:#037C38;">네이버 쇼핑 파트너스</span>
+      <div class="cmp-name">네이버 쇼핑파트너스</div>
+      <div class="cmp-row"><span style="color:var(--t3);">수수료율</span><span>0.5~3%</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">쿠키 기간</span><span>30일</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">가입 조건</span><span>블로그 심사</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">상품 수</span><span>스마트스토어 연동</span></div>
+      <div class="cmp-row"><span>강점</span><span>네이버 SEO 시너지</span></div>
+    </div>
+    <div class="cmp-col">
+      <span class="cmp-badge" style="background:rgba(255,153,0,.1);color:#CC7700;">Amazon Associates</span>
+      <div class="cmp-name">아마존 어소시에이츠</div>
+      <div class="cmp-row"><span style="color:var(--t3);">수수료율</span><span>1~10%</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">쿠키 기간</span><span>24시간</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">가입 조건</span><span>일정 트래픽 필요</span></div>
+      <div class="cmp-row"><span style="color:var(--t3);">상품 수</span><span>글로벌 최대</span></div>
+      <div class="cmp-row"><span>강점</span><span>글로벌 · 높은 전환율</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">08</span><span class="sec-title">쿠팡이 버는 돈 vs 파트너가 버는 돈</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">쿠팡 수익 구조에서 파트너스의 위치</div>
+      <div class="card-d">판매자에게 받는 수수료 중 일부를 파트너에게 배분</div>
+      <div style="height:210px;position:relative;"><canvas id="structChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-t">파트너 수익 실현 가능 시나리오</div>
+      <div class="card-d">채널 규모별 월 예상 수수료 (수수료율 3% 기준)</div>
+      <div style="height:210px;position:relative;"><canvas id="scenChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">09</span><span class="sec-title">핵심 인사이트</span><div class="sec-line"></div></div>
+  <div class="ins-grid">
+    <div class="ins">
+      <div class="ins-num">CPS</div>
+      <div class="ins-t">성과형 마케팅</div>
+      <div class="ins-b">쿠팡 관점에서 광고비 0원. 구매 발생 시에만 비용. 가장 효율적인 마케팅 방식.</div>
+    </div>
+    <div class="ins">
+      <div class="ins-num g">24h</div>
+      <div class="ins-t">쿠키 창의 마법</div>
+      <div class="ins-b">소개한 상품이 아닌 다른 상품을 사도 수수료 발생. 충동구매가 클수록 파트너에게 유리.</div>
+    </div>
+    <div class="ins">
+      <div class="ins-num a">3.3%</div>
+      <div class="ins-t">원천징수 주의</div>
+      <div class="ins-b">지급 시 3.3% 세금 차감. 연간 수입 합산 시 종합소득세 신고 필요. 사업자 여부 확인 필요.</div>
+    </div>
+    <div class="ins">
+      <div class="ins-num b">₩0</div>
+      <div class="ins-t">리스크 없는 부업</div>
+      <div class="ins-b">가입비·유지비 없음. 팔리면 받고 안 팔리면 0원. 손실 구조가 없는 유일한 수익 모델.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">데이터 출처: 쿠팡파트너스 공식 사이트, 공식 가이드, 언론 보도, 블로거 실사용 후기 종합 (2024~2025) · 수수료율은 정책 변경에 따라 달라질 수 있음</div>
+</div>
+
+<script>
+const tc='#B09080', gc='rgba(0,0,0,.06)';
+
+// FEE TABLE
+const FEES=[
+  {cat:'패션·의류',rate:5,col:'rgba(229,66,26,.75)'},
+  {cat:'뷰티·화장품',rate:5,col:'rgba(229,66,26,.7)'},
+  {cat:'생활·주방용품',rate:4,col:'rgba(229,66,26,.6)'},
+  {cat:'스포츠·레저',rate:4,col:'rgba(229,66,26,.55)'},
+  {cat:'식품·건강',rate:3,col:'rgba(229,66,26,.5)'},
+  {cat:'가전·디지털',rate:2,col:'rgba(229,66,26,.4)'},
+  {cat:'도서·음악',rate:3,col:'rgba(229,66,26,.45)'},
+  {cat:'자동차용품',rate:3,col:'rgba(229,66,26,.45)'},
+  {cat:'로켓직구',rate:3,col:'rgba(229,66,26,.4)'},
+  {cat:'유아·완구',rate:3,col:'rgba(229,66,26,.4)'},
+];
+document.getElementById('feeTbl').innerHTML=FEES.map(f=>`
+  <tr>
+    <td>${f.cat}</td>
+    <td class="fee-pct">${f.rate}%</td>
+    <td><div class="fee-bar-wrap"><div class="fee-bar" style="width:${f.rate/8*100}%;background:${f.col};"></div></div></td>
+  </tr>`).join('');
+
+// FEE CHART
+new Chart(document.getElementById('feeChart'),{
+  type:'bar',indexAxis:'y',
+  data:{
+    labels:FEES.map(f=>f.cat),
+    datasets:[{
+      data:FEES.map(f=>f.rate),
+      backgroundColor:FEES.map(f=>f.col),
+      borderRadius:3,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` 수수료율 ${c.parsed.x}%`}}},
+    scales:{
+      x:{ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},min:0,max:8},
+      y:{ticks:{color:tc,font:{size:11}},grid:{display:false}}
+    }
+  }
+});
+
+// BD BARS
+const BD=[
+  {lbl:'구매자 결제금액',v:100000,col:'#E5421A',s:'+'},
+  {lbl:'판매자 정산액',v:-85000,col:'#B09080',s:'-'},
+  {lbl:'쿠팡 마진 (마케팅·물류 전)',v:15000,col:'#1A5AA0',s:'='},
+  {lbl:'파트너 수수료 (5%)',v:-5000,col:'#E5421A',s:'-'},
+  {lbl:'쿠팡 실질 마진',v:10000,col:'#1A7A40',s:'≈'},
+];
+document.getElementById('bdBars').innerHTML=BD.map(i=>{
+  const pct=Math.round(Math.abs(i.v)/100000*100);
+  const col=i.lbl.includes('실질 마진')?'var(--grn)':i.lbl.includes('파트너')?'var(--cp)':i.lbl.includes('판매자')?'var(--t3)':'var(--blu)';
+  return`<div class="bd-row"><span class="bd-lbl">${i.lbl}</span><div class="bd-bg"><div class="bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="bd-val" style="color:${col};">${i.s} ₩${Math.abs(i.v).toLocaleString()}</span></div>`;
+}).join('');
+
+// CO CHART
+new Chart(document.getElementById('coChart'),{
+  type:'doughnut',
+  data:{
+    labels:['파트너 수수료 5%','쿠팡 마진 10%','판매자 정산 85%'],
+    datasets:[{data:[5,10,85],backgroundColor:['#E5421A','#1A5AA0','#D4B8A8'],borderWidth:2,borderColor:'#FFF8F5',hoverOffset:5}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'60%',
+    plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:8}}}
+  }
+});
+
+// STRUCT CHART
+new Chart(document.getElementById('structChart'),{
+  type:'bar',
+  data:{
+    labels:['가전(2%)','식품(3%)','의류(5%)','뷰티(5%)'],
+    datasets:[
+      {label:'쿠팡 수취 판매수수료',data:[10,10,13,13],backgroundColor:'rgba(26,90,160,.55)',borderRadius:0,stack:'s'},
+      {label:'파트너 지급 수수료',data:[2,3,5,5],backgroundColor:'rgba(229,66,26,.7)',borderRadius:[3,3,0,0],stack:'s'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},
+    scales:{
+      x:{ticks:{color:tc},grid:{display:false},stacked:true},
+      y:{ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},stacked:true,title:{display:true,text:'수수료율 (%)',color:tc,font:{size:10}}}
+    }
+  }
+});
+
+// SCENARIO CHART
+new Chart(document.getElementById('scenChart'),{
+  type:'bar',
+  data:{
+    labels:['1천명/월','1만명/월','5만명/월','10만명/월','50만명/월'],
+    datasets:[{
+      label:'월 수수료 (만원)',
+      data:[0.5,4.5,22.5,45,225],
+      backgroundColor:'rgba(229,66,26,.65)',
+      borderRadius:4,borderSkipped:false,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` 월 ${c.parsed.y}만원`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:10}},grid:{display:false}},
+      y:{ticks:{color:tc,callback:v=>v+'만'},grid:{color:gc},min:0}
+    }
+  }
+});
+
+// SIMULATOR
+function calc(){
+  const vis=parseInt(document.getElementById('sl-vis').value);
+  const ctr=parseFloat(document.getElementById('sl-ctr').value);
+  const cvr=parseFloat(document.getElementById('sl-cvr').value);
+  const aov=parseInt(document.getElementById('sl-aov').value);
+  const fee=parseFloat(document.getElementById('sl-fee').value);
+  document.getElementById('v-vis').textContent=vis>=10000?(vis/10000).toFixed(1)+'만명':vis.toLocaleString()+'명';
+  document.getElementById('v-ctr').textContent=ctr+'%';
+  document.getElementById('v-cvr').textContent=cvr+'%';
+  document.getElementById('v-aov').textContent=(aov/10000).toFixed(0)+'만원';
+  document.getElementById('v-fee').textContent=fee+'%';
+  const clicks=Math.round(vis*ctr/100);
+  const orders=Math.round(clicks*cvr/100);
+  const gmv=orders*aov;
+  const comm=Math.round(gmv*fee/100);
+  const fmt=n=>n>=10000?(n/10000).toFixed(1)+'만원':n.toLocaleString()+'원';
+  document.getElementById('s-click').textContent=clicks.toLocaleString()+'명';
+  document.getElementById('s-orders').textContent=orders.toLocaleString()+'건';
+  document.getElementById('s-gmv').textContent=fmt(gmv);
+  document.getElementById('s-fee').textContent=fmt(comm);
+}
+calc();
+</script>
+</body>
+</html>

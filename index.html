@@ -354,7 +354,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
   </div>
   <nav class="sb-nav" id="sbNav"></nav>
   <div class="sb-foot">
-    <button class="btn-add" onclick="openModal()">? AI로 새 주제 분석</button>
+    <button class="btn-add" onclick="openModal()">✨ AI로 새 주제 분석</button>
   </div>
 </aside>
 
@@ -375,10 +375,10 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
     <div class="mo-t">AI 수익 구조 분석</div>
     <div class="mo-s">궁금한 비즈니스나 직업을 입력하면 Gemini AI가 즉시 분석하여 시각화된 리포트를 생성합니다.</div>
     <input class="mo-input" type="text" id="modalInput" placeholder="예: 무인 아이스크림 할인점, 테슬라, 웹툰 작가..." onkeydown="if(event.key==='Enter')generateAIPage()">
-    <div class="mo-examples">?? 추천: 카카오톡, 당근마켓, 쿠팡, 편의점</div>
+    <div class="mo-examples">✨ 추천: 카카오톡, 당근마켓, 쿠팡, 편의점</div>
     <div class="mo-acts">
       <button class="btn-s" onclick="closeModal()">취소</button>
-      <button class="btn-p" onclick="generateAIPage()">? 분석 시작</button>
+      <button class="btn-p" onclick="generateAIPage()">⚡ 분석 시작</button>
     </div>
   </div>
 </div>
@@ -456,12 +456,13 @@ function getEunNeun(word) {
 
 // Initial Navigation Structure
 let NAV = [
-  { cat:'?? 하이라이트', items:[
-    {id:'leaderboard',label:'?? 리더보드'}
+  { cat:'🔥 하이라이트', items:[
+    {id:'leaderboard',label:'🏆 리더보드'}
   ]},
   { cat:'플랫폼 (IT)', items:[
     {id:'daangn',label:'당근마켓'},
     {id:'gamsgo',label:'GamsGo'},
+    {id:'coupang-partners',label:'쿠팡파트너스'},
   ]},
   { cat:'우주/항공', items:[
     {id:'spacex',label:'스페이스엑스'},
@@ -552,6 +553,7 @@ const PAGE_FILE_MAP = {
   "leaderboard": "pages/leaderboard.html",
   "daangn": "pages/daangn.html",
   "gamsgo": "pages/gamsgo.html",
+  "coupang-partners": "pages/coupang-partners.html",
   "spacex": "pages/spacex.html",
   "tron": "pages/tron.html",
   "skhynix": "pages/skhynix.html",
@@ -1126,11 +1128,11 @@ function showWelcome(){
   document.getElementById('content').innerHTML = `
   <div class="welcome">
     <div class="wt">OO은 어떻게<br><em>돈을 버나</em></div>
-    <div class="ws">기업, 자영업, 직업까지 ? 수익 구조를 숫자와 차트로 시각화합니다</div>
+    <div class="ws">기업, 자영업, 직업까지 수익 구조를 숫자와 차트로 시각화합니다</div>
     <div class="w-chips">
-      <div class="chip" onclick="navigate('leaderboard')" style="background:var(--amb2);border-color:#E0C070;color:var(--amb);">?? 리더보드 보기</div>
+      <div class="chip" onclick="navigate('leaderboard')" style="background:var(--amb2);border-color:#E0C070;color:var(--amb);">🏆 리더보드 보기</div>
       ${NAV.flatMap(c=>c.items).filter(i=>i.id!=='leaderboard').map(i=>`<div class="chip" onclick="navigate('${i.id}')">${i.label}</div>`).join('')}
-      <div class="chip" onclick="openModal()" style="border-style:dashed;">? AI로 직접 분석하기</div>
+      <div class="chip" onclick="openModal()" style="border-style:dashed;">✨ AI로 직접 분석하기</div>
     </div>
   </div>`;
 }
@@ -1176,17 +1178,17 @@ window.selectTrStep = function(stepId) {
 // 스페이스X 커스텀 탭 동작 함수
 window.spStreamDetails = [
   {
-    title: '??? Starlink: 글로벌 우주 인터넷 통신사',
+    title: '🛰️ Starlink: 글로벌 우주 인터넷 통신사',
     rows: [['매출 기여', '스페이스엑스 전체 매출의 60% 이상'], ['수익 모델', '위성 안테나 판매 + 매월 통신 구독료'], ['2026년 가입자', '1,000만 명 돌파'], ['핵심 강점', '지구상 인터넷이 없는 곳을 독점']],
     body: '스페이스엑스의 가장 든든한 캐시카우(돈줄)입니다. 초기에는 안테나 단말기를 팔아 손해를 보기도 했지만, 현재는 매월 따박따박 들어오는 1,000만 명의 구독료(월 약 $100~150)가 조 단위의 현금을 창출합니다. 통신망을 까는 비용(로켓 발사)을 자사 로켓으로 해결해 원가를 획기적으로 낮췄습니다.'
   },
   {
-    title: '?? Launch Services: 우주의 페덱스(FedEx)',
+    title: '🚀 Launch Services: 우주의 페덱스(FedEx)',
     rows: [['핵심 원리', '로켓 재사용을 통한 압도적 원가 절감'], ['시장 점유율', '글로벌 상업 발사 시장 독점'], ['2025 발사 횟수', '165회 (역대 최고)'], ['최고 재사용', '33회 (1단 부스터)']],
     body: '다른 회사가 로켓을 한 번 쏘고 수백억 원을 버릴 때, 스페이스엑스는 비행기처럼 착륙시켜 최대 30번 이상 재사용합니다. 타사 대비 훨씬 저렴한 가격에 다른 회사의 위성을 우주로 배달해주면서도 원가가 워낙 낮아 큰 마진을 남깁니다. 전 세계의 화물을 실어 나르는 우주의 독점 택배 사업입니다.'
   },
   {
-    title: '??? Gov & Defense: 정부와 국방의 핵심 파트너',
+    title: '🛡️ Gov & Defense: 정부와 국방의 핵심 파트너',
     rows: [['주요 고객', 'NASA, 미 국방부(펜타곤)'], ['핵심 프로젝트', 'Starshield (군사용 통신 및 정찰)'], ['달 탐사', 'Artemis 프로젝트 랜더(착륙선)'], ['특징', '초거대 규모의 장기 계약']],
     body: '국가 안보와 우주 탐사를 위한 정부의 대규모 예산을 안정적으로 흡수합니다. 군사용으로 고도로 암호화된 통신 및 정찰망(스타실드)을 제공하거나, 달과 화성에 우주인을 보내는 NASA의 핵심 파트너로 활약하며 수십억 달러 규모의 든든한 장기 계약을 맺습니다.'
   }
@@ -1213,7 +1215,7 @@ window.selectSpStream = function(index) {
 // 당근마켓 수익 다각화 아코디언 동작 함수
 window.dgStreams = [
   {
-    icon:'??',iconBg:'#FFF3ED',name:'하이퍼로컬 광고',share:'~60%',shareCol:'#FF6F2C',shareBg:'#FFF0E8',
+    icon:'📢',iconBg:'#FFF3ED',name:'하이퍼로컬 광고',share:'~60%',shareCol:'#FF6F2C',shareBg:'#FFF0E8',
     desc:'2025년 광고주 수 37%, 집행 광고 수 29% 증가. 로컬 타기팅 광고가 여전히 최대 수익원.',barW:60,barCol:'#FF6F2C',
     detail:`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div>
@@ -1223,31 +1225,31 @@ window.dgStreams = [
       <div>
         <div style="font-size:10px;font-weight:700;color:var(--dg-t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">주요 광고주</div>
         <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--dg-t2);">
-          <div>?? 동네 소상공인 (카페·미용실·학원)</div>
-          <div>?? 대기업 브랜드·기업 광고주</div>
-          <div>?? 부동산·중고차·생활 정보 사업자</div>
-          <div>?? 당근알바 채용 수요 사업장</div>
+          <div>🏪 동네 소상공인 (카페·미용실·학원)</div>
+          <div>🏢 대기업 브랜드·기업 광고주</div>
+          <div>🏠 부동산·중고차·생활 정보 사업자</div>
+          <div>💼 당근알바 채용 수요 사업장</div>
         </div>
       </div>
     </div>`
   },
   {
-    icon:'??',iconBg:'#EDF5FF',name:'비즈니스·알바·부동산',share:'~25%',shareCol:'#3A7BD5',shareBg:'#E8F0FF',
+    icon:'🏪',iconBg:'#EDF5FF',name:'비즈니스·알바·부동산',share:'~25%',shareCol:'#3A7BD5',shareBg:'#E8F0FF',
     desc:'비즈프로필, 당근알바, 부동산·중고차 등 생활형 버티컬이 광고 외 매출을 키우는 축.',barW:25,barCol:'#3A7BD5',
     detail:`<div style="font-size:12px;color:var(--dg-t2);line-height:1.65;">
-      <div style="margin-bottom:8px;"><strong style="color:var(--dg-t1);">당근알바</strong> ? 2025년 지원 횟수 5천만 회 돌파. 구인 광고·노출 상품이 빠르게 성장.</div>
-      <div><strong style="color:var(--dg-t1);">비즈니스 서비스</strong> ? 비즈프로필 누적 265만 개. 사장님용 로컬 마케팅 툴이 반복 매출원으로 자리잡는 중.</div>
+      <div style="margin-bottom:8px;"><strong style="color:var(--dg-t1);">당근알바</strong> · 2025년 지원 횟수 5천만 회 돌파. 구인 광고·노출 상품이 빠르게 성장.</div>
+      <div><strong style="color:var(--dg-t1);">비즈니스 서비스</strong> · 비즈프로필 누적 265만 개. 사장님용 로컬 마케팅 툴이 반복 매출원으로 자리잡는 중.</div>
     </div>`
   },
   {
-    icon:'??',iconBg:'#F0FFF4',name:'당근페이·안심결제',share:'~9%',shareCol:'#2E8B57',shareBg:'#E8F5EE',
+    icon:'💳',iconBg:'#F0FFF4',name:'당근페이·안심결제',share:'~9%',shareCol:'#2E8B57',shareBg:'#E8F5EE',
     desc:'결제 자체의 이익보다 거래 경험을 붙잡는 역할이 크다. 최신 구매 연결까지 결제 접점 확대 중.',barW:9,barCol:'#2E8B57',
     detail:`<div style="font-size:12px;color:var(--dg-t2);line-height:1.65;">
       결제 수수료 일부가 발생하지만 카드사·PG 비용을 감안하면 당장 고마진은 아니다. 다만 안전결제와 결제 경험이 쌓일수록 커머스·핀테크 확장 기반이 된다.
     </div>`
   },
   {
-    icon:'??',iconBg:'#FFF9E8',name:'글로벌·신규 서비스',share:'~6%',shareCol:'#E8A020',shareBg:'#FFF5DC',
+    icon:'🌍',iconBg:'#FFF9E8',name:'글로벌·신규 서비스',share:'~6%',shareCol:'#E8A020',shareBg:'#FFF5DC',
     desc:'Karrot 해외 법인과 AI·커뮤니티 신기능은 아직 투자 단계. 연결 실적에선 비용이 먼저 반영된다.',barW:6,barCol:'#E8A020',
     detail:`<div style="font-size:12px;color:var(--dg-t2);line-height:1.65;">
       연결 기준 영업이익이 별도 기준보다 낮은 이유가 여기에 있다. 캐나다·미국·일본 등 글로벌 확장과 신규 서비스 실험 비용이 아직 선행 투자 성격으로 잡힌다.
