@@ -450,7 +450,7 @@ function getEunNeun(word) {
 // Initial Navigation Structure
 let NAV = [
   { cat:'🔥 하이라이트', items:[
-    {id:'leaderboard',label:'🏆 수익률 랭킹'}
+    {id:'leaderboard',label:'🏆 리더보드'}
   ]},
   { cat:'플랫폼 (IT)', items:[
     {id:'daangn',label:'당근마켓'},
@@ -909,7 +909,7 @@ function showWelcome(){
     <div class="wt">OO은 어떻게<br><em>돈을 버나</em></div>
     <div class="ws">기업, 자영업, 직업까지 — 수익 구조를 숫자와 차트로 시각화합니다</div>
     <div class="w-chips">
-      <div class="chip" onclick="navigate('leaderboard')" style="background:var(--amb2);border-color:#E0C070;color:var(--amb);">🏆 수익률 리더보드 보기</div>
+      <div class="chip" onclick="navigate('leaderboard')" style="background:var(--amb2);border-color:#E0C070;color:var(--amb);">🏆 리더보드 보기</div>
       ${NAV.flatMap(c=>c.items).filter(i=>i.id!=='leaderboard').map(i=>`<div class="chip" onclick="navigate('${i.id}')">${i.label}</div>`).join('')}
       <div class="chip" onclick="openModal()" style="border-style:dashed;">✦ AI로 직접 분석하기</div>
     </div>
@@ -1093,85 +1093,305 @@ let PAGES = {
 
 // ═══════════════════════════════════════════════════════ LEADERBOARD
 leaderboard: {
-  label: '🏆 수익률 랭킹',
+  label: '🏆 리더보드',
   meta: { margin: 0, tags: [] },
   render() {
+    const categoryMap = {};
+    NAV.forEach(group => group.items.forEach(item => {
+      categoryMap[item.id] = group.cat;
+    }));
+
     const items = Object.keys(PAGES)
       .filter(k => k !== 'leaderboard' && PAGES[k].meta && typeof PAGES[k].meta.margin === 'number')
       .map(k => ({
         id: k,
         label: PAGES[k].label,
         margin: PAGES[k].meta.margin,
-        tags: PAGES[k].meta.tags || []
+        tags: PAGES[k].meta.tags || [],
+        category: categoryMap[k] || '기타'
       }))
       .sort((a, b) => b.margin - a.margin);
 
     const avgMargin = Math.round(items.reduce((sum, item) => sum + item.margin, 0) / items.length) || 0;
+    const ascMargins = [...items].sort((a, b) => a.margin - b.margin);
+    const medianMargin = ascMargins.length ? ascMargins[Math.floor(ascMargins.length / 2)].margin : 0;
+    const spread = Math.max(0, Math.round((items[0]?.margin || 0) - (items[items.length - 1]?.margin || 0)));
+    const maxMargin = Math.max(...items.map(i => i.margin), 1);
+
+    const tiers = [
+      { key:'ultra', title:'초고마진', desc:'45% 이상', color:'#1E8F5D', bg:'rgba(30,143,93,.08)', items: items.filter(i => i.margin >= 45) },
+      { key:'strong', title:'고마진', desc:'25~44%', color:'#3B8BD4', bg:'rgba(59,139,212,.08)', items: items.filter(i => i.margin >= 25 && i.margin < 45) },
+      { key:'steady', title:'안정 구간', desc:'15~24%', color:'#B87818', bg:'rgba(184,120,24,.08)', items: items.filter(i => i.margin >= 15 && i.margin < 25) },
+      { key:'thin', title:'얇은 마진', desc:'15% 미만', color:'#C0392B', bg:'rgba(192,57,43,.08)', items: items.filter(i => i.margin < 15) },
+    ];
+
+    const categoryStats = Object.values(items.reduce((acc, item) => {
+      if (!acc[item.category]) {
+        acc[item.category] = { category: item.category, total: 0, count: 0, topMargin: -Infinity, leader: item.label };
+      }
+      acc[item.category].total += item.margin;
+      acc[item.category].count += 1;
+      if (item.margin > acc[item.category].topMargin) {
+        acc[item.category].topMargin = item.margin;
+        acc[item.category].leader = item.label;
+      }
+      return acc;
+    }, {})).map(stat => ({
+      ...stat,
+      avg: Math.round(stat.total / stat.count)
+    })).sort((a, b) => b.avg - a.avg);
+
+    const topTags = Object.entries(items.slice(0, Math.ceil(items.length / 2)).reduce((acc, item) => {
+      item.tags.forEach(tag => { acc[tag] = (acc[tag] || 0) + 1; });
+      return acc;
+    }, {})).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([tag]) => `#${tag}`);
+
+    const topThree = items.slice(0, 3);
+    const bottomThree = [...items.slice(-3)].reverse();
+    const leadCategory = categoryStats[0] || { category: '-', avg: 0, leader: '-' };
+    const lagCategory = categoryStats[categoryStats.length - 1] || { category: '-', avg: 0, leader: '-' };
+    const ultraTier = tiers.find(t => t.key === 'ultra') || { items: [] };
+    const thinTier = tiers.find(t => t.key === 'thin') || { items: [] };
+    const ultraShare = items.length ? Math.round((ultraTier.items.length / items.length) * 100) : 0;
 
     return `
-    <div class="pg-head">
-      <div class="pg-badge">🔥 인사이트</div>
-      <div class="pg-title">비즈니스 수익률 랭킹</div>
-      <div class="pg-sub">모든 분석 항목의 예상 '순이익률(Margin)'을 기준으로 정렬한 리더보드입니다.</div>
-    </div>
-    
-    ${metHtml([
-      {l:'분석된 비즈니스',v:`${items.length}개`,s:'현재 등록된 항목 수'},
-      {l:'평균 순이익률',v:`${avgMargin}%`,s:'전체 평균'},
-      {l:'최고 수익률',v:`${items[0]?.margin || 0}%`,s:`${items[0]?.label || '-'}`,c:'g'},
-      {l:'AI 분석 항목',v:`${items.filter(i=>!['google','netflix','youtube','chicken','cafe','destcafe','rider','skhynix','samsung','tron','spacex','daangn'].includes(i.id)).length}개`,s:'사용자 생성 데이터',c:'a'},
-    ])}
+    <style>
+      .lb2-page{margin:-32px -28px -60px;padding:34px 28px 82px;background:linear-gradient(180deg,#FCFBF8 0%,#F5F1E8 100%);}
+      .lb2-wrap{max-width:980px;margin:0 auto;}
+      .lb2-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:stretch;margin-bottom:18px;}
+      .lb2-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(212,168,67,.26);border-radius:999px;background:rgba(212,168,67,.12);font-size:11px;font-weight:700;color:var(--amb);letter-spacing:.05em;margin-bottom:12px;}
+      .lb2-title{font-family:'DM Serif Display',Georgia,serif;font-size:48px;line-height:1.02;letter-spacing:-.03em;color:var(--t1);margin-bottom:10px;}
+      .lb2-sub{max-width:560px;font-size:15px;line-height:1.68;color:var(--t2);}
+      .lb2-hero-panel{background:linear-gradient(135deg,#234233 0%,#315642 100%);color:#F6FAF6;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;}
+      .lb2-hero-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.74;margin-bottom:8px;}
+      .lb2-hero-value{font-family:'DM Serif Display',Georgia,serif;font-size:44px;line-height:1;margin-bottom:6px;}
+      .lb2-hero-note{font-size:12px;line-height:1.55;color:rgba(246,250,246,.82);}
+      .lb2-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+      .lb2-kpi{background:#FFFFFF;border:1px solid #E7E2D7;border-radius:12px;padding:14px 16px;}
+      .lb2-kpi-l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:6px;}
+      .lb2-kpi-v{font-family:'DM Serif Display',Georgia,serif;font-size:27px;line-height:1;color:var(--t1);margin-bottom:4px;}
+      .lb2-kpi-s{font-size:11px;line-height:1.5;color:var(--t2);}
+      .lb2-sec{margin-bottom:16px;}
+      .lb2-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+      .lb2-sec-chip{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);}
+      .lb2-sec-line{flex:1;height:1px;background:#E6DFD1;}
+      .lb2-main{display:grid;grid-template-columns:.92fr 1.08fr;gap:12px;margin-bottom:18px;}
+      .lb2-panel{background:#FFFFFF;border:1px solid #E7E2D7;border-radius:14px;padding:18px;}
+      .lb2-panel-title{font-family:'DM Serif Display',Georgia,serif;font-size:24px;line-height:1.1;color:var(--t1);margin-bottom:8px;}
+      .lb2-panel-sub{font-size:12px;line-height:1.6;color:var(--t2);margin-bottom:14px;}
+      .lb2-podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+      .lb2-podium-card{border:1px solid #E7E2D7;border-radius:12px;padding:14px 14px 12px;background:#FBFAF6;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;}
+      .lb2-podium-card:hover{transform:translateY(-2px);border-color:#D9CCB2;box-shadow:0 8px 24px rgba(32,28,18,.06);}
+      .lb2-rank{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+      .lb2-podium-name{font-size:17px;font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:4px;}
+      .lb2-podium-meta{font-size:11px;color:var(--t3);margin-bottom:10px;}
+      .lb2-podium-margin{font-family:'DM Serif Display',Georgia,serif;font-size:34px;line-height:1;color:var(--t1);margin-bottom:10px;}
+      .lb2-mini-bar{height:6px;border-radius:999px;background:#EFE8DB;overflow:hidden;}
+      .lb2-mini-bar > div{height:100%;border-radius:999px;background:linear-gradient(90deg,#C7A249 0%,#D8B76C 100%);}
+      .lb2-tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+      .lb2-tier{border-radius:12px;padding:14px;border:1px solid #E7E2D7;background:#FCFBF8;}
+      .lb2-tier-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+      .lb2-tier-name{font-size:17px;font-weight:700;color:var(--t1);}
+      .lb2-tier-count{font-family:'DM Serif Display',Georgia,serif;font-size:22px;line-height:1;color:var(--t1);}
+      .lb2-tier-desc{font-size:11px;color:var(--t3);margin-bottom:10px;}
+      .lb2-pill-row{display:flex;flex-wrap:wrap;gap:6px;}
+      .lb2-pill{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:600;color:var(--t1);background:#F0EBE2;}
+      .lb2-pill-muted{color:var(--t3);}
+      .lb2-insights{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+      .lb2-insight{background:#FFFFFF;border:1px solid #E7E2D7;border-radius:12px;padding:15px 16px;}
+      .lb2-insight-k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;}
+      .lb2-insight-v{font-family:'DM Serif Display',Georgia,serif;font-size:30px;line-height:1;color:var(--t1);margin-bottom:6px;}
+      .lb2-insight-b{font-size:11.5px;line-height:1.6;color:var(--t2);}
+      .lb2-story{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+      .lb2-story-card{background:#FBFAF6;border:1px solid #E7E2D7;border-radius:12px;padding:15px 16px;}
+      .lb2-story-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:6px;}
+      .lb2-story-body{font-size:12px;line-height:1.65;color:var(--t2);}
+      .lb2-board{background:#FFFFFF;border:1px solid #E7E2D7;border-radius:14px;padding:16px 16px 10px;}
+      .lb2-board-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:12px;}
+      .lb2-board-title{font-family:'DM Serif Display',Georgia,serif;font-size:26px;line-height:1.05;color:var(--t1);}
+      .lb2-board-sub{font-size:12px;color:var(--t2);line-height:1.55;}
+      .lb2-row{display:grid;grid-template-columns:52px 1fr 110px;gap:12px;align-items:center;padding:12px 10px;border-top:1px solid #EFE8DB;cursor:pointer;transition:background .18s ease;}
+      .lb2-row:first-of-type{border-top:none;}
+      .lb2-row:hover{background:#FCFBF8;}
+      .lb2-rank-badge{font-family:'DM Serif Display',Georgia,serif;font-size:24px;line-height:1;color:var(--amb);}
+      .lb2-name{font-size:16px;font-weight:700;color:var(--t1);line-height:1.2;margin-bottom:5px;}
+      .lb2-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+      .lb2-meta span{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;color:var(--t2);background:#F3EEDF;}
+      .lb2-track{height:8px;border-radius:999px;background:#F0E8DB;overflow:hidden;}
+      .lb2-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#C8A04A 0%,#DDBA71 100%);}
+      .lb2-score{text-align:right;}
+      .lb2-score-main{font-family:'DM Serif Display',Georgia,serif;font-size:30px;line-height:1;color:var(--t1);}
+      .lb2-score-sub{font-size:11px;color:var(--t3);margin-top:4px;}
+      .lb2-foot{font-size:11px;line-height:1.6;color:var(--t3);margin-top:12px;padding:0 2px;}
+      @media(max-width:760px){
+        .lb2-page{margin:-22px -18px -40px;padding:24px 18px 58px;}
+        .lb2-hero,.lb2-main,.lb2-story{grid-template-columns:1fr;}
+        .lb2-kpis,.lb2-insights,.lb2-podium,.lb2-tier-grid{grid-template-columns:1fr 1fr;}
+        .lb2-row{grid-template-columns:42px 1fr 82px;gap:10px;padding:12px 6px;}
+      }
+      @media(max-width:560px){
+        .lb2-title{font-size:38px;}
+        .lb2-kpis,.lb2-insights,.lb2-podium,.lb2-tier-grid,.lb2-story{grid-template-columns:1fr;}
+        .lb2-board-head{flex-direction:column;align-items:flex-start;}
+      }
+    </style>
+    <div class="lb2-page">
+      <div class="lb2-wrap">
+        <div class="lb2-hero">
+          <div>
+            <div class="lb2-kicker">🏆 리더보드 인사이트</div>
+            <div class="lb2-title">리더보드</div>
+            <div class="lb2-sub">순이익률 숫자만 세우지 않고, 어떤 카테고리가 구조적으로 두꺼운 마진을 만들고 어떤 비즈니스가 얇은 마진에 묶이는지까지 읽히도록 인포그래픽 형태로 다시 구성했습니다.</div>
+          </div>
+          <div class="lb2-hero-panel">
+            <div>
+              <div class="lb2-hero-label">현재 1위</div>
+              <div class="lb2-hero-value">${topThree[0]?.margin || 0}%</div>
+            </div>
+            <div class="lb2-hero-note">${topThree[0]?.label || '-'}가 선두를 유지 중입니다. 카테고리 평균 1위는 ${leadCategory.category} (${leadCategory.avg}%)이고, 상위권 공통 키워드는 ${topTags.length ? topTags.join(' · ') : '플랫폼 · 광고 · 네트워크 효과'}입니다.</div>
+          </div>
+        </div>
 
-    <div class="card full">
-      <div class="card-t">순이익률 비교 차트</div>
-      <div class="card-d">바를 클릭하면 해당 비즈니스 상세 페이지로 이동합니다.</div>
-      <div class="ch-wrap" style="height:${Math.max(300, items.length * 45)}px;"><canvas id="lb-chart"></canvas></div>
+        <div class="lb2-kpis">
+          <div class="lb2-kpi">
+            <div class="lb2-kpi-l">분석 항목</div>
+            <div class="lb2-kpi-v">${items.length}개</div>
+            <div class="lb2-kpi-s">현재 메인에 등록된 전체 비즈니스 수</div>
+          </div>
+          <div class="lb2-kpi">
+            <div class="lb2-kpi-l">평균 순이익률</div>
+            <div class="lb2-kpi-v">${avgMargin}%</div>
+            <div class="lb2-kpi-s">전체를 한 줄로 세웠을 때의 평균값</div>
+          </div>
+          <div class="lb2-kpi">
+            <div class="lb2-kpi-l">중앙값</div>
+            <div class="lb2-kpi-v">${medianMargin}%</div>
+            <div class="lb2-kpi-s">극단값을 제외했을 때의 기준선</div>
+          </div>
+          <div class="lb2-kpi">
+            <div class="lb2-kpi-l">초고마진 비중</div>
+            <div class="lb2-kpi-v">${ultraShare}%</div>
+            <div class="lb2-kpi-s">45% 이상 구간에 속한 모델의 비율</div>
+          </div>
+        </div>
+
+        <div class="lb2-sec">
+          <div class="lb2-sec-head">
+            <div class="lb2-sec-chip">Top Structure</div>
+            <div class="lb2-sec-line"></div>
+          </div>
+          <div class="lb2-main">
+            <div class="lb2-panel">
+              <div class="lb2-panel-title">상위 3개는 왜 강한가</div>
+              <div class="lb2-panel-sub">상단은 비용이 선형으로 늘지 않는 모델이 차지합니다. 클릭하면 각 상세 페이지로 이동합니다.</div>
+              <div class="lb2-podium">
+                ${topThree.map((item, idx) => `
+                  <div class="lb2-podium-card" onclick="navigate('${item.id}')">
+                    <div class="lb2-rank">#${idx + 1}</div>
+                    <div class="lb2-podium-name">${item.label}</div>
+                    <div class="lb2-podium-meta">${item.category}</div>
+                    <div class="lb2-podium-margin">${item.margin}%</div>
+                    <div class="lb2-mini-bar"><div style="width:${Math.max(14, Math.round((item.margin / maxMargin) * 100))}%;"></div></div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="lb2-panel">
+              <div class="lb2-panel-title">구간별 지형도</div>
+              <div class="lb2-panel-sub">숫자를 그대로 보기보다, 어떤 군집에 누가 모여 있는지가 더 많은 힌트를 줍니다.</div>
+              <div class="lb2-tier-grid">
+                ${tiers.map(tier => `
+                  <div class="lb2-tier" style="background:${tier.bg};border-color:${tier.color}22;">
+                    <div class="lb2-tier-top">
+                      <div class="lb2-tier-name">${tier.title}</div>
+                      <div class="lb2-tier-count" style="color:${tier.color};">${tier.items.length}</div>
+                    </div>
+                    <div class="lb2-tier-desc">${tier.desc}</div>
+                    <div class="lb2-pill-row">
+                      ${tier.items.length
+                        ? tier.items.slice(0, 4).map(item => `<span class="lb2-pill">${item.label}</span>`).join('')
+                        : `<span class="lb2-pill lb2-pill-muted">비어 있음</span>`}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lb2-sec">
+          <div class="lb2-sec-head">
+            <div class="lb2-sec-chip">Read The Board</div>
+            <div class="lb2-sec-line"></div>
+          </div>
+          <div class="lb2-insights">
+            <div class="lb2-insight">
+              <div class="lb2-insight-k">카테고리 평균 1위</div>
+              <div class="lb2-insight-v">${leadCategory.avg}%</div>
+            <div class="lb2-insight-b">평균 1위 카테고리는 ${leadCategory.category}입니다. 대표 주자는 ${leadCategory.leader}.</div>
+            </div>
+            <div class="lb2-insight">
+              <div class="lb2-insight-k">가장 얇은 카테고리</div>
+              <div class="lb2-insight-v">${lagCategory.avg}%</div>
+            <div class="lb2-insight-b">가장 얇은 카테고리는 ${lagCategory.category}입니다. 전체 평균보다 ${Math.max(0, avgMargin - lagCategory.avg)}%p 낮습니다.</div>
+            </div>
+            <div class="lb2-insight">
+              <div class="lb2-insight-k">초고마진 군집</div>
+              <div class="lb2-insight-v">${ultraTier.items.length}개</div>
+            <div class="lb2-insight-b">45% 이상 구간을 이룬 이름은 ${ultraTier.items.length ? ultraTier.items.slice(0, 3).map(item => item.label).join(' · ') : '아직 없음'}입니다.</div>
+            </div>
+            <div class="lb2-insight">
+              <div class="lb2-insight-k">주의 구간</div>
+              <div class="lb2-insight-v">${thinTier.items.length}개</div>
+              <div class="lb2-insight-b">15% 미만 모델은 ${thinTier.items.length ? thinTier.items.slice(0, 3).map(item => item.label).join(' · ') : '없음'}처럼 운영 부담이 큽니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lb2-story">
+          <div class="lb2-story-card">
+            <div class="lb2-story-title">상단권 해석</div>
+            <div class="lb2-story-body">상위권은 ${topTags.length ? topTags.join(' · ') : '플랫폼 · 광고 · 구독'}처럼 무형 자산과 반복 매출이 겹친 모델이 많습니다. 고객 1명을 더 받아도 원가가 함께 치솟지 않는 구조라는 뜻입니다.</div>
+          </div>
+          <div class="lb2-story-card">
+            <div class="lb2-story-title">하단권 해석</div>
+            <div class="lb2-story-body">하위권은 ${bottomThree.map(item => item.label).join(' · ')}처럼 제조, 물류, 오프라인 운영비 또는 인센티브 부담이 큰 모델이 모여 있습니다. 매출 성장만으로는 마진이 얇은 구조를 뒤집기 어렵습니다.</div>
+          </div>
+        </div>
+
+        <div class="lb2-board">
+          <div class="lb2-board-head">
+            <div>
+              <div class="lb2-board-title">전체 리더보드</div>
+              <div class="lb2-board-sub">비즈니스별 순이익률과 소속 카테고리를 한 줄에서 비교할 수 있게 정리했습니다.</div>
+            </div>
+            <div class="lb2-board-sub">상하위 격차 ${spread}%p</div>
+          </div>
+          ${items.map((item, idx) => `
+            <div class="lb2-row" onclick="navigate('${item.id}')">
+              <div class="lb2-rank-badge">#${idx + 1}</div>
+              <div>
+                <div class="lb2-name">${item.label}</div>
+                <div class="lb2-meta">
+                  <span>${item.category}</span>
+                  ${item.tags.slice(0, 2).map(tag => `<span>#${tag}</span>`).join('')}
+                </div>
+                <div class="lb2-track"><div class="lb2-fill" style="width:${Math.max(8, Math.round((item.margin / maxMargin) * 100))}%;"></div></div>
+              </div>
+              <div class="lb2-score">
+                <div class="lb2-score-main">${item.margin}%</div>
+                <div class="lb2-score-sub">순이익률</div>
+              </div>
+            </div>
+          `).join('')}
+          <div class="lb2-foot">하단 3개는 ${bottomThree.map(item => `${item.label} ${item.margin}%`).join(' · ')}입니다. 점수보다 구조를 먼저 읽도록 리더보드 전체를 텍스트 인사이트와 구간 지도로 바꿨습니다.</div>
+        </div>
+      </div>
     </div>
-    
-    <script>window.lbItems = ${JSON.stringify(items)};<\/script>
     `;
   },
-  charts() {
-    const items = window.lbItems || [];
-    const labels = items.map(i => i.label);
-    const data = items.map(i => i.margin);
-    const bgColors = data.map(m => m >= 25 ? C.bTeal : m >= 15 ? C.bBlue : m > 0 ? C.bAmber : C.bCoral);
-    const borderColors = data.map(m => m >= 25 ? C.teal : m >= 15 ? C.blue : m > 0 ? C.amber : C.coral);
-
-    mc('lb-chart',{
-      type:'bar',
-      data:{
-        labels: labels,
-        datasets:[{
-          label:'순이익률 (%)',
-          data: data,
-          backgroundColor: bgColors,
-          borderColor: borderColors,
-          borderWidth: 1,
-          borderRadius: 4
-        }]
-      },
-      options:{
-        indexAxis: 'y',
-        responsive:true,
-        maintainAspectRatio:false,
-        onClick: (e, activeEls) => {
-          if (activeEls.length > 0) {
-            const index = activeEls[0].index;
-            navigate(items[index].id);
-          }
-        },
-        plugins:{
-          legend:{display:false},
-          tooltip:{callbacks:{label:c=>` 순이익률: ${c.parsed.x}%`}}
-        },
-        scales:{
-          x:{ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},min:0},
-          y:{ticks:{color:tc,font:{weight:'bold'}},grid:{display:false}}
-        }
-      }
-    });
-  }
+  charts() {}
 },
 
 // ═══════════════════════════════════════════════════════ DAANGN (당근마켓)
