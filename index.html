@@ -6,7 +6,7 @@
 <title>머니하우 | 메인</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <!-- 폰트 두께 700(Bold) 유지, 당근마켓용 Noto Sans KR 추가 -->
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
@@ -467,6 +467,7 @@ let NAV = [
     {id:'samsung',label:'삼성전자'},
   ]},
   { cat:'빅테크', items:[
+    {id:'nvidia',label:'엔비디아'},
     {id:'google',label:'구글'},
     {id:'netflix',label:'넷플릭스'},
     {id:'youtube',label:'유튜브 광고'},
@@ -540,6 +541,7 @@ const PAGE_FILE_MAP = {
   "tron": "pages/tron.html",
   "skhynix": "pages/skhynix.html",
   "samsung": "pages/samsung.html",
+  "nvidia": "pages/nvidia.html",
   "google": "pages/google.html",
   "netflix": "pages/netflix.html",
   "youtube": "pages/youtube.html",
@@ -904,7 +906,7 @@ function showWelcome(){
   document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="홈">${HOME_ICON}</div>`;
   document.getElementById('content').innerHTML = `
   <div class="welcome">
-    <div class="wt">비즈니스는 어떻게<br><em>돈을 버나</em></div>
+    <div class="wt">OO은 어떻게<br><em>돈을 버나</em></div>
     <div class="ws">기업, 자영업, 직업까지 — 수익 구조를 숫자와 차트로 시각화합니다</div>
     <div class="w-chips">
       <div class="chip" onclick="navigate('leaderboard')" style="background:var(--amb2);border-color:#E0C070;color:var(--amb);">🏆 수익률 리더보드 보기</div>
@@ -1804,6 +1806,384 @@ spacex: {
         scales: { x: { ticks: { color: tc }, grid: { display: false } }, y: { ticks: { color: tc, callback: v => v+'M' }, grid: { color: gc } } }
       }
     });
+  }
+},
+
+// ═══════════════════════════════════════════════════════ NVIDIA
+nvidia: {
+  label: '엔비디아',
+  meta: { margin: 61, tags: ['AI 반도체', 'GPU', 'CUDA', '데이터센터'], currency: '$' },
+  render(){
+    const pillars = [
+      {icon:'🖥',name:'데이터센터',share:'~91%',rev:'~$620억 (Q4)',width:91,color:'#1A6B3A',note:'H100·H200·Blackwell GPU + NVLink + InfiniBand. 마이크로소프트·구글·아마존·메타가 주요 고객.'},
+      {icon:'🎮',name:'게이밍',share:'~5%',rev:'~$34억 (Q4)',width:5,color:'#1A4A8B',note:'GeForce RTX 시리즈. 한때 주력이었으나 데이터센터에 완전히 밀림. Blackwell 게이밍 출시로 반등 시도.'},
+      {icon:'🎨',name:'프로 비주얼라이제이션',share:'~2%',rev:'~$14억 (Q4)',width:2,color:'#7A4F00',note:'Quadro/RTX 워크스테이션. 영화·설계·시뮬레이션. 마진율은 높지만 절대 규모가 작다.'},
+      {icon:'🚗',name:'자동차',share:'~2%',rev:'~$13억 (Q4)',width:2,color:'#6B1A1A',note:'DRIVE 플랫폼. 자율주행 SoC. 수년째 성장 중이지만 전체 대비 비중은 여전히 미미.'},
+    ];
+    const roadmap = [
+      {era:'2022–2023',chip:'Hopper (H100)',desc:'AI 붐을 촉발한 칩. 데이터센터 폭발의 기폭제. 개당 $3–4만.',bg:'#FAFAF7',tagBg:'var(--nv-grn2)',tagColor:'var(--nv-grn)',tag:'레거시'},
+      {era:'2024–2025',chip:'Blackwell (B100/GB200)',desc:'H100 대비 성능 4배. FY2026 Q4에 본격 매출 기여. 공급이 수요를 못 따라감.',bg:'var(--nv-sur)',tagBg:'rgba(26,74,139,.1)',tagColor:'#1A4A8B',tag:'현재 주력'},
+      {era:'2025–2026',chip:'Vera Rubin (R100)',desc:'차세대 아키텍처. 샘플 출하 시작. Grace CPU + Rubin GPU 통합. 메모리 대역폭 대폭 향상.',bg:'var(--nv-sur)',tagBg:'var(--nv-amb2)',tagColor:'var(--nv-amb)',tag:'출시 예정'},
+      {era:'2026–2027',chip:'Rubin Ultra',desc:'Rubin의 확장판. HBM4e 메모리. 추론 최적화. 젠슨 황은 "AI 팩토리"를 표방.',bg:'var(--nv-sur)',tagBg:'rgba(107,26,26,.08)',tagColor:'#6B1A1A',tag:'로드맵'},
+    ];
+    const insights = [
+      {color:'var(--nv-grn)',num:'75%',title:'매출총이익률 (FY26 Q4)',body:'하드웨어 회사인데 소프트웨어 마진. CUDA 해자가 가격결정력을 만든다.'},
+      {color:'#1A4A8B',num:'91%',title:'데이터센터 매출 비중',body:'사실상 AI 인프라 단일 기업. 게이밍은 부업이 됐다.'},
+      {color:'var(--nv-amb)',num:'$45B',title:'중국 규제 일회성 손실',body:'FY27 Q1. GPM을 14%p 낮춘 최대 변수. Q2에도 $80억 추가.'},
+      {color:'var(--nv-red)',num:'1년',title:'칩 세대 교체 주기',body:'Hopper → Blackwell → Rubin. 고객이 따라가지 않으면 구식. 업그레이드 강제력.'},
+    ];
+    const risks = [
+      {icon:'🇨🇳',title:'중국 수출 규제:',body:'H20 판매 금지로 FY27 Q1에만 $45억 손실. Q2에 $80억 추가 예정. GPM 14%p 급락.'},
+      {icon:'📉',title:'마진 하락세:',body:'75% → 72% → 61%. Blackwell 초기 공급망 비용과 규제 충격이 겹침. 단기 회복 불확실.'},
+      {icon:'🏭',title:'TSMC 의존:',body:'자체 공장 없음. TSMC 생산능력·가격 협상력에 묶임. 지정학 리스크 취약.'},
+      {icon:'🤖',title:'자체 칩 추격:',body:'구글 TPU·아마존 Trainium·MS Azure Maia. 대형 클라우드사가 내재화하면 주문 감소.'},
+    ];
+
+    return `
+    <style>
+      .nv-page{
+        --nv-bg:#F8F6F1;--nv-bg2:#EFECE4;--nv-bg3:#E5E1D5;
+        --nv-sur:#FFFFFF;--nv-sur2:#FDFCF9;
+        --nv-bor:#E0DDD4;--nv-bor2:#C8C4B8;
+        --nv-t1:#1A1916;--nv-t2:#6B6760;--nv-t3:#A8A49C;
+        --nv-grn:#1A6B3A;--nv-grn2:rgba(26,107,58,.09);
+        --nv-red:#9B2020;--nv-red2:rgba(155,32,32,.08);
+        --nv-amb:#7A4F00;--nv-amb2:rgba(122,79,0,.09);
+        --nv-ink:#1A1916;--nv-strip:#365141;--nv-strip2:#40604C;--nv-strip-line:rgba(255,255,255,.14);
+        --nv-rad:8px;--nv-rad2:14px;
+        margin:-32px -28px -60px;padding:0 28px 80px;position:relative;overflow:hidden;
+        background:var(--nv-bg);font-family:'Source Sans 3','Noto Sans KR',sans-serif;color:var(--nv-t1);
+      }
+      .nv-page::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5;}
+      .nv-wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 24px 0;}
+      .nv-masthead{border-bottom:2px solid var(--nv-ink);padding:28px 0 16px;margin-bottom:0;}
+      .nv-mast-top{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+      .nv-mast-kicker{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--nv-t3);border:1px solid var(--nv-bor2);padding:2px 8px;}
+      .nv-mast-date{font-size:10px;color:var(--nv-t3);margin-left:auto;}
+      .nv-mast-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(42px,7vw,82px);font-weight:900;line-height:.92;letter-spacing:-.03em;color:var(--nv-ink);margin-bottom:8px;}
+      .nv-mast-title em{font-style:italic;font-weight:700;color:var(--nv-grn);}
+      .nv-mast-deck{font-size:15px;color:var(--nv-t2);line-height:1.6;max-width:560px;border-left:3px solid var(--nv-ink);padding-left:14px;font-weight:300;}
+      .nv-hero-strip{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr;background:linear-gradient(135deg,var(--nv-strip) 0%,var(--nv-strip2) 100%);margin:0 0 28px;border-top:1px solid rgba(255,255,255,.22);border-radius:0 0 12px 12px;overflow:hidden;}
+      .nv-hs-div{background:var(--nv-strip-line);width:1px;}
+      .nv-hs-cell{padding:18px 20px;text-align:center;}
+      .nv-hs-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(248,246,241,.58);margin-bottom:7px;}
+      .nv-hs-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#F8F6F1;line-height:1;}
+      .nv-hs-chg{font-size:10px;margin-top:5px;font-weight:600;}
+      .nv-hs-chg.up{color:#9FE0B3;}
+      .nv-hs-chg.dn{color:#E8A0A0;}
+      .nv-hs-chg.warn{color:#F1D38F;}
+      .nv-sec{margin-bottom:32px;}
+      .nv-sec-rule{display:flex;align-items:center;gap:10px;margin-bottom:14px;border-top:2px solid var(--nv-ink);padding-top:8px;}
+      .nv-sec-n{font-family:'Playfair Display',serif;font-size:11px;font-style:italic;color:var(--nv-t3);}
+      .nv-sec-h{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--nv-t1);}
+      .nv-sec-line{flex:1;height:1px;background:var(--nv-bor);}
+      .nv-sec-note{font-size:10px;color:var(--nv-t3);}
+      .nv-card{background:var(--nv-sur);border:1px solid var(--nv-bor);border-radius:var(--nv-rad2);padding:18px 20px;}
+      .nv-card-t{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--nv-t1);margin-bottom:3px;}
+      .nv-card-d{font-size:11px;color:var(--nv-t3);margin-bottom:14px;line-height:1.5;}
+      .nv-g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+      .nv-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px;}
+      .nv-pillar{background:var(--nv-sur);border:1px solid var(--nv-bor);border-radius:var(--nv-rad2);padding:16px;overflow:hidden;position:relative;transition:all .18s;}
+      .nv-pillar:hover{border-color:var(--nv-bor2);box-shadow:0 3px 16px rgba(0,0,0,.08);}
+      .nv-pillar-accent{height:3px;border-radius:2px;margin-bottom:12px;}
+      .nv-pillar-icon{font-size:22px;margin-bottom:8px;display:block;}
+      .nv-pillar-name{font-size:12px;font-weight:600;color:var(--nv-t1);margin-bottom:3px;}
+      .nv-pillar-share{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
+      .nv-pillar-rev{font-size:11px;color:var(--nv-t2);margin-bottom:8px;}
+      .nv-pillar-bar-bg{background:var(--nv-bg3);border-radius:2px;height:4px;overflow:hidden;}
+      .nv-pillar-bar{height:100%;border-radius:2px;transition:width .9s cubic-bezier(.4,0,.2,1);}
+      .nv-pillar-note{font-size:10.5px;color:var(--nv-t3);margin-top:8px;line-height:1.4;}
+      .nv-bd{display:flex;flex-direction:column;gap:7px;}
+      .nv-bd-row{display:flex;align-items:center;gap:9px;}
+      .nv-bd-lbl{font-size:11px;color:var(--nv-t2);min-width:160px;text-align:right;}
+      .nv-bd-bg{flex:1;background:var(--nv-bg2);border-radius:2px;height:14px;overflow:hidden;}
+      .nv-bd-bar{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+      .nv-bd-val{font-size:11px;font-weight:600;min-width:80px;text-align:right;}
+      .nv-q-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+      .nv-q-table th{padding:8px 12px;text-align:left;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--nv-t3);border-bottom:1px solid var(--nv-ink);background:var(--nv-bg2);}
+      .nv-q-table td{padding:9px 12px;border-bottom:1px solid var(--nv-bor);vertical-align:middle;}
+      .nv-q-table tr.hl td{background:rgba(26,107,58,.06);font-weight:600;}
+      .nv-q-table tr.warn td{background:rgba(122,79,0,.06);}
+      .nv-q-table tr:hover td{background:var(--nv-sur2);}
+      .nv-badge{display:inline-block;font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:3px;}
+      .nv-badge-up{background:var(--nv-grn2);color:var(--nv-grn);}
+      .nv-badge-dn{background:var(--nv-red2);color:var(--nv-red);}
+      .nv-badge-warn{background:var(--nv-amb2);color:var(--nv-amb);}
+      .nv-moat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+      .nv-moat-cell{background:var(--nv-sur);border:1px solid var(--nv-bor);border-radius:var(--nv-rad2);padding:16px 18px;}
+      .nv-mc-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--nv-ink);line-height:1;margin-bottom:4px;}
+      .nv-mc-title{font-size:12px;font-weight:600;color:var(--nv-t1);margin-bottom:5px;}
+      .nv-mc-body{font-size:11.5px;color:var(--nv-t2);line-height:1.55;}
+      .nv-risk-strip{background:var(--nv-bg2);border:1px solid var(--nv-bor);border-left:4px solid var(--nv-red);border-radius:0 var(--nv-rad) var(--nv-rad) 0;padding:14px 18px;margin-bottom:28px;}
+      .nv-rs-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--nv-red);margin-bottom:10px;}
+      .nv-rs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+      .nv-rs-item{font-size:12px;color:var(--nv-t2);display:flex;gap:7px;line-height:1.5;}
+      .nv-sim-card{background:var(--nv-sur);border:1px solid var(--nv-bor);border-radius:var(--nv-rad2);padding:18px 20px;margin-bottom:12px;}
+      .nv-sl-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+      .nv-sl-lbl{font-size:11.5px;color:var(--nv-t2);min-width:130px;font-weight:400;}
+      .nv-sl-row input[type=range]{flex:1;accent-color:var(--nv-grn);cursor:pointer;}
+      .nv-sl-val{font-size:12px;font-weight:600;min-width:70px;text-align:right;color:var(--nv-t1);}
+      .nv-sim-outs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+      .nv-so{background:var(--nv-bg2);border-radius:var(--nv-rad);padding:10px 12px;border:1px solid var(--nv-bor);}
+      .nv-so-l{font-size:9.5px;color:var(--nv-t3);margin-bottom:4px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+      .nv-so-v{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--nv-t1);}
+      .nv-china-box{background:rgba(122,79,0,.07);border:1px solid rgba(122,79,0,.2);border-radius:var(--nv-rad2);padding:16px 18px;margin-bottom:28px;display:flex;gap:14px;align-items:flex-start;}
+      .nv-cb-icon{font-size:22px;flex-shrink:0;}
+      .nv-cb-title{font-size:12.5px;font-weight:600;color:var(--nv-amb);margin-bottom:5px;}
+      .nv-cb-body{font-size:12px;color:var(--nv-t2);line-height:1.6;}
+      .nv-roadmap{display:flex;gap:0;overflow:hidden;border-radius:var(--nv-rad2);border:1px solid var(--nv-bor);margin-bottom:12px;}
+      .nv-rm-item{flex:1;padding:14px 15px;border-right:1px solid var(--nv-bor);background:var(--nv-sur);}
+      .nv-rm-item:last-child{border-right:none;}
+      .nv-rm-era{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--nv-t3);margin-bottom:5px;}
+      .nv-rm-chip{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--nv-t1);margin-bottom:4px;}
+      .nv-rm-desc{font-size:10.5px;color:var(--nv-t2);line-height:1.45;}
+      .nv-rm-tag{display:inline-block;font-size:9px;font-weight:600;padding:1.5px 6px;border-radius:3px;margin-top:5px;letter-spacing:.04em;}
+      .nv-ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+      .nv-ins{background:var(--nv-sur);border:1px solid var(--nv-bor);border-radius:var(--nv-rad2);padding:14px 15px;border-top:3px solid;transition:all .18s;}
+      .nv-ins:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.07);}
+      .nv-ins-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:5px;}
+      .nv-ins-t{font-size:12px;font-weight:600;color:var(--nv-t1);margin-bottom:3px;}
+      .nv-ins-b{font-size:11px;color:var(--nv-t3);line-height:1.5;}
+      .nv-footer{border-top:1px solid var(--nv-bor);padding-top:16px;font-size:10.5px;color:var(--nv-t3);text-align:center;line-height:1.6;}
+      @media(max-width:700px){
+        .nv-page{margin:-32px -20px -60px;padding:0 20px 80px;}
+        .nv-wrap{padding:0;}
+        .nv-hero-strip{grid-template-columns:1fr 1px 1fr;}
+        .nv-hero-strip .nv-hs-cell:nth-of-type(5),.nv-hero-strip .nv-hs-div:nth-of-type(6),.nv-hero-strip .nv-hs-cell:nth-of-type(7){display:none;}
+        .nv-pillars,.nv-ins-grid{grid-template-columns:repeat(2,1fr);}
+        .nv-g2,.nv-moat-grid,.nv-rs-grid{grid-template-columns:1fr;}
+        .nv-sim-outs{grid-template-columns:repeat(2,1fr);}
+        .nv-roadmap{flex-direction:column;}
+        .nv-rm-item{border-right:none;border-bottom:1px solid var(--nv-bor);}
+        .nv-rm-item:last-child{border-bottom:none;}
+      }
+    </style>
+    <div class="nv-page">
+      <div class="nv-wrap">
+        <div class="nv-masthead">
+          <div class="nv-mast-top">
+            <span class="nv-mast-kicker">수익의 구조 분석</span>
+            <span class="nv-mast-date">2026년 4월 기준 · FY2027 Q1 실적 반영</span>
+          </div>
+          <div class="nv-mast-title">엔비디아는<br>어떻게 <em>돈을 버나</em></div>
+          <div class="nv-mast-deck">GPU 하나 팔고 끝나는 게 아니다 — CUDA 생태계로 AI 인프라 전체를 장악하고, 소프트웨어 회사 수준의 마진을 뽑아내는 구조의 해부</div>
+        </div>
+
+        <div class="nv-hero-strip">
+          <div class="nv-hs-cell"><div class="nv-hs-label">FY2026 연간 매출</div><div class="nv-hs-val">$2,159억</div><div class="nv-hs-chg up">▲ 65% YoY</div></div>
+          <div class="nv-hs-div"></div>
+          <div class="nv-hs-cell"><div class="nv-hs-label">FY2026 Q4 단분기 매출</div><div class="nv-hs-val">$681억</div><div class="nv-hs-chg up">▲ 73% YoY</div></div>
+          <div class="nv-hs-div"></div>
+          <div class="nv-hs-cell"><div class="nv-hs-label">영업이익률 (FY26 Q4)</div><div class="nv-hs-val">65%</div><div class="nv-hs-chg up">소프트웨어 수준</div></div>
+          <div class="nv-hs-div"></div>
+          <div class="nv-hs-cell"><div class="nv-hs-label">FY2027 Q1 매출 (최신)</div><div class="nv-hs-val">$441억</div><div class="nv-hs-chg warn">중국 규제 $45억 손실</div></div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">I.</span><span class="nv-sec-h">4가지 수익원 — 어디서 얼마를 버나</span><div class="nv-sec-line"></div><span class="nv-sec-note">FY2026 Q4 기준 추정</span></div>
+          <div class="nv-pillars">
+            ${pillars.map(p=>`
+              <div class="nv-pillar">
+                <div class="nv-pillar-accent" style="background:${p.color};"></div>
+                <span class="nv-pillar-icon">${p.icon}</span>
+                <div class="nv-pillar-name">${p.name}</div>
+                <div class="nv-pillar-share" style="color:${p.color};">${p.share}</div>
+                <div class="nv-pillar-rev">${p.rev}</div>
+                <div class="nv-pillar-bar-bg"><div class="nv-pillar-bar" style="width:${p.width}%;background:${p.color};"></div></div>
+                <div class="nv-pillar-note">${p.note}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">II.</span><span class="nv-sec-h">H100 하나 팔면 어떻게 돈이 되나</span><div class="nv-sec-line"></div><span class="nv-sec-note">서버 시스템 단위 추정</span></div>
+          <div class="nv-g2">
+            <div class="nv-card">
+              <div class="nv-card-t">H100 서버 1대 판매 손익</div>
+              <div class="nv-card-d">GPU 8개 탑재 DGX H100 기준 — 약 $40만~$50만</div>
+              <div class="nv-bd" id="nv-bdBars"></div>
+            </div>
+            <div class="nv-card">
+              <div class="nv-card-t">엔비디아가 하드웨어 회사가 아닌 이유</div>
+              <div class="nv-card-d">CUDA 소프트웨어 스택이 경제적 해자를 만든다</div>
+              <div class="nv-moat-grid" style="gap:8px;margin-bottom:0;">
+                <div style="background:var(--nv-bg2);border-radius:var(--nv-rad);padding:12px 13px;"><div style="font-size:10px;font-weight:600;color:var(--nv-t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">CUDA 생태계</div><div style="font-size:12px;color:var(--nv-t2);line-height:1.5;">400만+ 개발자, 5만+ 소프트웨어 애플리케이션. GPU를 바꾸면 전체 코드베이스를 다시 짜야 한다.</div></div>
+                <div style="background:var(--nv-bg2);border-radius:var(--nv-rad);padding:12px 13px;"><div style="font-size:10px;font-weight:600;color:var(--nv-t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">소프트웨어 수익</div><div style="font-size:12px;color:var(--nv-t2);line-height:1.5;">NIM, AI 엔터프라이즈, CUDA 라이선스. GPU 판매 없이도 반복 수익을 만들기 시작.</div></div>
+                <div style="background:var(--nv-bg2);border-radius:var(--nv-rad);padding:12px 13px;"><div style="font-size:10px;font-weight:600;color:var(--nv-t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">네트워킹 (Mellanox)</div><div style="font-size:12px;color:var(--nv-t2);line-height:1.5;">InfiniBand·Ethernet 스위치. GPU를 연결하는 네트워크까지 엔비디아가 점령.</div></div>
+                <div style="background:var(--nv-bg2);border-radius:var(--nv-rad);padding:12px 13px;"><div style="font-size:10px;font-weight:600;color:var(--nv-t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;">시장 점유율</div><div style="font-size:12px;color:var(--nv-t2);line-height:1.5;">AI GPU 시장 80%+ 장악. AMD MI300, 구글 TPU, 자체 칩이 추격 중이지만 격차 유지.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">III.</span><span class="nv-sec-h">분기별 매출 추이 & 수익원 구성</span><div class="nv-sec-line"></div></div>
+          <div class="nv-g2">
+            <div class="nv-card"><div class="nv-card-t">분기별 매출 추이</div><div class="nv-card-d">FY2023~FY2027 Q1 — 엔비디아가 역사를 다시 쓴 3년</div><div style="height:220px;position:relative;"><canvas id="nv-trendChart"></canvas></div></div>
+            <div class="nv-card"><div class="nv-card-t">수익원별 구성 (FY2026 Q4)</div><div class="nv-card-d">데이터센터가 91% — 사실상 AI 인프라 회사</div><div style="height:220px;position:relative;"><canvas id="nv-segChart"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">IV.</span><span class="nv-sec-h">분기별 실적 기록 — 기록이 기록을 깨다</span><div class="nv-sec-line"></div></div>
+          <div class="nv-card" style="padding:0;overflow:hidden;">
+            <table class="nv-q-table">
+              <thead><tr><th>분기</th><th>매출</th><th>데이터센터</th><th>매출총이익률</th><th>영업이익률</th><th>YoY 성장</th><th>비고</th></tr></thead>
+              <tbody id="nv-qTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="nv-china-box"><span class="nv-cb-icon">🇨🇳</span><div><div class="nv-cb-title">중국 수출 규제 — FY2027 Q1의 가장 큰 변수</div><div class="nv-cb-body">미국 정부의 H20 칩 대중 수출 제한 발효로 <strong>FY2027 Q1에 $45억 규모 비용 발생</strong>. 전체 매출의 약 10%에 해당. 젠슨 황 CEO는 "5천억 달러 규모의 중국 시장이 사실상 닫혔다"고 발언. 이로 인해 매출총이익률이 FY2026 Q4 75%에서 FY2027 Q1 <strong>61%로 14%p 급락</strong>. Q2에도 중국 관련 $80억 추가 비용 인식 예정.</div></div></div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">V.</span><span class="nv-sec-h">마진이 전부다 — 왜 75%가 가능한가</span><div class="nv-sec-line"></div></div>
+          <div class="nv-g2">
+            <div class="nv-card"><div class="nv-card-t">매출총이익률 추이</div><div class="nv-card-d">75% → 중국 규제 충격으로 61% — 구조적 마진 vs 일시 충격</div><div style="height:210px;position:relative;"><canvas id="nv-gpChart"></canvas></div></div>
+            <div class="nv-card"><div class="nv-card-t">TSMC 파운드리 의존 구조</div><div class="nv-card-d">설계만 하고 제조는 외주 — Fabless 비즈니스 모델</div><div class="nv-bd" id="nv-fabBd" style="margin-top:8px;"></div><div style="margin-top:12px;font-size:11.5px;color:var(--nv-t2);line-height:1.6;padding:10px;background:var(--nv-bg2);border-radius:var(--nv-rad);"><strong style="color:var(--nv-t1);">팹리스의 힘</strong> — 공장 없이 설계만. 고정자산 투자 없이 마진을 뽑는다. TSMC에 제조를 맡기고 소프트웨어·생태계로 차별화.</div></div>
+          </div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">VI.</span><span class="nv-sec-h">칩 로드맵 — 1년마다 세대를 교체한다</span><div class="nv-sec-line"></div></div>
+          <div class="nv-roadmap">
+            ${roadmap.map(item=>`
+              <div class="nv-rm-item" style="background:${item.bg};">
+                <div class="nv-rm-era">${item.era}</div>
+                <div class="nv-rm-chip">${item.chip}</div>
+                <div class="nv-rm-desc">${item.desc}</div>
+                <span class="nv-rm-tag" style="background:${item.tagBg};color:${item.tagColor};">${item.tag}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">VII.</span><span class="nv-sec-h">CUDA 해자 — 경쟁사가 단기간에 넘을 수 없는 이유</span><div class="nv-sec-line"></div></div>
+          <div class="nv-g2">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div class="nv-moat-cell"><div class="nv-mc-num">20년</div><div class="nv-mc-title">CUDA 누적 투자</div><div class="nv-mc-body">2006년 출시. 개발자·툴·라이브러리 생태계 구축에 20년. AMD가 ROCm으로 따라가지 못하는 이유.</div></div>
+              <div class="nv-moat-cell"><div class="nv-mc-num">400만+</div><div class="nv-mc-title">CUDA 개발자</div><div class="nv-mc-body">PyTorch·TensorFlow 모두 CUDA 우선 최적화. AI 모델을 AMD로 돌리면 성능이 안 나온다.</div></div>
+              <div class="nv-moat-cell"><div class="nv-mc-num">80%+</div><div class="nv-mc-title">AI GPU 시장 점유율</div><div class="nv-mc-body">AMD MI300·구글 TPU·아마존 Trainium이 추격 중. 틈새 시장은 잠식되나 클라우드 핵심은 견고.</div></div>
+              <div class="nv-moat-cell"><div class="nv-mc-num" style="font-size:22px;">NIM API</div><div class="nv-mc-title">소프트웨어 수익화</div><div class="nv-mc-body">엔비디아 AI Enterprise, NIM 마이크로서비스. GPU 없이도 API로 수익. SaaS형 수익 시작.</div></div>
+            </div>
+            <div class="nv-card"><div class="nv-card-t">글로벌 AI 인프라 투자와 엔비디아 매출 상관관계</div><div class="nv-card-d">마이크로소프트·구글·메타·아마존 Capex가 엔비디아 실적을 결정한다</div><div style="height:210px;position:relative;"><canvas id="nv-capexChart"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">VIII.</span><span class="nv-sec-h">수익 시뮬레이터</span><div class="nv-sec-line"></div></div>
+          <div class="nv-sim-card">
+            <div class="nv-card-t" style="margin-bottom:3px;">데이터센터 수요와 마진이 달라지면?</div>
+            <div class="nv-card-d" style="margin-bottom:12px;">슬라이더를 조정해 엔비디아 분기 수익을 추정해보세요</div>
+            <div class="nv-sl-row"><label class="nv-sl-lbl">분기 데이터센터 매출 ($B)</label><input type="range" min="20" max="120" value="62" step="1" id="nv-sl-dc" oninput="nvCalc()"><span class="nv-sl-val" id="nv-v-dc">$62B</span></div>
+            <div class="nv-sl-row"><label class="nv-sl-lbl">게이밍·기타 매출 ($B)</label><input type="range" min="2" max="20" value="6" step="0.5" id="nv-sl-gm" oninput="nvCalc()"><span class="nv-sl-val" id="nv-v-gm">$6B</span></div>
+            <div class="nv-sl-row"><label class="nv-sl-lbl">매출총이익률 (%)</label><input type="range" min="40" max="80" value="72" step="1" id="nv-sl-gp" oninput="nvCalc()"><span class="nv-sl-val" id="nv-v-gp">72%</span></div>
+            <div class="nv-sl-row"><label class="nv-sl-lbl">영업비용 ($B, 고정)</label><input type="range" min="5" max="20" value="8" step="0.5" id="nv-sl-op" oninput="nvCalc()"><span class="nv-sl-val" id="nv-v-op">$8B</span></div>
+            <div class="nv-sim-outs">
+              <div class="nv-so"><div class="nv-so-l">분기 총매출</div><div class="nv-so-v" id="nv-s-rev">$68B</div></div>
+              <div class="nv-so"><div class="nv-so-l">매출총이익</div><div class="nv-so-v" id="nv-s-gp" style="color:var(--nv-grn);">$48.96B</div></div>
+              <div class="nv-so"><div class="nv-so-l">영업이익</div><div class="nv-so-v" id="nv-s-op" style="color:var(--nv-grn);">$40.96B</div></div>
+              <div class="nv-so"><div class="nv-so-l">영업이익률</div><div class="nv-so-v" id="nv-s-opm">60.2%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nv-risk-strip"><div class="nv-rs-title">⚠ 리스크 — 이 수익 구조의 취약점</div><div class="nv-rs-grid">${risks.map(r=>`<div class="nv-rs-item"><span>${r.icon}</span><span><strong>${r.title}</strong> ${r.body}</span></div>`).join('')}</div></div>
+
+        <div class="nv-sec">
+          <div class="nv-sec-rule"><span class="nv-sec-n">IX.</span><span class="nv-sec-h">핵심 인사이트</span><div class="nv-sec-line"></div></div>
+          <div class="nv-ins-grid">
+            ${insights.map(item=>`
+              <div class="nv-ins" style="border-top-color:${item.color};">
+                <div class="nv-ins-num" style="color:${item.color};">${item.num}</div>
+                <div class="nv-ins-t">${item.title}</div>
+                <div class="nv-ins-b">${item.body}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="nv-footer">데이터 출처: NVIDIA 공식 실적 발표, Investing.com, 레버리지셰어즈 인사이트, 언론 보도 종합 (FY2026 Q4 = 2026년 1월 마감, FY2027 Q1 = 2025년 봄 마감) · 일부 수치는 추정치 포함</div>
+      </div>
+    </div>
+    ${relHtml(['samsung','skhynix','google'])}`;
+  },
+  charts(){
+    const tc='#A8A49C', gc='rgba(0,0,0,.06)';
+    const bd = [
+      {lbl:'서버 시스템 판매가',v:40,col:'#365141',s:'+'},
+      {lbl:'TSMC 제조 원가',v:-8,col:'#9B2020',s:'-'},
+      {lbl:'기판·HBM·패키징',v:-2,col:'#9B2020',s:'-'},
+      {lbl:'영업·마케팅비',v:-2.5,col:'#A8A49C',s:'-'},
+      {lbl:'R&D 배분',v:-3,col:'#A8A49C',s:'-'},
+      {lbl:'엔비디아 영업이익',v:24.5,col:'#1A6B3A',s:'≈'},
+    ];
+    document.getElementById('nv-bdBars').innerHTML = bd.map(i=>{
+      const pct = Math.round(Math.abs(i.v)/40*100);
+      const col = i.lbl.includes('영업이익') ? 'var(--nv-grn)' : i.v < 0 ? 'var(--nv-red)' : 'var(--nv-ink)';
+      return `<div class="nv-bd-row"><span class="nv-bd-lbl">${i.lbl}</span><div class="nv-bd-bg"><div class="nv-bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="nv-bd-val" style="color:${col};">${i.s} $${Math.abs(i.v)}B</span></div>`;
+    }).join('');
+
+    const fab = [
+      {lbl:'엔비디아 설계·소프트웨어',v:75,col:'#1A6B3A',s:'마진'},
+      {lbl:'TSMC 제조 원가',v:-20,col:'#9B2020',s:'원가'},
+      {lbl:'패키징·테스트·기타',v:-5,col:'#A8A49C',s:'원가'},
+    ];
+    document.getElementById('nv-fabBd').innerHTML = fab.map(i=>{
+      const pct = Math.round(Math.abs(i.v)/75*100);
+      const col = i.v > 0 ? 'var(--nv-grn)' : 'var(--nv-red)';
+      return `<div class="nv-bd-row"><span class="nv-bd-lbl">${i.lbl}</span><div class="nv-bd-bg"><div class="nv-bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="nv-bd-val" style="color:${col};">${i.v > 0 ? '+' : ''} ${i.v}%</span></div>`;
+    }).join('');
+
+    const qtable = [
+      {q:'FY2024 Q2',rev:13.5,dc:10.3,gpm:70.1,opm:53.5,yoy:'+101%',note:'AI 붐 첫 급등',cls:'',badge:'nv-badge-up'},
+      {q:'FY2024 Q4',rev:22.1,dc:18.4,gpm:74.0,opm:56.4,yoy:'+265%',note:'',cls:'',badge:'nv-badge-up'},
+      {q:'FY2025 Q2',rev:30.0,dc:26.3,gpm:75.1,opm:62.1,yoy:'+122%',note:'',cls:'',badge:'nv-badge-up'},
+      {q:'FY2025 Q4',rev:39.3,dc:35.6,gpm:73.5,opm:59.0,yoy:'+78%',note:'Blackwell 시작',cls:'',badge:'nv-badge-up'},
+      {q:'FY2026 Q2',rev:45.0,dc:40.5,gpm:75.0,opm:62.0,yoy:'+50%',note:'',cls:'',badge:'nv-badge-up'},
+      {q:'FY2026 Q3',rev:57.0,dc:51.2,gpm:74.6,opm:63.2,yoy:'+62.5%',note:'Blackwell 본격',cls:'',badge:'nv-badge-up'},
+      {q:'FY2026 Q4 ★',rev:68.1,dc:61.9,gpm:75.0,opm:65.0,yoy:'+73%',note:'역대 최대 단분기',cls:'hl',badge:'nv-badge-up'},
+      {q:'FY2027 Q1 ⚠',rev:44.1,dc:39.1,gpm:61.0,opm:51.0,yoy:'+69%',note:'중국 H20 규제 $45B 손실',cls:'warn',badge:'nv-badge-warn'},
+    ];
+    document.getElementById('nv-qTable').innerHTML = qtable.map(r=>`
+      <tr class="${r.cls}">
+        <td style="font-weight:${r.cls ? '600' : '400'};">${r.q}</td>
+        <td>$${r.rev}B</td>
+        <td>$${r.dc}B</td>
+        <td style="color:${r.gpm >= 70 ? 'var(--nv-grn)' : r.gpm >= 60 ? 'var(--nv-amb)' : 'var(--nv-red)'};">${r.gpm}%</td>
+        <td style="color:${r.opm >= 60 ? 'var(--nv-grn)' : r.opm >= 50 ? 'var(--nv-amb)' : 'var(--nv-red)'};">${r.opm}%</td>
+        <td><span class="nv-badge ${r.badge}">${r.yoy}</span></td>
+        <td style="font-size:11px;color:var(--nv-t3);">${r.note}</td>
+      </tr>`).join('');
+
+    const quarters = ['FY24Q1','FY24Q2','FY24Q3','FY24Q4','FY25Q1','FY25Q2','FY25Q3','FY25Q4','FY26Q1','FY26Q2','FY26Q3','FY26Q4','FY27Q1'];
+    const revs = [22.1,30.0,35.1,22.1,26.0,30.0,35.1,39.3,44.1,45.0,57.0,68.1,44.1];
+    mc('nv-trendChart',{type:'bar',data:{labels:quarters,datasets:[{label:'분기 매출 ($B)',data:revs,backgroundColor:revs.map((_,i)=>i===12?'rgba(122,79,0,.65)':i>=8?'rgba(26,107,58,.75)':'rgba(26,26,22,.35)'),borderColor:revs.map((_,i)=>i===12?'#7A4F00':i>=8?'#1A6B3A':'#1A1916'),borderWidth:1,borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.y}B`}}},scales:{x:{ticks:{color:tc,font:{size:9},maxRotation:45},grid:{display:false}},y:{ticks:{color:tc,callback:v=>'$'+v+'B'},grid:{color:gc},min:0}}}});
+    mc('nv-segChart',{type:'doughnut',data:{labels:['데이터센터 91%','게이밍 5%','프로 비주얼 2%','자동차 2%'],datasets:[{data:[91,5,2,2],backgroundColor:['#1A6B3A','#1A4A8B','#7A4F00','#6B1A1A'],borderWidth:2,borderColor:'#F8F6F1',hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:10}}}}});
+    mc('nv-gpChart',{type:'line',data:{labels:['FY25Q1','FY25Q2','FY25Q3','FY25Q4','FY26Q1','FY26Q2','FY26Q3','FY26Q4','FY27Q1'],datasets:[{label:'매출총이익률',data:[78.4,75.1,74.6,73.5,73.5,75.0,74.6,75.0,61.0],borderColor:'#1A6B3A',backgroundColor:'rgba(26,107,58,.08)',fill:true,tension:.35,pointRadius:4,pointBackgroundColor:ctx=>ctx.dataIndex===8?'#7A4F00':'#1A6B3A'},{label:'영업이익률',data:[64.9,62.1,61.9,59.0,61.0,62.0,63.2,65.0,51.0],borderColor:'#1A4A8B',backgroundColor:'transparent',tension:.35,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},scales:{x:{ticks:{color:tc,font:{size:10}},grid:{color:gc}},y:{ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},min:40,max:85}}}});
+    mc('nv-capexChart',{type:'bar',data:{labels:['2022','2023','2024','2025','2026E'],datasets:[{label:'빅4 클라우드 Capex ($B)',data:[130,150,200,310,420],backgroundColor:'rgba(26,74,139,.4)',borderRadius:3,yAxisID:'yA'},{label:'엔비디아 연간 매출 ($B)',data:[27,44.9,60.9,130,215.9],type:'line',borderColor:'#1A6B3A',backgroundColor:'transparent',tension:.4,pointRadius:4,yAxisID:'yB'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},scales:{x:{ticks:{color:tc},grid:{display:false}},yA:{position:'left',ticks:{color:tc,callback:v=>'$'+v+'B'},grid:{color:gc}},yB:{position:'right',ticks:{color:'#1A6B3A',callback:v=>'$'+v+'B'},grid:{display:false}}}}});
+    window.nvCalc = function(){
+      const dc = parseFloat(document.getElementById('nv-sl-dc').value);
+      const gm = parseFloat(document.getElementById('nv-sl-gm').value);
+      const gp = parseInt(document.getElementById('nv-sl-gp').value, 10);
+      const opex = parseFloat(document.getElementById('nv-sl-op').value);
+      document.getElementById('nv-v-dc').textContent = '$'+dc+'B';
+      document.getElementById('nv-v-gm').textContent = '$'+gm+'B';
+      document.getElementById('nv-v-gp').textContent = gp+'%';
+      document.getElementById('nv-v-op').textContent = '$'+opex+'B';
+      const rev = dc + gm;
+      const gross = Math.round(rev * gp / 100 * 100) / 100;
+      const oi = Math.round((gross - opex) * 100) / 100;
+      const opm = Math.round(oi / rev * 100 * 10) / 10;
+      document.getElementById('nv-s-rev').textContent = '$'+(Math.round(rev * 10) / 10)+'B';
+      document.getElementById('nv-s-gp').textContent = '$'+gross+'B';
+      document.getElementById('nv-s-op').textContent = '$'+oi+'B';
+      document.getElementById('nv-s-opm').textContent = opm+'%';
+      document.getElementById('nv-s-op').style.color = oi > 0 ? 'var(--nv-grn)' : 'var(--nv-red)';
+    };
+    nvCalc();
   }
 },
 
