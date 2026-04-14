@@ -69,6 +69,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
 .ib.active{background:var(--amb2);border-color:#E0C070;color:var(--amb);}
 .content{flex:1;overflow-y:auto;padding:32px 28px 60px; scroll-behavior: smooth;}
 .content.embed-standalone{padding:0;}
+.content.embed-detail-shell{padding:0;}
 .content.embed-shell{padding:32px 28px 60px;}
 
 /* WELCOME & UTILS */
@@ -183,6 +184,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
   .topbar{padding:0 16px;}
   .content{padding:20px 16px 40px;}
   .content.embed-standalone{padding:0;}
+  .content.embed-detail-shell{padding:0;}
   .content.embed-shell{padding:20px 16px 40px;}
 }
 
@@ -567,12 +569,26 @@ const PAGE_FILE_MAP = {
   "rider": "pages/rider.html"
 };
 const STANDALONE_EMBED_IDS = new Set([
+  'sanil',
+  'daewon'
+]);
+const DETAIL_SHELL_EMBED_IDS = new Set([
+  'leaderboard',
   'daangn',
   'gamsgo',
+  'google',
+  'netflix',
+  'youtube',
+  'cafe',
+  'destcafe',
+  'chicken',
+  'rider',
+  'skhynix',
   'samsung',
-  'sanil',
-  'daewon',
-  'nanoentek'
+  'nanoentek',
+  'nvidia',
+  'spacex',
+  'tron'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
@@ -614,12 +630,13 @@ function stripLegacyEmbeddedRules(doc){
 
 function detectEmbeddedKind(doc){
   const hasShell = doc.querySelector('.sb') && doc.querySelector('.topbar') && doc.querySelector('.content');
-  return hasShell ? 'shell' : 'standalone';
+  return hasShell ? 'detail-shell' : 'standalone';
 }
 
 function resolveEmbeddedKind(frame, doc){
   const pageId = frame?.dataset?.pageId;
   if(pageId && STANDALONE_EMBED_IDS.has(pageId)) return 'standalone';
+  if(pageId && DETAIL_SHELL_EMBED_IDS.has(pageId)) return 'detail-shell';
   return detectEmbeddedKind(doc);
 }
 
@@ -628,13 +645,17 @@ function getEmbeddedLayoutFixCss(doc, kind){
     'html.embedded body{display:block;height:auto;overflow:auto;}'
   ];
 
-  if(kind === 'shell') {
+  if(kind === 'shell' || kind === 'detail-shell') {
     parts.push(`
       html.embedded .sb,
       html.embedded .topbar,
       html.embedded .sb-ov{display:none !important;}
       html.embedded .main{flex:1;width:100%;min-width:0;}
-      html.embedded .content{padding:32px 28px 60px !important;overflow:visible !important;}
+      html.embedded .content{
+        padding:32px 28px 60px !important;
+        overflow:visible !important;
+        background:transparent !important;
+      }
       html.embedded .page-frame{height:auto;min-height:0;border:0;}
       @media(max-width:900px){
         html.embedded .content{padding:20px 16px 40px !important;}
@@ -725,6 +746,7 @@ function syncEmbeddedContainer(frame, kind){
   const content = frame.closest('#content');
   if(!content) return;
   content.classList.toggle('embed-standalone', kind === 'standalone');
+  content.classList.toggle('embed-detail-shell', kind === 'detail-shell');
   content.classList.toggle('embed-shell', kind === 'shell');
 }
 
@@ -761,7 +783,7 @@ function navigate(id, _fromStatic = false){
     bb.classList.toggle('active', bookmarks.includes(id));
   }
   const content = document.getElementById('content');
-  content.classList.remove('embed-standalone', 'embed-shell');
+  content.classList.remove('embed-standalone', 'embed-detail-shell', 'embed-shell');
   if(targetFile) {
     const iframe = document.createElement('iframe');
     iframe.className = 'page-frame';

@@ -343,12 +343,20 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 html.embedded .lb2-page{margin:0 !important;padding:0 !important;background:transparent !important;}
 html.embedded .lb2-wrap{padding-top:0 !important;padding-bottom:0 !important;}
 </style>
 </head>
 <body>
-<script>const EMBED_MODE = new URLSearchParams(location.search).get('embed') === '1'; if (EMBED_MODE) document.documentElement.classList.add('embedded');</script>
+<script>const EMBED_MODE = new URLSearchParams(location.search).get('embed') === '1'; document.documentElement.classList.add(EMBED_MODE ? 'embedded' : 'direct-page');</script>
 
 <div class="sb-ov" id="sbOverlay" onclick="closeSidebar()"></div>
 <aside class="sb" id="sidebar">
@@ -1282,6 +1290,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
     <div class="lb2-page">
       <div class="lb2-wrap">
@@ -1901,6 +1917,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
 
     <div class="sp-hero">
@@ -2228,6 +2252,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
     <div class="nv-page">
       <div class="nv-wrap">
@@ -3153,6 +3185,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
     <div class="gg-page">
       <div class="gg-wrap">
@@ -3444,6 +3484,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
     <div class="pg-head">
       <div class="pg-badges">
@@ -3718,6 +3766,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
     <div class="ss-page">
       <div class="ss-wrap">
@@ -4075,6 +4131,14 @@ html.embedded .content{padding:0 !important;overflow:visible !important;}
 html.embedded .page-frame{height:auto;min-height:0;border:0;}
 html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
 html.embedded .hero{padding-top:28px;}
+html.direct-page body{display:block;height:auto;overflow:auto;}
+html.direct-page .sb,
+html.direct-page .topbar,
+html.direct-page .sb-ov{display:none !important;}
+html.direct-page .main{flex:1;width:100%;min-width:0;overflow:visible !important;}
+html.direct-page .content{padding:32px 28px 60px !important;overflow:visible !important;background:transparent !important;}
+html.direct-page .page-frame{height:auto;min-height:0;border:0;}
+@media(max-width:900px){html.direct-page .content{padding:20px 16px 40px !important;}}
 </style>
     <div class="ne-page">
       <div class="ne-wrap">
