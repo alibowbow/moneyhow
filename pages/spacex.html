@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SpaceX | MoneyHow</title>
+<title>SpaceX | 머니하우</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <!-- 폰트 두께 700(Bold) 유지, 당근마켓용 Noto Sans KR 추가 -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -547,7 +547,7 @@ const PAGE_FILE_MAP = {
 };
 const HOME_FILE = "../index.html";
 const STATIC_PAGE = 'spacex';
-const HOME_TITLE = "MoneyHow | Home";
+const HOME_TITLE = "머니하우 | 메인";
 
 function getCurrentFileName(){
   const trimmed = location.pathname.replace(/\/+$/, '');
@@ -566,8 +566,8 @@ function navigate(id, _fromStatic = false){
   buildNav(document.getElementById('searchInput')?.value || '');
   const page = PAGES[id];
   if(!page) return;
-  document.title = `${page.label} | MoneyHow`;
-  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="Home">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">${page.label}</span>`;
+  document.title = `${page.label} | 머니하우`;
+  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="홈">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">${page.label}</span>`;
   const bb = document.getElementById('bookmarkBtn');
   if(bb) {
     bb.textContent = bookmarks.includes(id) ? '?' : '?';
@@ -668,7 +668,7 @@ async function generateAIPage(){
   const josa = getEunNeun(topic);
   const exactTitle = `${topic}${josa} 어떻게 돈을 버나`;
   
-  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="Home">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">AI 분석 중</span>`;
+  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="홈">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">AI 분석 중</span>`;
   document.getElementById('content').innerHTML = `
   <div class="ai-loader">
     <div class="spinner-icon">✦</div>
@@ -2266,30 +2266,30 @@ rider: {
 // CUSTOM STATIC PAGES
 gamsgo: {
   label: 'GamsGo',
-  meta: { margin: 18, tags: ['subscription sharing', 'marketplace', 'fee model', 'consumer savings'], currency: '$' },
+  meta: { margin: 18, tags: ['구독공유', '마켓플레이스', '플랫폼 수수료', '구독경제'], currency: '$' },
   render(){
     const offers = [
-      {icon:'N', name:'Netflix 4K', full:'$17/mo', shared:'$6.8', discount:60, fee:'15-20%'},
-      {icon:'AI', name:'ChatGPT Plus', full:'$20/mo', shared:'$9', discount:55, fee:'18-25%'},
-      {icon:'YT', name:'YouTube Premium', full:'$14.9/mo', shared:'$6.7', discount:55, fee:'15-18%'},
-      {icon:'SP', name:'Spotify Family', full:'$16.3/mo', shared:'$9.8', discount:40, fee:'12-18%'},
-      {icon:'CV', name:'Canva Pro', full:'$17/mo', shared:'$5.9', discount:65, fee:'18-25%'},
-      {icon:'VPN', name:'NordVPN', full:'$14/mo', shared:'$5.5', discount:61, fee:'15-22%'},
+      {icon:'N', name:'Netflix 4K', full:'월 ₩17,000', shared:'₩6,800', discount:60, fee:'15~20%'},
+      {icon:'AI', name:'ChatGPT Plus', full:'월 $20', shared:'$9', discount:55, fee:'18~25%'},
+      {icon:'YT', name:'YouTube Premium', full:'월 ₩14,900', shared:'₩6,700', discount:55, fee:'15~18%'},
+      {icon:'SP', name:'Spotify Family', full:'월 ₩16,350', shared:'₩9,800', discount:40, fee:'12~18%'},
+      {icon:'CV', name:'Canva Pro', full:'월 $17', shared:'$5.9', discount:65, fee:'18~25%'},
+      {icon:'VPN', name:'NordVPN', full:'월 $13.99', shared:'$5.5', discount:61, fee:'15~22%'},
     ];
     const levels = [
-      {name:'Starter', fee:'up to 25%', limit:'$50/mo', warranty:'7 days', color:C.gray},
-      {name:'Bronze', fee:'up to 22%', limit:'$200/mo', warranty:'14 days', color:C.amber},
-      {name:'Silver', fee:'up to 18%', limit:'$500/mo', warranty:'21 days', color:C.blue},
-      {name:'Gold', fee:'up to 14%', limit:'$1,500/mo', warranty:'30 days', color:C.teal},
-      {name:'Diamond', fee:'up to 10%', limit:'Unlimited', warranty:'60 days', color:C.purple},
+      {name:'Lv.1 신입', fee:'최대 25%', limit:'$50/월', warranty:'7일', color:C.gray},
+      {name:'Lv.2 브론즈', fee:'최대 22%', limit:'$200/월', warranty:'14일', color:C.amber},
+      {name:'Lv.3 실버', fee:'최대 18%', limit:'$500/월', warranty:'21일', color:C.blue},
+      {name:'Lv.4 골드', fee:'최대 14%', limit:'$1,500/월', warranty:'30일', color:C.teal},
+      {name:'Lv.5 다이아', fee:'최대 10%', limit:'무제한', warranty:'60일', color:C.purple},
     ];
     const feeRows = [
-      {cat:'Video streaming', item:'Netflix, Disney+, Crunchyroll', orig:'$15-22', sale:'$5-9', rate:'15-20%'},
-      {cat:'AI tools', item:'ChatGPT Plus, Midjourney, Perplexity', orig:'$10-30', sale:'$4-14', rate:'18-25%'},
-      {cat:'Music', item:'Spotify, Deezer, Tidal', orig:'$10-18', sale:'$4-9', rate:'12-18%'},
-      {cat:'Productivity', item:'Canva Pro, Office 365, Autodesk', orig:'$15-60', sale:'$5-25', rate:'18-25%'},
-      {cat:'Security', item:'NordVPN, 1Password', orig:'$4-14', sale:'$1.5-6', rate:'15-22%'},
-      {cat:'Education', item:'Duolingo, Scribd, learning apps', orig:'$6-12', sale:'$2.5-5', rate:'15-20%'},
+      {cat:'동영상 스트리밍', item:'Netflix, Disney+, Crunchyroll', orig:'$15~22', sale:'$5~9', rate:'15~20%'},
+      {cat:'AI 도구', item:'ChatGPT Plus, Midjourney, Perplexity', orig:'$10~30', sale:'$4~14', rate:'18~25%'},
+      {cat:'음악 스트리밍', item:'Spotify, Deezer, Tidal', orig:'$10~18', sale:'$4~9', rate:'12~18%'},
+      {cat:'생산성·디자인', item:'Canva Pro, Office 365, Autodesk', orig:'$15~60', sale:'$5~25', rate:'18~25%'},
+      {cat:'보안·VPN', item:'NordVPN, 1Password', orig:'$4~14', sale:'$1.5~6', rate:'15~22%'},
+      {cat:'교육·기타', item:'Duolingo, Scribd, 기타 학습앱', orig:'$6~12', sale:'$2.5~5', rate:'15~20%'},
     ];
     return `
     <style>
@@ -2340,144 +2340,144 @@ gamsgo: {
     </style>
     <div class="pg-head">
       <div class="pg-badges">
-        <span class="pg-badge">Platform</span>
+        <span class="pg-badge">플랫폼</span>
         ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
       </div>
-      <div class="pg-title">How GamsGo Makes Money</div>
-      <div class="pg-sub">GamsGo connects spare subscription slots with discount-hunting buyers, handles payment and guarantee flow, and keeps a platform fee on each transaction.</div>
+      <div class="pg-title">GamsGo는 어떻게 돈을 버나</div>
+      <div class="pg-sub">남는 구독 슬롯을 사고파는 마켓플레이스에서 거래를 붙여주고, 결제와 보증을 대신 처리한 뒤 중간 수수료를 가져가는 구조입니다.</div>
     </div>
     ${metHtml([
-      {l:'Core revenue',v:'Marketplace fee',s:'15-25% take rate'},
-      {l:'Users',v:'1M+',s:'180+ countries'},
-      {l:'Buyer savings',v:'Up to 70%',s:'vs official plan price',c:'g'},
-      {l:'Catalog',v:'100+',s:'streaming, AI, productivity'},
+      {l:'핵심 수익원',v:'플랫폼 수수료',s:'거래 금액의 15~25%'},
+      {l:'등록 사용자',v:'100만+',s:'180개국 이상'},
+      {l:'구매자 절감률',v:'최대 70%',s:'정가 대비 할인',c:'g'},
+      {l:'취급 서비스',v:'100+',s:'스트리밍·AI·생산성'},
     ])}
     <div class="gg-hero">
       <div class="gg-panel">
-        <div class="gg-kicker">Subscription carpool</div>
-        <div class="gg-big">It does not create the product.<br>It monetizes the match.</div>
-        <div class="gg-sub">A seller brings the unused seat, a buyer brings price-sensitive demand, and the platform brings trust, payment processing, and replacement support. That middle layer is where the margin lives.</div>
+        <div class="gg-kicker">구독의 카풀</div>
+        <div class="gg-big">구독을 직접 만들지 않고<br>연결해서 돈을 번다</div>
+        <div class="gg-sub">판매자는 남는 가족 요금제 슬롯을 올리고, 구매자는 정가보다 훨씬 싸게 들어옵니다. GamsGo는 계정을 소유하지 않아도 거래마다 수수료와 보증 프리미엄을 쌓을 수 있습니다.</div>
       </div>
       <div class="gg-panel alt">
-        <div class="gg-kicker">Typical deals</div>
+        <div class="gg-kicker">대표 할인 예시</div>
         <div class="gg-pill-list">
-          ${offers.slice(0,5).map(o=>`<div class="gg-pill"><span class="gg-pill-icon">${o.icon}</span><span class="gg-pill-name">${o.name}</span><span class="gg-pill-price">${o.discount}% off</span></div>`).join('')}
+          ${offers.slice(0,5).map(o=>`<div class="gg-pill"><span class="gg-pill-icon">${o.icon}</span><span class="gg-pill-name">${o.name}</span><span class="gg-pill-price">${o.discount}% 절감</span></div>`).join('')}
         </div>
       </div>
     </div>
     <div class="card" style="margin-bottom:14px;">
-      <div class="card-t">Flow of money</div>
-      <div class="card-d">The seller contributes access, the buyer funds the transaction, and the platform keeps a fee for matching, support, and guarantee coverage.</div>
+      <div class="card-t">돈이 흐르는 4단계</div>
+      <div class="card-d">구독 공유자는 슬롯을 공급하고, 구매자는 할인된 가격을 지불합니다. 플랫폼은 거래 안전장치와 함께 수수료를 가져갑니다.</div>
       <div class="gg-flow">
-        <div class="gg-step"><div class="gg-step-num">Step 1</div><div class="gg-step-title">Seller lists a spare seat</div><div class="gg-step-body">Unused family-plan capacity becomes marketplace supply.</div></div>
-        <div class="gg-step"><div class="gg-step-num">Step 2</div><div class="gg-step-title">Buyer pays a discount price</div><div class="gg-step-body">Lower-than-retail pricing pulls in demand from cost-sensitive users.</div></div>
-        <div class="gg-step"><div class="gg-step-num">Step 3</div><div class="gg-step-title">Platform manages risk</div><div class="gg-step-body">Payment collection, warranty rules, support, and account replacement reduce trust friction.</div></div>
-        <div class="gg-step"><div class="gg-step-num">Step 4</div><div class="gg-step-title">Payout after hold period</div><div class="gg-step-body">Seller payout is released after a hold, while the platform keeps its cut.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 1</div><div class="gg-step-title">판매자 등록</div><div class="gg-step-body">가족 요금제나 팀 플랜의 남는 자리를 올리고 구매자를 기다립니다.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 2</div><div class="gg-step-title">매칭과 결제</div><div class="gg-step-body">GamsGo가 구매자와 연결하고 카드 결제를 받아 일정 기간 보관합니다.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 3</div><div class="gg-step-title">보증과 운영</div><div class="gg-step-body">문제 계정 교체, CS, 환불 규칙을 제공해 거래 신뢰를 만듭니다.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 4</div><div class="gg-step-title">정산</div><div class="gg-step-body">보증 기간이 지나면 판매자에게 대금을 풀고, 차액은 플랫폼 매출로 남깁니다.</div></div>
       </div>
     </div>
     <div class="card" style="margin-bottom:14px;">
-      <div class="card-t">Price and fee snapshot</div>
-      <div class="card-d">The product feels cheap to the buyer because the buyer only pays for a seat. The platform still takes a meaningful slice of every seat sold.</div>
+      <div class="card-t">서비스별 할인과 수수료</div>
+      <div class="card-d">높은 할인율이 보일수록 구매 전환은 쉬워지고, 플랫폼은 그 거래에서 일정 비율을 가져갑니다.</div>
       <div class="gg-share-grid">
-        ${offers.map(o=>`<div class="gg-share-card"><div class="gg-share-top"><span class="gg-share-icon">${o.icon}</span><span class="gg-share-name">${o.name}</span></div><div class="gg-share-full">Official ${o.full}</div><div class="gg-share-price">${o.shared}</div><div class="gg-share-meta"><span>Platform fee</span><strong>${o.fee}</strong></div><div class="gg-share-bar"><span style="width:${o.discount}%;"></span></div></div>`).join('')}
+        ${offers.map(o=>`<div class="gg-share-card"><div class="gg-share-top"><span class="gg-share-icon">${o.icon}</span><span class="gg-share-name">${o.name}</span></div><div class="gg-share-full">정가 ${o.full}</div><div class="gg-share-price">${o.shared}</div><div class="gg-share-meta"><span>추정 수수료</span><strong>${o.fee}</strong></div><div class="gg-share-bar"><span style="width:${o.discount}%;"></span></div></div>`).join('')}
       </div>
     </div>
     <div class="cg">
       <div class="card">
-        <div class="card-t">One transaction, simplified</div>
-        <div class="card-d">Example: a $9 ChatGPT Plus seat sold through the marketplace.</div>
+        <div class="card-t">거래 1건 분해</div>
+        <div class="card-d">ChatGPT Plus 슬롯 1개월 판매를 단순화한 예시입니다.</div>
         ${bdHtml([
-          {lbl:'Buyer payment',v:9,col:C.blue,s:'+'},
-          {lbl:'Underlying seat cost',v:-5.5,col:C.coral,s:'-'},
-          {lbl:'Payment processing',v:-0.25,col:C.purple,s:'-'},
-          {lbl:'Support and reserve',v:-0.8,col:C.gray,s:'-'},
-          {lbl:'Seller payout',v:-1.65,col:C.gray,s:'-'},
-          {lbl:'Platform profit',v:0.8,col:C.teal,s:'='},
-        ], 9, '$')}
+          {lbl:'구매자 결제액',v:10000,col:C.blue,s:'+'},
+          {lbl:'원가 배분',v:-5500,col:C.coral,s:'-'},
+          {lbl:'PG 수수료',v:-250,col:C.purple,s:'-'},
+          {lbl:'운영·CS 비용',v:-800,col:C.gray,s:'-'},
+          {lbl:'판매자 정산액',v:-2650,col:C.gray,s:'-'},
+          {lbl:'GamsGo 순이익',v:800,col:C.teal,s:'='},
+        ], 10000, '₩')}
       </div>
       <div class="card">
-        <div class="card-t">Fee stack</div>
-        <div class="card-d">The visible take rate is only part of the story. Fixed fees and risk coverage matter too.</div>
+        <div class="card-t">수수료 구성</div>
+        <div class="card-d">플랫폼 수수료율, 고정 수수료, 결제 비용, 운영비가 섞여 실제 이익을 만듭니다.</div>
         <div class="ch-wrap" style="height:220px;"><canvas id="gg-fee"></canvas></div>
       </div>
     </div>
     <div class="card" style="margin-bottom:14px;">
-      <div class="card-t">Seller level system</div>
-      <div class="card-d">The supply side is sticky when reliable sellers earn lower fees and faster unlocks.</div>
+      <div class="card-t">판매자 등급 시스템</div>
+      <div class="card-d">공급자를 오래 묶어둘수록 품질이 안정되기 때문에, 레벨을 올리면 수수료를 깎아주는 구조를 씁니다.</div>
       <div class="gg-levels">
-        ${levels.map(level=>`<div class="gg-level" style="border-top:3px solid ${level.color};"><div class="gg-level-name">${level.name}</div><div class="gg-level-row"><span>Fee</span><strong>${level.fee}</strong></div><div class="gg-level-row"><span>Limit</span><strong>${level.limit}</strong></div><div class="gg-level-row"><span>Warranty</span><strong>${level.warranty}</strong></div></div>`).join('')}
+        ${levels.map(level=>`<div class="gg-level" style="border-top:3px solid ${level.color};"><div class="gg-level-name">${level.name}</div><div class="gg-level-row"><span>수수료</span><strong>${level.fee}</strong></div><div class="gg-level-row"><span>출금한도</span><strong>${level.limit}</strong></div><div class="gg-level-row"><span>보증기간</span><strong>${level.warranty}</strong></div></div>`).join('')}
       </div>
     </div>
     <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
       <div style="padding:18px 20px 0;">
-        <div class="card-t">Estimated fee structure by category</div>
-        <div class="card-d">Higher discounts, more fragile accounts, and more support work usually imply a higher take rate.</div>
+        <div class="card-t">카테고리별 수수료 구조</div>
+        <div class="card-d">정가, 할인 폭, 계정 안정성에 따라 카테고리별로 수수료율이 미세하게 달라지는 것으로 보입니다.</div>
       </div>
       <table class="gg-table">
-        <thead><tr><th>Category</th><th>Examples</th><th>Official price</th><th>Seat price</th><th>Take rate</th></tr></thead>
+        <thead><tr><th>카테고리</th><th>대표 상품</th><th>정가</th><th>GamsGo 판매가</th><th>추정 수수료율</th></tr></thead>
         <tbody>
           ${feeRows.map(row=>`<tr><td><span class="gg-badge">${row.cat}</span></td><td>${row.item}</td><td>${row.orig}</td><td style="color:var(--grn);font-weight:700;">${row.sale}</td><td>${row.rate}</td></tr>`).join('')}
         </tbody>
       </table>
     </div>
     <div class="sim-card">
-      <div class="card-t">Revenue simulator</div>
-      <div class="card-d" style="margin-bottom:14px;">Adjust transaction count, ticket size, and fee rate to see how quickly marketplace revenue scales.</div>
-      <div class="sl-row"><label class="sl-lbl">Monthly transactions</label><input type="range" min="1000" max="200000" value="50000" step="1000" id="gg-tx" oninput="ggCalc()"><span class="sl-val" id="gg-tx-v">50k</span></div>
-      <div class="sl-row"><label class="sl-lbl">Average order value</label><input type="range" min="5" max="50" value="12" step="1" id="gg-amt" oninput="ggCalc()"><span class="sl-val" id="gg-amt-v">$12</span></div>
-      <div class="sl-row"><label class="sl-lbl">Platform fee rate</label><input type="range" min="5" max="35" value="18" step="1" id="gg-fee-rate" oninput="ggCalc()"><span class="sl-val" id="gg-fee-rate-v">18%</span></div>
-      <div class="sl-row"><label class="sl-lbl">Affiliate mix</label><input type="range" min="0" max="50" value="20" step="5" id="gg-aff" oninput="ggCalc()"><span class="sl-val" id="gg-aff-v">20%</span></div>
+      <div class="card-t">GamsGo 수익 시뮬레이터</div>
+      <div class="card-d" style="margin-bottom:14px;">거래량과 수수료율을 바꾸면 플랫폼 월매출이 어떻게 달라지는지 볼 수 있습니다.</div>
+      <div class="sl-row"><label class="sl-lbl">월 거래 건수</label><input type="range" min="1000" max="200000" value="50000" step="1000" id="gg-tx" oninput="ggCalc()"><span class="sl-val" id="gg-tx-v">5만건</span></div>
+      <div class="sl-row"><label class="sl-lbl">평균 거래 단가</label><input type="range" min="5" max="50" value="12" step="1" id="gg-amt" oninput="ggCalc()"><span class="sl-val" id="gg-amt-v">$12</span></div>
+      <div class="sl-row"><label class="sl-lbl">플랫폼 수수료율</label><input type="range" min="5" max="35" value="18" step="1" id="gg-fee-rate" oninput="ggCalc()"><span class="sl-val" id="gg-fee-rate-v">18%</span></div>
+      <div class="sl-row"><label class="sl-lbl">제휴 비중</label><input type="range" min="0" max="50" value="20" step="5" id="gg-aff" oninput="ggCalc()"><span class="sl-val" id="gg-aff-v">20%</span></div>
       <div class="sim-outs">
-        <div class="so"><div class="so-l">Monthly GMV</div><div class="so-v" id="gg-out-gmv">$600K</div></div>
-        <div class="so"><div class="so-l">Fee revenue</div><div class="so-v" id="gg-out-fee" style="color:var(--grn);">$108K</div></div>
-        <div class="so"><div class="so-l">Affiliate revenue</div><div class="so-v" id="gg-out-aff">$6K</div></div>
-        <div class="so"><div class="so-l">Total revenue</div><div class="so-v" id="gg-out-total" style="color:var(--acc);">$114K</div></div>
+        <div class="so"><div class="so-l">월 총 거래액</div><div class="so-v" id="gg-out-gmv">$600K</div></div>
+        <div class="so"><div class="so-l">플랫폼 수수료 수익</div><div class="so-v" id="gg-out-fee" style="color:var(--grn);">$108K</div></div>
+        <div class="so"><div class="so-l">제휴 커미션</div><div class="so-v" id="gg-out-aff">$6K</div></div>
+        <div class="so"><div class="so-l">월 총 추정 수익</div><div class="so-v" id="gg-out-total" style="color:var(--acc);">$114K</div></div>
       </div>
     </div>
     <div class="cg">
       <div class="card">
-        <div class="card-t">Scale scenarios</div>
-        <div class="card-d">A fee-led marketplace gets a lot of operating leverage once transaction volume compounds.</div>
+        <div class="card-t">거래량별 수익 시나리오</div>
+        <div class="card-d">수수료 중심 모델이라 GMV가 커질수록 레버리지가 빠르게 붙습니다.</div>
         <div class="ch-wrap" style="height:220px;"><canvas id="gg-scenario"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-t">Revenue mix</div>
-        <div class="card-d">Marketplace fees dominate, while affiliate and first-party products remain secondary.</div>
+        <div class="card-t">수익원 구성</div>
+        <div class="card-d">핵심은 마켓플레이스 수수료이고, 제휴와 자체 상품은 보조 축에 가깝습니다.</div>
         <div class="ch-wrap" style="height:220px;"><canvas id="gg-mix"></canvas></div>
       </div>
     </div>
     <div class="card" style="margin-bottom:18px;">
-      <div class="card-t">Model risks</div>
-      <div class="card-d">The same asset-light model that makes the business attractive also makes it fragile.</div>
+      <div class="card-t">이 모델의 리스크</div>
+      <div class="card-d">거래를 붙여주는 구조라서 정책 변화와 신뢰 유지 실패에 민감합니다.</div>
       <div class="gg-risk-list">
-        <div class="gg-risk-item">Official services can tighten family-plan sharing rules and reduce supply overnight.</div>
-        <div class="gg-risk-item">Gray-area policy exposure can raise chargeback risk, support costs, and account churn.</div>
-        <div class="gg-risk-item">If seller payouts feel slow or unfair, trusted supply can leave the marketplace.</div>
-        <div class="gg-risk-item">Competing slot-sharing platforms can force take rates down through price competition.</div>
+        <div class="gg-risk-item">넷플릭스나 유튜브가 가족 요금제 공유 정책을 더 세게 막으면 핵심 공급이 흔들릴 수 있습니다.</div>
+        <div class="gg-risk-item">서비스 약관 위반에 가까운 회색지대라 결제 차단이나 계정 정지가 반복될 수 있습니다.</div>
+        <div class="gg-risk-item">판매자 등급제가 출금 지연으로 받아들여지면 공급자 이탈이 발생하고, 그 순간 플랫폼 매칭 품질이 꺾입니다.</div>
+        <div class="gg-risk-item">유사 서비스와 가격 경쟁이 붙으면 결국 수수료율이 낮아질 가능성이 큽니다.</div>
       </div>
     </div>
     ${insHtml([
-      {n:'18%',t:'Typical fee rate',b:'A meaningful cut for a platform that does not own the underlying content.'},
-      {n:'70%',t:'Headline savings',b:'Big consumer savings are the core demand engine of the marketplace.'},
-      {n:'0 inventory',t:'Asset-light model',b:'The platform does not need to pre-buy subscriptions to make money.'},
-      {n:'Lv.5',t:'Supply lock-in',b:'Better economics for proven sellers makes high-quality supply harder to leave.'},
+      {n:'18%',t:'추정 수수료율',b:'콘텐츠를 만들지 않고 연결과 보증만으로 가져가는 핵심 마진.'},
+      {n:'70%',t:'구매자 절감률',b:'싸게 사려는 수요가 꾸준히 붙는 이유.'},
+      {n:'0원',t:'재고 비용',b:'플랫폼은 구독권을 직접 매입하지 않아 재고 부담이 거의 없다.'},
+      {n:'Lv.5',t:'공급자 록인',b:'등급이 올라갈수록 수수료가 내려가 장기 판매자를 붙잡아둔다.'},
     ])}
     ${relHtml(['netflix','google','youtube'])}`;
   },
   charts(){
     mc('gg-fee',{
       type:'doughnut',
-      data:{labels:['Variable fee','Fixed fee','Payment cost','Support and reserve'],datasets:[{data:[55,20,15,10],backgroundColor:[C.blue,C.purple,C.amber,C.gray],borderWidth:0}]},
+      data:{labels:['거래 비율 수수료','고정 수수료','PG 비용','운영·CS'],datasets:[{data:[55,20,15,10],backgroundColor:[C.blue,C.purple,C.amber,C.gray],borderWidth:0}]},
       options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:8}}}}
     });
     mc('gg-scenario',{
       type:'bar',
-      data:{labels:['10k','50k','100k','500k','1M'],datasets:[{label:'Fee revenue ($K)',data:[22,108,216,1080,2160],backgroundColor:'rgba(59,139,212,.68)',borderRadius:4,borderSkipped:false},{label:'Affiliate revenue ($K)',data:[0.4,1.8,3.6,18,36],backgroundColor:'rgba(30,143,93,.58)',borderRadius:4,borderSkipped:false}]},
+      data:{labels:['1만건','5만건','10만건','50만건','100만건'],datasets:[{label:'수수료 수익($K)',data:[22,108,216,1080,2160],backgroundColor:'rgba(59,139,212,.68)',borderRadius:4,borderSkipped:false},{label:'제휴 수익($K)',data:[0.4,1.8,3.6,18,36],backgroundColor:'rgba(30,143,93,.58)',borderRadius:4,borderSkipped:false}]},
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},scales:{x:{ticks:{color:tc},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v>=1000?'$'+(v/1000).toFixed(1)+'M':'$'+v+'K'},grid:{color:gc}}}}
     });
     mc('gg-mix',{
       type:'doughnut',
-      data:{labels:['Marketplace fees 75%','Affiliate 15%','First-party AI 7%','Other 3%'],datasets:[{data:[75,15,7,3],backgroundColor:[C.blue,C.teal,C.purple,C.gray],borderWidth:0}]},
+      data:{labels:['마켓플레이스 수수료 75%','제휴 15%','자체 AI 구독 7%','기타 3%'],datasets:[{data:[75,15,7,3],backgroundColor:[C.blue,C.teal,C.purple,C.gray],borderWidth:0}]},
       options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:10},boxWidth:10,padding:6}}}}
     });
     window.ggCalc = function(){
@@ -2485,7 +2485,7 @@ gamsgo: {
       const amt = parseInt(document.getElementById('gg-amt').value, 10);
       const fee = parseInt(document.getElementById('gg-fee-rate').value, 10);
       const aff = parseInt(document.getElementById('gg-aff').value, 10);
-      document.getElementById('gg-tx-v').textContent = tx >= 1000 ? (tx / 1000).toFixed(tx % 1000 === 0 ? 0 : 1) + 'k' : String(tx);
+      document.getElementById('gg-tx-v').textContent = tx >= 10000 ? ((tx % 10000 === 0 ? (tx / 10000).toFixed(0) : (tx / 10000).toFixed(1)) + '만건') : (tx.toLocaleString() + '건');
       document.getElementById('gg-amt-v').textContent = '$' + amt;
       document.getElementById('gg-fee-rate-v').textContent = fee + '%';
       document.getElementById('gg-aff-v').textContent = aff + '%';
