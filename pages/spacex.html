@@ -84,6 +84,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
 .pg-badge{display:inline-flex;align-items:center;padding:4px 12px;background:var(--amb2);border-radius:100px;font-size:11px;font-weight:600;color:var(--amb);letter-spacing:.02em;}
 .pg-badge.tag{background:#EFEFEF;color:var(--t2);font-weight:500;}
 .pg-title{font-family:'DM Serif Display',Georgia,serif;font-size:34px;letter-spacing:-.02em;color:var(--t1);margin-bottom:6px;line-height:1.2;}
+.pg-title em{font-style:italic;color:var(--amb);}
 .pg-sub{font-size:15px;color:var(--t2);line-height:1.55;}
 
 /* METRICS */
@@ -822,7 +823,7 @@ async function generateAIPage(){
             <span class="pg-badge">AI 분석: ${data.badge || '비즈니스'}</span>
             ${tagHtml}
           </div>
-          <div class="pg-title">${data.title}</div>
+          <div class="pg-title">${formatMoneyTitle(data.title)}</div>
           <div class="pg-sub">${data.sub}</div>
         </div>
         ${metHtml(data.metrics)}
@@ -914,6 +915,7 @@ function showWelcome(){
 }
 
 // ─── PAGE HELPERS ─────────────────────────────────────────────────────────────
+function formatMoneyTitle(title){ return title.includes('돈을 버나') ? title.replace('돈을 버나', '<em>돈을 버나</em>') : title; }
 function metHtml(mets){ return `<div class="mets">${mets.map(m=>`<div class="met"><div class="met-lbl">${m.l}</div><div class="met-val ${m.c||''}">${m.v}</div><div class="met-sub">${m.s||''}</div></div>`).join('')}</div>`; }
 function insHtml(ins){ return `<div class="ins-grid">${ins.map(i=>`<div class="ins-card"><div class="ins-num">${i.n}</div><div class="ins-title">${i.t}</div><div class="ins-body">${i.b}</div></div>`).join('')}</div>`; }
 function relHtml(ids){ return `<div class="rel-sec"><div class="rel-title">연관 항목</div><div class="rel-chips">${ids.map(id=>`<div class="chip" onclick="navigate('${id}')">${PAGES[id]?.label||id}</div>`).join('')}</div></div>`; }
@@ -1815,7 +1817,7 @@ google: {
       <span class="pg-badge">빅테크</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">구글은 어떻게 돈을 버나</div>
+    <div class="pg-title">구글은 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">검색창 하나로 연간 $3,500억 — 광고 제국의 수익 구조 해부</div>
   </div>
   ${metHtml([
@@ -1866,7 +1868,7 @@ netflix: {
       <span class="pg-badge">빅테크</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">넷플릭스는 어떻게 돈을 버나</div>
+    <div class="pg-title">넷플릭스는 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">영화관 티켓 한 장보다 싼 구독료로 26% 영업이익률을 만드는 구조</div>
   </div>
   ${metHtml([
@@ -1924,7 +1926,7 @@ youtube: {
       <span class="pg-badge">크리에이터 생태계</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">유튜버는 어떻게 돈을 버나</div>
+    <div class="pg-title">유튜버는 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">크리에이터와 구글이 나눠 갖는 광고 수익 — 건당 경매의 구조</div>
   </div>
   ${metHtml([
@@ -1982,7 +1984,7 @@ chicken: {
       <span class="pg-badge">자영업</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">치킨집은 어떻게 돈을 버나</div>
+    <div class="pg-title">치킨집은 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">₩21,000짜리 치킨에서 실제로 남는 돈은 얼마? 배달앱이 가장 큰 변수</div>
   </div>
   ${metHtml([
@@ -2059,7 +2061,7 @@ cafe: {
       <span class="pg-badge">자영업</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">도심 카페는 어떻게 돈을 버나</div>
+    <div class="pg-title">도심 카페는 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">아메리카노 ₩4,500 — 원가는 25%인데 왜 어려울까</div>
   </div>
   ${metHtml([
@@ -2135,7 +2137,7 @@ destcafe: {
       <span class="pg-badge">자영업</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">한적한 대형 카페는 어떻게 돈을 버나</div>
+    <div class="pg-title">한적한 대형 카페는 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">임차료 10배 싸고, 객단가 3배 높다 — 목적지형 카페의 경제학</div>
   </div>
   ${metHtml([
@@ -2197,7 +2199,7 @@ rider: {
       <span class="pg-badge">긱 이코노미</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">배달 라이더는 어떻게 돈을 버나</div>
+    <div class="pg-title">배달 라이더는 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">10시간 일하면 실제로 얼마가 남나 — 건당 ₩4,000에서 고정비를 걷어내면</div>
   </div>
   ${metHtml([
@@ -2373,12 +2375,12 @@ gamsgo: {
       }
       .gg-badge-dot{width:10px;height:10px;border-radius:50%;background:rgba(99,102,241,.45);}
       .gg-title{
-        font-family:'Plus Jakarta Sans','Noto Sans KR',sans-serif;font-size:clamp(44px,7vw,74px);
-        line-height:.98;font-weight:800;letter-spacing:-.05em;color:var(--gg-text);margin:0 0 18px;
+        font-family:'DM Serif Display',Georgia,serif;font-size:clamp(40px,6.4vw,68px);
+        line-height:1.02;font-weight:400;letter-spacing:-.03em;color:var(--gg-text);margin:0 0 18px;
       }
       .gg-title .accent{
         background:linear-gradient(135deg,#4338CA 0%,#5B51F1 52%,#7C6CF8 100%);
-        -webkit-background-clip:text;background-clip:text;color:transparent;
+        -webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;
       }
       .gg-sub{
         max-width:900px;font-size:17px;line-height:1.7;color:var(--gg-sub);margin-bottom:42px;font-weight:400;
@@ -2779,7 +2781,7 @@ tron: {
         <span class="pg-badge">웹3</span>
         ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
       </div>
-      <div class="pg-title">트론은 어떻게 돈을 버나</div>
+      <div class="pg-title">트론은 어떻게 <em>돈을 버나</em></div>
       <div class="pg-sub">초저가 USDT 전송 네트워크가 어떻게 TRX 가치 포획 구조로 이어지는지, 스테이블코인 플라이휠 관점에서 정리한 페이지입니다.</div>
     </div>
     ${metHtml([
@@ -2942,8 +2944,8 @@ samsung: {
       .ss-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(21,101,192,.1);border:1px solid rgba(21,101,192,.25);border-radius:100px;font-size:11px;font-weight:500;color:var(--ss-acc);letter-spacing:.06em;margin-bottom:16px;}
       .ss-badge-live{width:7px;height:7px;border-radius:50%;background:#1B7F4A;animation:sslive 1.4s ease-in-out infinite;}
       @keyframes sslive{0%,100%{opacity:1;}50%{opacity:.2;}}
-      .ss-title{font-family:'Bebas Neue','DM Sans','Noto Sans KR',sans-serif;font-size:clamp(44px,7vw,80px);letter-spacing:.04em;line-height:.95;color:var(--ss-t1);margin-bottom:12px;}
-      .ss-title span{color:var(--ss-acc);}
+      .ss-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(38px,6vw,68px);letter-spacing:-.025em;line-height:1.02;color:var(--ss-t1);margin-bottom:12px;}
+      .ss-title span{color:var(--ss-acc);font-style:italic;}
       .ss-sub{font-size:13.5px;color:var(--ss-t2);line-height:1.65;max-width:500px;font-weight:300;}
       .ss-hero-right{flex-shrink:0;text-align:right;}
       .ss-shock{background:linear-gradient(135deg,rgba(21,101,192,.08),rgba(30,63,204,.05));border:1px solid rgba(21,101,192,.2);border-radius:var(--ss-rad2);padding:18px 22px;text-align:center;}
@@ -3044,7 +3046,7 @@ samsung: {
         <div class="ss-hero">
           <div class="ss-hero-left">
             <div class="ss-badge"><span class="ss-badge-live"></span>2026년 1분기 잠정실적 반영</div>
-            <div class="ss-title">삼성전자는<br>어떻게 <span>돈을</span><br>버나</div>
+            <div class="ss-title">삼성전자는<br>어떻게 <span>돈을<br>버나</span></div>
             <div class="ss-sub">반도체·스마트폰·디스플레이·가전 — 4개 사업부가 만드는 수익 구조와 AI 메모리 슈퍼사이클이 바꾼 역대 최대 실적의 해부</div>
           </div>
           <div class="ss-hero-right">
@@ -3284,7 +3286,7 @@ skhynix: {
       <span class="pg-badge">반도체</span>
       ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
     </div>
-    <div class="pg-title">SK하이닉스는 어떻게 돈을 버나</div>
+    <div class="pg-title">SK하이닉스는 어떻게 <em>돈을 버나</em></div>
     <div class="pg-sub">범용 메모리 사이클 위에 HBM 프리미엄이 올라타면서, AI 서버 수요가 수익성 레버리지로 바뀌는 구조를 요약했습니다.</div>
   </div>
   ${metHtml([
