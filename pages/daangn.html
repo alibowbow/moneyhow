@@ -994,44 +994,44 @@ window.selectSpStream = function(index) {
 // 당근마켓 수익 다각화 아코디언 동작 함수
 window.dgStreams = [
   {
-    icon:'📢',iconBg:'#FFF3ED',name:'하이퍼로컬 광고',share:'~65%',shareCol:'#FF6F2C',shareBg:'#FFF0E8',
-    desc:'동네 반경 6km 타겟팅 광고. 소상공인·프랜차이즈·대기업 브랜드가 주요 광고주.',barW:65,barCol:'#FF6F2C',
+    icon:'📢',iconBg:'#FFF3ED',name:'하이퍼로컬 광고',share:'~60%',shareCol:'#FF6F2C',shareBg:'#FFF0E8',
+    desc:'2025년 광고주 수 37%, 집행 광고 수 29% 증가. 로컬 타기팅 광고가 여전히 최대 수익원.',barW:60,barCol:'#FF6F2C',
     detail:`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div>
-        <div style="font-size:10px;font-weight:700;color:var(--dg-t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">광고 유형</div>
-        ${[['당근 비즈프로필 광고','CPC·CPM 혼합'],['동네 배너 광고','지역 타겟 배너'],['끌어올리기 (유료)','게시물 상단 노출'],['당근 알바 광고','구인 공고 노출']].map(([n,d])=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--dg-bor);font-size:11px;"><span style="color:var(--dg-t2);">${n}</span><span style="color:var(--dg-car);font-weight:600;">${d}</span></div>`).join('')}
+        <div style="font-size:10px;font-weight:700;color:var(--dg-t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">핵심 지표</div>
+        ${[['광고주 수', '2025년 +37%'], ['집행 광고 수', '2025년 +29%'], ['비즈프로필 누적', '265만 개'], ['광고 성장 축', '로컬 + 브랜드 광고']].map(([n,d])=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--dg-bor);font-size:11px;"><span style="color:var(--dg-t2);">${n}</span><span style="color:var(--dg-car);font-weight:600;">${d}</span></div>`).join('')}
       </div>
       <div>
         <div style="font-size:10px;font-weight:700;color:var(--dg-t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">주요 광고주</div>
         <div style="display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--dg-t2);">
           <div>🏪 동네 소상공인 (카페·미용실·학원)</div>
-          <div>🏢 대기업 브랜드 (이마트·배민 등)</div>
-          <div>🏠 부동산 중개사무소</div>
-          <div>💼 채용 광고 (알바·정규직)</div>
+          <div>🏢 대기업 브랜드·기업 광고주</div>
+          <div>🏠 부동산·중고차·생활 정보 사업자</div>
+          <div>💼 당근알바 채용 수요 사업장</div>
         </div>
       </div>
     </div>`
   },
   {
-    icon:'🏠',iconBg:'#EDF5FF',name:'부동산·구인 버티컬',share:'~18%',shareCol:'#3A7BD5',shareBg:'#E8F0FF',
-    desc:'당근 부동산 (집주인 직거래), 당근 알바 (매칭 수수료). 중개사 수수료보다 저렴한 플랫폼.',barW:18,barCol:'#3A7BD5',
+    icon:'🏠',iconBg:'#EDF5FF',name:'비즈니스·알바·부동산',share:'~25%',shareCol:'#3A7BD5',shareBg:'#E8F0FF',
+    desc:'비즈프로필, 당근알바, 부동산·중고차 등 생활형 버티컬이 광고 외 매출을 키우는 축.',barW:25,barCol:'#3A7BD5',
     detail:`<div style="font-size:12px;color:var(--dg-t2);line-height:1.65;">
-      <div style="margin-bottom:8px;"><strong style="color:var(--dg-t1);">당근 부동산</strong> — 집주인이 직접 올리는 매물. 중개 수수료 없음 대신 광고 노출 수수료. 부동산 중개사 광고비가 핵심.</div>
-      <div><strong style="color:var(--dg-t1);">당근 알바</strong> — 동네 알바 매칭. 구인 공고 1건당 2~5만원 과금. 소규모 자영업자 타겟.</div>
+      <div style="margin-bottom:8px;"><strong style="color:var(--dg-t1);">당근알바</strong> — 2025년 지원 횟수 5천만 회 돌파. 구인 광고·노출 상품이 빠르게 성장.</div>
+      <div><strong style="color:var(--dg-t1);">비즈니스 서비스</strong> — 비즈프로필 누적 265만 개. 사장님용 로컬 마케팅 툴이 반복 매출원으로 자리잡는 중.</div>
     </div>`
   },
   {
-    icon:'💳',iconBg:'#F0FFF4',name:'당근페이 수수료',share:'~10%',shareCol:'#2E8B57',shareBg:'#E8F5EE',
-    desc:'중고 거래 안전결제 서비스. 거래 금액의 3.5% 수수료 (결제사 비용 제외 순이익은 0.5~1%).',barW:10,barCol:'#2E8B57',
+    icon:'💳',iconBg:'#F0FFF4',name:'당근페이·안심결제',share:'~9%',shareCol:'#2E8B57',shareBg:'#E8F5EE',
+    desc:'결제 자체의 이익보다 거래 경험을 붙잡는 역할이 크다. 최신 구매 연결까지 결제 접점 확대 중.',barW:9,barCol:'#2E8B57',
     detail:`<div style="font-size:12px;color:var(--dg-t2);line-height:1.65;">
-      당근페이 거래 수수료 3.5% 중 카드사·PG사에 2.5~3%를 지불 후 순이익은 매우 작음. 현재는 트래픽 락인 목적으로 운영 중. 간편결제·송금 확장 시 금융 수익이 추가될 전망.
+      결제 수수료 일부가 발생하지만 카드사·PG 비용을 감안하면 당장 고마진은 아니다. 다만 안전결제와 결제 경험이 쌓일수록 커머스·핀테크 확장 기반이 된다.
     </div>`
   },
   {
-    icon:'🌍',iconBg:'#FFF9E8',name:'글로벌 (Karrot)',share:'~7%',shareCol:'#E8A020',shareBg:'#FFF5DC',
-    desc:'영국·캐나다·일본·미국 등 진출. 각국 하이퍼로컬 광고 실험 중.',barW:7,barCol:'#E8A020',
+    icon:'🌍',iconBg:'#FFF9E8',name:'글로벌·신규 서비스',share:'~6%',shareCol:'#E8A020',shareBg:'#FFF5DC',
+    desc:'Karrot 해외 법인과 AI·커뮤니티 신기능은 아직 투자 단계. 연결 실적에선 비용이 먼저 반영된다.',barW:6,barCol:'#E8A020',
     detail:`<div style="font-size:12px;color:var(--dg-t2);line-height:1.65;">
-      해외 법인(Karrot)은 아직 매출보다 투자 단계. 영국·캐나다에서 MAU 확보 중. 한국 모델을 현지화하는 것이 과제. 2025년 이후 수익화 본격화 예상.
+      연결 기준 영업이익이 별도 기준보다 낮은 이유가 여기에 있다. 캐나다·미국·일본 등 글로벌 확장과 신규 서비스 실험 비용이 아직 선행 투자 성격으로 잡힌다.
     </div>`
   }
 ];
@@ -1072,20 +1072,20 @@ window.dgCalc = function() {
   const fee = parseFloat(elFee.value);
   const pay = parseInt(elPay.value);
 
-  document.getElementById('dg-v-mau').textContent = (mau/100).toFixed(0) + '00만';
+  document.getElementById('dg-v-mau').textContent = mau.toLocaleString() + '만';
   document.getElementById('dg-v-arpu').textContent = arpu.toLocaleString() + '원';
   document.getElementById('dg-v-fee').textContent = fee + '%';
-  document.getElementById('dg-v-pay').textContent = pay + '억';
+  document.getElementById('dg-v-pay').textContent = pay.toLocaleString() + '억';
 
-  const adRev = Math.round(mau * arpu / 100) / 100; // 억 단위
+  const adRev = Math.round((mau * arpu) / 100) / 100; // 억 단위
   const feeRev = Math.round(pay * fee / 100 * 100) / 100;
   const payRev = Math.round(pay * 0.003 * 100) / 100;
   const total = Math.round((adRev + feeRev + payRev) * 10) / 10;
 
-  document.getElementById('dg-s-adrev').textContent = Math.round(adRev) + '억';
-  document.getElementById('dg-s-fee').textContent = Math.round(feeRev) + '억';
+  document.getElementById('dg-s-adrev').textContent = (Math.round(adRev * 10) / 10).toLocaleString() + '억';
+  document.getElementById('dg-s-fee').textContent = (Math.round(feeRev * 10) / 10).toLocaleString() + '억';
   document.getElementById('dg-s-pay').textContent = payRev.toFixed(1) + '억';
-  document.getElementById('dg-s-total').textContent = Math.round(total) + '억';
+  document.getElementById('dg-s-total').textContent = (Math.round(total * 10) / 10).toLocaleString() + '억';
 };
 
 // ─── PAGES ───────────────────────────────────────────────────────────────────
@@ -1397,27 +1397,28 @@ leaderboard: {
 // ═══════════════════════════════════════════════════════ DAANGN (당근마켓)
 daangn: {
   label: '당근마켓',
-  meta: { margin: 12, tags: ['하이퍼로컬', '광고모델', '커뮤니티', '플랫폼'], currency: '₩' },
+  meta: { margin: 9, tags: ['하이퍼로컬', '광고모델', '커뮤니티', '플랫폼'], currency: '₩' },
   render() {
     const BD = [
-      {lbl:'광고 집행액',v:100000,col:'#FF6F2C',s:'+'},
-      {lbl:'플랫폼 운영비 (서버·인건비)',v:-25000,col:'#D94040',s:'-'},
-      {lbl:'마케팅 지원·리워드',v:-8000,col:'#D96040',s:'-'},
-      {lbl:'결제 수수료',v:-3000,col:'#A89880',s:'-'},
-      {lbl:'당근 수익',v:64000,col:'#2E8B57',s:'='},
+      {lbl:'국내 본업 매출',v:100,col:'#FF6F2C',s:'+'},
+      {lbl:'인력·제품개발',v:-38,col:'#D94040',s:'-'},
+      {lbl:'인프라·운영',v:-16,col:'#D96040',s:'-'},
+      {lbl:'마케팅·리워드',v:-11,col:'#C07A4A',s:'-'},
+      {lbl:'결제·신뢰·고객지원',v:-10,col:'#A89880',s:'-'},
+      {lbl:'별도 영업이익',v:25,col:'#2E8B57',s:'='},
     ];
     const bdHtml = BD.map(i => {
-      const pct = Math.min(100, Math.round(Math.abs(i.v)/100000*100));
-      const col = i.lbl.includes('당근 수익') ? 'var(--dg-grn)' : i.v<0 ? 'var(--dg-red)' : 'var(--dg-car)';
-      return `<div class="dg-bd-row"><span class="dg-bd-lbl">${i.lbl}</span><div class="dg-bd-bg"><div class="dg-bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="dg-bd-val" style="color:${col};">${i.s} ₩${Math.abs(i.v).toLocaleString()}</span></div>`;
+      const pct = Math.min(100, Math.round(Math.abs(i.v)));
+      const col = i.lbl.includes('영업이익') ? 'var(--dg-grn)' : i.v<0 ? 'var(--dg-red)' : 'var(--dg-car)';
+      return `<div class="dg-bd-row"><span class="dg-bd-lbl">${i.lbl}</span><div class="dg-bd-bg"><div class="dg-bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="dg-bd-val" style="color:${col};">${i.s} ${Math.abs(i.v).toLocaleString()}원</span></div>`;
     }).join('');
 
     const FN = [
-      {lbl:'전국 MAU',val:'2,500만 명',w:100,col:'rgba(255,111,44,.8)'},
-      {lbl:'동네 광고 노출',val:'1,800만 명',w:72,col:'rgba(255,111,44,.65)'},
-      {lbl:'광고 클릭',val:'180만 명',w:50,col:'rgba(255,111,44,.5)'},
-      {lbl:'광고 전환',val:'18만 건/일',w:32,col:'rgba(255,111,44,.4)'},
-      {lbl:'광고 수익',val:'월 ~113억',w:20,col:'rgba(46,139,87,.7)'},
+      {lbl:'월간 활성 이용자',val:'2,100만+ 명',w:100,col:'rgba(255,111,44,.8)'},
+      {lbl:'중고거래 연결',val:'1억 9,000만 건/년',w:78,col:'rgba(255,111,44,.65)'},
+      {lbl:'당근알바 지원',val:'5,000만 회/년',w:60,col:'rgba(255,111,44,.5)'},
+      {lbl:'비즈프로필',val:'누적 265만 개',w:44,col:'rgba(255,111,44,.4)'},
+      {lbl:'연결 매출',val:'2,707억',w:32,col:'rgba(46,139,87,.7)'},
     ];
     const fnHtml = FN.map((f, i) => `
       <div class="dg-fn">
@@ -1430,10 +1431,10 @@ daangn: {
     const TL = [
       {yr:'2015',t:'창업 — 수수료 없는 동네 중고 거래',d:'판교 엔지니어 김용현·황도연이 창업. "동네 기반 커뮤니티" 철학. 거래 수수료를 받지 않겠다는 파격적 결정.',tag:{c:'#FFF0E8',tc:'#C85020',l:'창업'}},
       {yr:'2019',t:'MAU 300만 돌파 — 광고 상품 첫 출시',d:'비즈프로필 광고 출시. 소상공인 타겟 동네 광고 시장 개척. 처음으로 매출이 발생하기 시작.',tag:{c:'#FFF0E8',tc:'#C85020',l:'첫 수익'}},
-      {yr:'2021',t:'시리즈 D $33M — 기업 가치 1.2조원',d:'카카오인베스트먼트·소프트뱅크벤처스 참여. 하이퍼로컬 광고 모델의 성장성 인정.',tag:{c:'#E8F0FF',tc:'#2850A0',l:'성장'}},
-      {yr:'2022',t:'당근페이 출시 — 안전결제로 수익화',d:'중고 거래 안전결제 서비스. 거래금액의 3.5% 수수료. 금융 수익의 시작.',tag:{c:'#E8F5EE',tc:'#1A6040',l:'페이'}},
-      {yr:'2023',t:'MAU 2,000만+ · 기업 가치 3조원',d:'당근 알바·당근 부동산 버티컬 확장. 매출 1,800억 추정. 광고 외 수익 다각화 본격화.',tag:{c:'#FFF0E8',tc:'#C85020',l:'도약'}},
-      {yr:'2024',t:'IPO 준비 · 수익성 증명 단계',d:'흑자 전환이 최대 과제. 광고·커머스·페이·글로벌 4개 축으로 1조 매출 도전. IPO 시 카카오 수준 기업 가치 목표.',tag:{c:'#F5E8FF',tc:'#6820A0',l:'Next'}},
+      {yr:'2021',t:'시리즈 D 투자 유치',d:'하이퍼로컬 광고 모델의 성장성을 인정받으며 전국 단위 확장 기반을 다졌다.',tag:{c:'#E8F0FF',tc:'#2850A0',l:'성장'}},
+      {yr:'2023',t:'창사 첫 연간 흑자',d:'별도 기준 매출 1,276억, 영업이익 173억. MAU 1,900만에 육박하며 광고 플랫폼이 본격적으로 이익을 만들기 시작.',tag:{c:'#E8F5EE',tc:'#1A6040',l:'흑자'}},
+      {yr:'2024',t:'성장과 내실 동시 입증',d:'별도 매출 1,891억, 영업이익 376억. 연결 기준도 영업이익 25억 흑자 전환, 누적 가입자 4,300만·WAU 1,400만에 육박.',tag:{c:'#FFF0E8',tc:'#C85020',l:'확장'}},
+      {yr:'2025',t:'연결 매출 2,707억 · 영업이익 146억',d:'별도 영업이익 671억, MAU 2,100만+, 중고거래 연결 1.9억 건, 당근알바 지원 5천만 회. 광고 외 생활형 서비스 확장이 숫자로 증명됨.',tag:{c:'#F5E8FF',tc:'#6820A0',l:'최신'}},
     ];
     const tlHtml = TL.map(t => `
       <div class="dg-tl-item">
@@ -1465,7 +1466,7 @@ daangn: {
           <div class="dg-hero-left">
             <div class="dg-hero-eyebrow"><span style="font-size:14px;">🥕</span> 수익의 구조 분석</div>
             <div class="dg-hero-title">당근마켓은<br>어떻게 <em>돈을 버나</em></div>
-            <div class="dg-hero-sub">"무료 거래"를 표방하면서 기업 가치 3조 원 — 이웃 연결이 광고가 되는 하이퍼로컬 플랫폼의 역설적 경제학</div>
+            <div class="dg-hero-sub">중고거래 수수료는 0원이지만 2025년 연결 매출 2,707억 원, 영업이익 146억 원을 만든 하이퍼로컬 플랫폼의 최신 수익 구조</div>
           </div>
           <div class="dg-hero-right">
             <div class="dg-hero-phone">
@@ -1514,13 +1515,13 @@ daangn: {
         <div class="dg-paradox">
           <div class="dg-px-left">
             <div class="dg-px-title">수수료 <em>0원</em>인데<br>어떻게 돈을 버나?</div>
-            <div class="dg-px-body">당근마켓은 중고 거래에서 수수료를 받지 않습니다. 거래 1건이 성사돼도 당근에는 1원도 안 들어옵니다. 그럼에도 기업 가치가 3조 원에 달하는 이유 — 거래가 아닌 <strong>사람과 동네</strong>에서 돈을 법니다.</div>
+            <div class="dg-px-body">당근은 지금도 중고 거래 수수료를 0원으로 유지합니다. 그런데도 2025년 연결 매출 2,707억 원, 영업이익 146억 원을 기록했습니다. 핵심은 거래 자체가 아니라 <strong>반복 방문하는 동네 이용자</strong>를 광고·알바·비즈니스·결제로 전환하는 구조입니다.</div>
           </div>
           <div class="dg-px-right">
-            <div class="dg-px-big">2,500만</div>
+            <div class="dg-px-big">2,100만+</div>
             <div class="dg-px-big-sub">월간 활성 이용자 (MAU)</div>
             <div class="dg-px-arrow">↓</div>
-            <div class="dg-px-small">이 트래픽이 광고·서비스 수익으로 전환</div>
+            <div class="dg-px-small">이 트래픽이 광고·알바·비즈니스 매출로 전환</div>
           </div>
         </div>
 
@@ -1529,47 +1530,47 @@ daangn: {
           <div class="dg-met">
             <div class="dg-met-icon">🥕</div>
             <div class="dg-met-lbl">월간 활성 이용자</div>
-            <div class="dg-met-val car">2,500만</div>
-            <div class="dg-met-sub">국민 2명 중 1명</div>
+            <div class="dg-met-val car">2,100만+</div>
+            <div class="dg-met-sub">2025 연간 실적 발표 기준</div>
           </div>
           <div class="dg-met">
             <div class="dg-met-icon">💰</div>
-            <div class="dg-met-lbl">2023 추정 매출</div>
-            <div class="dg-met-val">1,800억</div>
-            <div class="dg-met-sub">YoY +60%+ 성장 중</div>
+            <div class="dg-met-lbl">2025 연결 매출</div>
+            <div class="dg-met-val">2,707억</div>
+            <div class="dg-met-sub">전년 대비 43% 증가</div>
           </div>
           <div class="dg-met">
             <div class="dg-met-icon">🏢</div>
-            <div class="dg-met-lbl">기업 가치</div>
-            <div class="dg-met-val car">3조원</div>
-            <div class="dg-met-sub">2023 밸류에이션</div>
+            <div class="dg-met-lbl">2025 연결 영업이익</div>
+            <div class="dg-met-val car">146억</div>
+            <div class="dg-met-sub">2024년 25억 → 146억</div>
           </div>
           <div class="dg-met">
             <div class="dg-met-icon">📍</div>
-            <div class="dg-met-lbl">서비스 동네 수</div>
-            <div class="dg-met-val grn">6,300개+</div>
-            <div class="dg-met-sub">읍면동 단위 커버</div>
+            <div class="dg-met-lbl">2025 별도 영업이익</div>
+            <div class="dg-met-val grn">671억</div>
+            <div class="dg-met-sub">국내 본업 OPM 24.9%</div>
           </div>
         </div>
 
         <!-- REVENUE STREAMS -->
         <div class="dg-sec">
-          <div class="dg-sec-head"><span class="dg-sec-num">01</span><span class="dg-sec-title">수익 구조 — 4가지 기둥</span><div class="dg-sec-line"></div></div>
+          <div class="dg-sec-head"><span class="dg-sec-num">01</span><span class="dg-sec-title">수익 구조 — 4가지 기둥 (2025 기준)</span><div class="dg-sec-line"></div></div>
           <div class="dg-rev-stream" id="dg-revStreams"></div>
         </div>
 
         <!-- BREAKDOWN -->
         <div class="dg-sec">
-          <div class="dg-sec-head"><span class="dg-sec-num">02</span><span class="dg-sec-title">광고 수익 해부 — 1MAU의 가치</span><div class="dg-sec-line"></div></div>
+          <div class="dg-sec-head"><span class="dg-sec-num">02</span><span class="dg-sec-title">2025 실적 해부 — 매출 100원은 어디로 가나</span><div class="dg-sec-line"></div></div>
           <div class="dg-g2">
             <div class="dg-card">
-              <div class="dg-card-t">당근 광고 ₩10만 집행 시 어디로 가나</div>
-              <div class="dg-card-d">광고주가 1건 집행했을 때의 수익 배분</div>
+              <div class="dg-card-t">국내 본업 매출 100원 분해</div>
+              <div class="dg-card-d">2025년 당근마켓 별도 기준 영업이익률 24.9%를 단순화한 그림</div>
               <div class="dg-bd">${bdHtml}</div>
             </div>
             <div class="dg-card">
-              <div class="dg-card-t">광고 유형별 CPM 비교</div>
-              <div class="dg-card-d">일반 포털 대비 당근 광고의 위치</div>
+              <div class="dg-card-t">광고 플랫폼 성장 지표</div>
+              <div class="dg-card-d">2025 연간 실적 발표에서 확인된 핵심 성장률</div>
               <div style="height:200px;position:relative;"><canvas id="dg-cpmChart"></canvas></div>
             </div>
           </div>
@@ -1577,16 +1578,16 @@ daangn: {
 
         <!-- FUNNEL -->
         <div class="dg-sec">
-          <div class="dg-sec-head"><span class="dg-sec-num">03</span><span class="dg-sec-title">이용자 → 광고 수익 전환 깔때기</span><div class="dg-sec-line"></div></div>
+          <div class="dg-sec-head"><span class="dg-sec-num">03</span><span class="dg-sec-title">이용자 → 실적 전환 지표</span><div class="dg-sec-line"></div></div>
           <div class="dg-g2">
             <div class="dg-card">
-              <div class="dg-card-t">하이퍼로컬 광고 깔때기</div>
-              <div class="dg-card-d">2,500만 MAU가 광고 수익으로 바뀌는 경로</div>
+              <div class="dg-card-t">트래픽이 매출로 바뀌는 운영 사슬</div>
+              <div class="dg-card-d">2025 공식 지표를 한 줄로 엮은 운영 구조</div>
               <div class="dg-funnel">${fnHtml}</div>
             </div>
             <div class="dg-card">
-              <div class="dg-card-t">끌어올리기 — 아주 작은 유료 기능</div>
-              <div class="dg-card-d">수수료 없이도 간접 수익을 만드는 방법</div>
+              <div class="dg-card-t">2025 성장 동력 구성 (추정)</div>
+              <div class="dg-card-d">공식 실적과 서비스 확장 흐름을 바탕으로 재구성한 그림</div>
               <div style="height:200px;position:relative;"><canvas id="dg-pullChart"></canvas></div>
             </div>
           </div>
@@ -1596,22 +1597,22 @@ daangn: {
         <div class="dg-sec">
           <div class="dg-sec-head"><span class="dg-sec-num">04</span><span class="dg-sec-title">당근 수익 시뮬레이터</span><div class="dg-sec-line"></div></div>
           <div class="dg-sim">
-            <div class="dg-card-t" style="margin-bottom:3px;">MAU와 수익화율이 달라지면?</div>
-            <div class="dg-card-d" style="margin-bottom:14px;">슬라이더를 조정해 당근의 성장 시나리오를 계산해보세요</div>
-            <div class="dg-sl-row"><label class="dg-sl-lbl">MAU (만 명)</label><input type="range" min="500" max="5000" value="2500" step="100" id="dg-sl-mau" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-mau">2,500만</span></div>
-            <div class="dg-sl-row"><label class="dg-sl-lbl">1인당 광고 ARPU (원/월)</label><input type="range" min="100" max="2000" value="450" step="50" id="dg-sl-arpu" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-arpu">450원</span></div>
-            <div class="dg-sl-row"><label class="dg-sl-lbl">구인·부동산 수수료율 (%)</label><input type="range" min="0" max="10" value="2" step="0.5" id="dg-sl-fee" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-fee">2%</span></div>
-            <div class="dg-sl-row"><label class="dg-sl-lbl">당근페이 GMV (억원/월)</label><input type="range" min="0" max="5000" value="800" step="100" id="dg-sl-pay" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-pay">800억</span></div>
+            <div class="dg-card-t" style="margin-bottom:3px;">2025 실적을 설명하는 기본값</div>
+            <div class="dg-card-d" style="margin-bottom:14px;">MAU, 광고 ARPU, 버티컬 수익화율을 조정해 연간 2,700억 체력을 어떻게 만드는지 확인해보세요</div>
+            <div class="dg-sl-row"><label class="dg-sl-lbl">MAU (만 명)</label><input type="range" min="1000" max="4000" value="2100" step="100" id="dg-sl-mau" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-mau">2,100만</span></div>
+            <div class="dg-sl-row"><label class="dg-sl-lbl">1인당 광고 ARPU (원/월)</label><input type="range" min="200" max="1500" value="700" step="50" id="dg-sl-arpu" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-arpu">700원</span></div>
+            <div class="dg-sl-row"><label class="dg-sl-lbl">버티컬 수익화율 (%)</label><input type="range" min="1" max="8" value="4" step="0.5" id="dg-sl-fee" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-fee">4%</span></div>
+            <div class="dg-sl-row"><label class="dg-sl-lbl">버티컬 GMV (억원/월)</label><input type="range" min="300" max="4000" value="1800" step="100" id="dg-sl-pay" oninput="window.dgCalc()"><span class="dg-sl-val" id="dg-v-pay">1,800억</span></div>
             <div class="dg-sim-outs">
-              <div class="dg-so"><div class="dg-so-l">월 광고 매출</div><div class="dg-so-v" id="dg-s-adrev" style="color:var(--dg-car);">113억</div></div>
-              <div class="dg-so"><div class="dg-so-l">월 커머스·수수료</div><div class="dg-so-v" id="dg-s-fee">16억</div></div>
-              <div class="dg-so"><div class="dg-so-l">월 페이 수익</div><div class="dg-so-v" id="dg-s-pay">2.4억</div></div>
-              <div class="dg-so"><div class="dg-so-l">월 추정 총매출</div><div class="dg-so-v" id="dg-s-total" style="color:var(--dg-grn);">131억</div></div>
+              <div class="dg-so"><div class="dg-so-l">월 광고 매출</div><div class="dg-so-v" id="dg-s-adrev" style="color:var(--dg-car);">147억</div></div>
+              <div class="dg-so"><div class="dg-so-l">월 버티컬 수익</div><div class="dg-so-v" id="dg-s-fee">72억</div></div>
+              <div class="dg-so"><div class="dg-so-l">월 결제 수익</div><div class="dg-so-v" id="dg-s-pay">5.4억</div></div>
+              <div class="dg-so"><div class="dg-so-l">월 추정 총매출</div><div class="dg-so-v" id="dg-s-total" style="color:var(--dg-grn);">224억</div></div>
             </div>
           </div>
           <div class="dg-card">
-            <div class="dg-card-t">MAU 성장에 따른 예상 매출 (광고 중심)</div>
-            <div class="dg-card-d">수익화율이 유지된다면 — 1억 MAU 시 연 1조 원 돌파 시나리오</div>
+            <div class="dg-card-t">연간 실적 추이</div>
+            <div class="dg-card-d">공식 발표 기준 2023→2025 성장과 수익성 개선</div>
             <div style="height:210px;position:relative;"><canvas id="dg-growthChart"></canvas></div>
           </div>
         </div>
@@ -1659,13 +1660,13 @@ daangn: {
                 ${dotsHtml}
                 <div class="dg-map-center">
                   <div class="dg-map-big">6km</div>
-                  <div class="dg-map-sub">이 반경이 당근의 광고 단위<br>전국 6,300개 동네 × 광고주</div>
+                  <div class="dg-map-sub">이 반경이 당근의 핵심 광고 단위<br>생활 반경 기반 타기팅이 효율을 만든다</div>
                 </div>
               </div>
             </div>
             <div class="dg-card">
-              <div class="dg-card-t">수익원별 매출 구성 추이</div>
-              <div class="dg-card-d">광고 중심에서 다각화로 — 2024년부터 커머스·페이 비중 확대</div>
+              <div class="dg-card-t">수익원별 매출 구성 추정</div>
+              <div class="dg-card-d">광고 비중이 여전히 크지만 알바·비즈니스·결제가 점점 두꺼워지는 그림</div>
               <div style="height:190px;position:relative;"><canvas id="dg-mixChart"></canvas></div>
             </div>
           </div>
@@ -1684,22 +1685,22 @@ daangn: {
             <div class="dg-ins">
               <div class="dg-ins-num">$0</div>
               <div class="dg-ins-t">거래 수수료</div>
-              <div class="dg-ins-b">수수료 없이 기업 가치 3조. 트래픽을 모아 광고로 수익화하는 페이스북·구글식 모델.</div>
+              <div class="dg-ins-b">중고거래는 무료지만, 반복 방문을 광고·알바·비즈니스로 바꾸는 구조 덕분에 돈을 번다.</div>
             </div>
             <div class="dg-ins">
-              <div class="dg-ins-num grn">6,300</div>
-              <div class="dg-ins-t">광고 단위 (동네)</div>
-              <div class="dg-ins-b">전국을 6,300개 동네로 쪼개 각각 광고 마켓을 운영. 로컬 소상공인이 핵심 광고주.</div>
+              <div class="dg-ins-num grn">2,707억</div>
+              <div class="dg-ins-t">2025 연결 매출</div>
+              <div class="dg-ins-b">2024년 1,891억에서 43% 성장. 무료 거래 앱에서 생활 플랫폼 매출로 확장했다.</div>
             </div>
             <div class="dg-ins">
-              <div class="dg-ins-num">66%</div>
-              <div class="dg-ins-t">재방문율</div>
-              <div class="dg-ins-b">중고 거래 앱 중 최고 수준. 거래 완료 후도 커뮤니티·소모임으로 잡아둔다.</div>
+              <div class="dg-ins-num">671억</div>
+              <div class="dg-ins-t">2025 별도 영업이익</div>
+              <div class="dg-ins-b">국내 본업은 이미 20%대 영업이익률. 연결 기준과의 차이는 글로벌·신규 서비스 투자다.</div>
             </div>
             <div class="dg-ins">
-              <div class="dg-ins-num">1조</div>
-              <div class="dg-ins-t">2026 목표 매출</div>
-              <div class="dg-ins-b">당근페이 수수료·부동산 중개·구인 플랫폼으로 다각화 중. IPO 전 증명 필요.</div>
+              <div class="dg-ins-num">1.9억</div>
+              <div class="dg-ins-t">2025 거래 연결</div>
+              <div class="dg-ins-b">거래 자체는 무료지만, 이 연결량이 광고 인벤토리와 비즈니스 수요를 함께 키운다.</div>
             </div>
           </div>
         </div>
@@ -1719,18 +1720,18 @@ daangn: {
     mc('dg-cpmChart',{
       type:'bar',indexAxis:'y',
       data:{
-        labels:['당근 동네광고','네이버 GFA','카카오 광고','페이스북 광고','구글 디스플레이'],
+        labels:['모임 가입자 증가율','모임 수 증가율','광고주 수 증가율','집행 광고 수 증가율'],
         datasets:[{
-          data:[3200,5800,4200,7500,2800],
-          backgroundColor:['#FF6F2C','rgba(168,152,128,.4)','rgba(168,152,128,.4)','rgba(168,152,128,.4)','rgba(168,152,128,.4)'],
+          data:[125,63,37,29],
+          backgroundColor:['#FF6F2C','rgba(255,111,44,.72)','rgba(255,111,44,.56)','rgba(255,111,44,.42)'],
           borderRadius:4,
         }]
       },
       options:{
         responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` CPM ₩${c.parsed.x.toLocaleString()}`}}},
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}}},
         scales:{
-          x:{ticks:{color:dgtc,callback:v=>'₩'+v.toLocaleString()},grid:{color:dggc}},
+          x:{ticks:{color:dgtc,callback:v=>v+'%'},grid:{color:dggc}},
           y:{ticks:{color:dgtc,font:{size:11}},grid:{display:false}}
         }
       }
@@ -1739,9 +1740,9 @@ daangn: {
     mc('dg-pullChart',{
       type:'doughnut',
       data:{
-        labels:['끌어올리기 (300원)','비즈프로필 광고','알바 공고 (3만~)','당근 부동산 광고'],
+        labels:['하이퍼로컬 광고 60%','비즈니스·알바·부동산 25%','당근페이·안심결제 9%','글로벌·신규 서비스 6%'],
         datasets:[{
-          data:[45,30,15,10],
+          data:[60,25,9,6],
           backgroundColor:['#FF6F2C','#E8A020','#3A7BD5','#2E8B57'],
           borderWidth:0,hoverOffset:5,
         }]
@@ -1754,20 +1755,22 @@ daangn: {
     });
 
     mc('dg-growthChart',{
-      type:'line',
+      type:'bar',
       data:{
-        labels:['500만','1천만','1,500만','2천만','2,500만','3천만','5천만','1억'],
+        labels:['2023','2024','2025'],
         datasets:[
-          {label:'광고 수익 (억/월)',data:[9,18,36,70,113,135,225,450],borderColor:'#FF6F2C',backgroundColor:'rgba(255,111,44,.08)',fill:true,tension:.4,pointRadius:3},
-          {label:'커머스+페이 (억/월)',data:[2,5,10,18,28,36,70,150],borderColor:'#2E8B57',backgroundColor:'rgba(46,139,87,.06)',fill:true,tension:.4,pointRadius:3},
+          {label:'별도 매출 (억원)',data:[1276,1891,2690],backgroundColor:'rgba(255,111,44,.75)',borderRadius:4,yAxisID:'yA'},
+          {label:'별도 영업이익 (억원)',data:[173,376,671],type:'line',borderColor:'#2E8B57',backgroundColor:'transparent',tension:.35,pointRadius:4,yAxisID:'yB'},
+          {label:'연결 영업이익 (억원)',data:[-11,25,146],type:'line',borderColor:'#3A7BD5',backgroundColor:'transparent',tension:.35,pointRadius:4,borderDash:[6,4],yAxisID:'yB'},
         ]
       },
       options:{
         responsive:true,maintainAspectRatio:false,
         plugins:{legend:{labels:{color:dgtc,font:{size:11},boxWidth:10}}},
         scales:{
-          x:{ticks:{color:dgtc,font:{size:10}},grid:{color:dggc}},
-          y:{ticks:{color:dgtc,callback:v=>v+'억'},grid:{color:dggc},min:0}
+          x:{ticks:{color:dgtc,font:{size:10}},grid:{display:false}},
+          yA:{position:'left',ticks:{color:dgtc,callback:v=>v+'억'},grid:{color:dggc},min:0},
+          yB:{position:'right',ticks:{color:'#2E8B57',callback:v=>v+'억'},grid:{display:false}}
         }
       }
     });
@@ -1775,12 +1778,12 @@ daangn: {
     mc('dg-mixChart',{
       type:'bar',
       data:{
-        labels:['2021','2022','2023','2024(E)','2025(E)'],
+        labels:['2023A','2024A','2025A'],
         datasets:[
-          {label:'광고',data:[85,75,65,58,50],backgroundColor:'rgba(255,111,44,.7)',stack:'s',borderRadius:0},
-          {label:'버티컬(부동산·구인)',data:[10,15,18,22,26],backgroundColor:'rgba(58,123,213,.7)',stack:'s',borderRadius:0},
-          {label:'당근페이',data:[2,5,10,12,15],backgroundColor:'rgba(46,139,87,.7)',stack:'s',borderRadius:0},
-          {label:'글로벌',data:[3,5,7,8,9],backgroundColor:'rgba(232,160,32,.7)',stack:'s',borderRadius:[3,3,0,0]},
+          {label:'광고',data:[80,72,64],backgroundColor:'rgba(255,111,44,.7)',stack:'s',borderRadius:0},
+          {label:'비즈니스·알바·부동산',data:[14,17,21],backgroundColor:'rgba(58,123,213,.7)',stack:'s',borderRadius:0},
+          {label:'당근페이·결제',data:[4,7,9],backgroundColor:'rgba(46,139,87,.7)',stack:'s',borderRadius:0},
+          {label:'글로벌·기타',data:[2,4,6],backgroundColor:'rgba(232,160,32,.7)',stack:'s',borderRadius:[3,3,0,0]},
         ]
       },
       options:{
@@ -4121,6 +4124,3 @@ if (STATIC_PAGE && PAGES[STATIC_PAGE]) {
 </script>
 </body>
 </html>
-
-
-
