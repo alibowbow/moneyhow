@@ -457,7 +457,7 @@ let NAV = [
     {id:'gamsgo',label:'GamsGo'},
   ]},
   { cat:'우주/항공', items:[
-    {id:'spacex',label:'SpaceX'},
+    {id:'spacex',label:'스페이스엑스'},
   ]},
   { cat:'웹3 & 블록체인', items:[
     {id:'tron',label:'트론 (USDT)'},
@@ -958,13 +958,13 @@ window.selectTrStep = function(stepId) {
 window.spStreamDetails = [
   {
     title: '🛰️ Starlink: 글로벌 우주 인터넷 통신사',
-    rows: [['매출 기여', 'SpaceX 전체 매출의 60% 이상'], ['수익 모델', '위성 안테나 판매 + 매월 통신 구독료'], ['2026년 가입자', '1,000만 명 돌파'], ['핵심 강점', '지구상 인터넷이 없는 곳을 독점']],
-    body: 'SpaceX의 가장 든든한 캐시카우(돈줄)입니다. 초기에는 안테나 단말기를 팔아 손해를 보기도 했지만, 현재는 매월 따박따박 들어오는 1,000만 명의 구독료(월 약 $100~150)가 조 단위의 현금을 창출합니다. 통신망을 까는 비용(로켓 발사)을 자사 로켓으로 해결해 원가를 획기적으로 낮췄습니다.'
+    rows: [['매출 기여', '스페이스엑스 전체 매출의 60% 이상'], ['수익 모델', '위성 안테나 판매 + 매월 통신 구독료'], ['2026년 가입자', '1,000만 명 돌파'], ['핵심 강점', '지구상 인터넷이 없는 곳을 독점']],
+    body: '스페이스엑스의 가장 든든한 캐시카우(돈줄)입니다. 초기에는 안테나 단말기를 팔아 손해를 보기도 했지만, 현재는 매월 따박따박 들어오는 1,000만 명의 구독료(월 약 $100~150)가 조 단위의 현금을 창출합니다. 통신망을 까는 비용(로켓 발사)을 자사 로켓으로 해결해 원가를 획기적으로 낮췄습니다.'
   },
   {
     title: '🚀 Launch Services: 우주의 페덱스(FedEx)',
     rows: [['핵심 원리', '로켓 재사용을 통한 압도적 원가 절감'], ['시장 점유율', '글로벌 상업 발사 시장 독점'], ['2025 발사 횟수', '165회 (역대 최고)'], ['최고 재사용', '33회 (1단 부스터)']],
-    body: '다른 회사가 로켓을 한 번 쏘고 수백억 원을 버릴 때, SpaceX는 비행기처럼 착륙시켜 최대 30번 이상 재사용합니다. 타사 대비 훨씬 저렴한 가격에 다른 회사의 위성을 우주로 배달해주면서도 원가가 워낙 낮아 큰 마진을 남깁니다. 전 세계의 화물을 실어 나르는 우주의 독점 택배 사업입니다.'
+    body: '다른 회사가 로켓을 한 번 쏘고 수백억 원을 버릴 때, 스페이스엑스는 비행기처럼 착륙시켜 최대 30번 이상 재사용합니다. 타사 대비 훨씬 저렴한 가격에 다른 회사의 위성을 우주로 배달해주면서도 원가가 워낙 낮아 큰 마진을 남깁니다. 전 세계의 화물을 실어 나르는 우주의 독점 택배 사업입니다.'
   },
   {
     title: '🛡️ Gov & Defense: 정부와 국방의 핵심 파트너',
@@ -1777,7 +1777,7 @@ daangn: {
 
 // ═══════════════════════════════════════════════════════ SPACEX
 spacex: {
-  label: 'SpaceX',
+  label: '스페이스엑스',
   meta: { margin: 52, tags: ['우주항공', '플랫폼', '구독모델', '인프라'], currency: '$' },
   render() {
     return `
@@ -1842,7 +1842,7 @@ spacex: {
     </style>
 
     <div class="sp-hero">
-      <h1 class="sp-hero-title">SPACEX는<br>어떻게 <span>돈을 버나</span></h1>
+      <h1 class="sp-hero-title">스페이스엑스는<br>어떻게 <span>돈을 버나</span></h1>
       <p class="sp-hero-sub">로켓 발사로 우주 택배비를 극단적으로 낮추고, 그 로켓으로 자체 통신망(Starlink)을 띄워 전 세계에서 매월 구독료를 거둬들이는 독점적 우주 인프라 기업입니다.</p>
     </div>
     
@@ -2060,8 +2060,8 @@ nvidia: {
       .nv-mast-top{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
       .nv-mast-kicker{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--nv-t3);border:1px solid var(--nv-bor2);padding:2px 8px;}
       .nv-mast-date{font-size:10px;color:var(--nv-t3);margin-left:auto;}
-      .nv-mast-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(42px,7vw,82px);font-weight:900;line-height:.92;letter-spacing:-.03em;color:var(--nv-ink);margin-bottom:8px;}
-      .nv-mast-title em{font-style:italic;font-weight:700;color:var(--nv-grn);}
+      .nv-mast-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(38px,6vw,68px);font-weight:400;line-height:1.02;letter-spacing:-.025em;color:var(--nv-ink);margin-bottom:12px;}
+      .nv-mast-title em{font-style:italic;font-weight:400;color:var(--nv-grn);}
       .nv-mast-deck{font-size:15px;color:var(--nv-t2);line-height:1.6;max-width:560px;border-left:3px solid var(--nv-ink);padding-left:14px;font-weight:300;}
       .nv-hero-strip{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr;background:linear-gradient(135deg,var(--nv-strip) 0%,var(--nv-strip2) 100%);margin:0 0 28px;border-top:1px solid rgba(255,255,255,.22);border-radius:0 0 12px 12px;overflow:hidden;}
       .nv-hs-div{background:var(--nv-strip-line);width:1px;}
@@ -4101,4 +4101,5 @@ if (STATIC_PAGE && PAGES[STATIC_PAGE]) {
 </script>
 </body>
 </html>
+
 
