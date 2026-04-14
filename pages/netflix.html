@@ -6,7 +6,7 @@
 <title>넷플릭스 | 머니하우</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <!-- 폰트 두께 700(Bold) 유지, 당근마켓용 Noto Sans KR 추가 -->
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
@@ -463,6 +463,7 @@ let NAV = [
   ]},
   { cat:'국내 대기업', items:[
     {id:'skhynix',label:'SK하이닉스'},
+    {id:'samsung',label:'삼성전자'},
   ]},
   { cat:'빅테크', items:[
     {id:'google',label:'구글'},
@@ -537,6 +538,7 @@ const PAGE_FILE_MAP = {
   "spacex": "spacex.html",
   "tron": "tron.html",
   "skhynix": "skhynix.html",
+  "samsung": "samsung.html",
   "google": "google.html",
   "netflix": "netflix.html",
   "youtube": "youtube.html",
@@ -1113,7 +1115,7 @@ leaderboard: {
       {l:'분석된 비즈니스',v:`${items.length}개`,s:'현재 등록된 항목 수'},
       {l:'평균 순이익률',v:`${avgMargin}%`,s:'전체 평균'},
       {l:'최고 수익률',v:`${items[0]?.margin || 0}%`,s:`${items[0]?.label || '-'}`,c:'g'},
-      {l:'AI 분석 항목',v:`${items.filter(i=>!['google','netflix','youtube','chicken','cafe','destcafe','rider','skhynix','tron','spacex','daangn'].includes(i.id)).length}개`,s:'사용자 생성 데이터',c:'a'},
+      {l:'AI 분석 항목',v:`${items.filter(i=>!['google','netflix','youtube','chicken','cafe','destcafe','rider','skhynix','samsung','tron','spacex','daangn'].includes(i.id)).length}개`,s:'사용자 생성 데이터',c:'a'},
     ])}
 
     <div class="card full">
@@ -2884,6 +2886,392 @@ tron: {
     });
     trCalc();
     window.selectTrStep(1);
+  }
+},
+
+samsung: {
+  label: '삼성전자',
+  meta: { margin: 43, tags: ['반도체', 'AI 메모리', '스마트폰', '디스플레이'], currency: '₩' },
+  render(){
+    const bizUnits = [
+      {icon:'💾', name:'반도체 (DS부문)', en:'Device Solutions — Memory + System LSI + Foundry', pct:'~55%', width:55, color:'#1B7F4A', stats:['추정 영업이익 30조+', 'HBM·DDR5·서버 D램 급등']},
+      {icon:'📱', name:'MX·네트워크 (MX부문)', en:'Mobile eXperience — Galaxy + 네트워크 장비', pct:'~25%', width:25, color:'#1565C0', stats:['Galaxy S25 시리즈 판매 호조', '영업이익률 ~8%']},
+      {icon:'🖥', name:'디스플레이 (SDC)', en:'Samsung Display Corp — OLED 패널', pct:'~12%', width:12, color:'#7B5000', stats:['애플 아이폰 OLED 공급', '폴더블 패널 확장']},
+      {icon:'🏠', name:'VD·가전 (DX부문)', en:'Visual Display + Digital Appliance', pct:'~8%', width:8, color:'#C62828', stats:['Neo QLED·BESPOKE', '글로벌 TV 점유율 1위']},
+    ];
+    const hbm = [
+      {lbl:'반도체 전체 매출', v:73, col:'#1565C0', sign:'+'},
+      {lbl:'일반 D램 원가', v:18, col:'#C62828', sign:'-'},
+      {lbl:'NAND 원가', v:8, col:'#C62828', sign:'-'},
+      {lbl:'생산·설비 감가상각', v:12, col:'#8892B0', sign:'-'},
+      {lbl:'연구개발비', v:5, col:'#8892B0', sign:'-'},
+      {lbl:'반도체 영업이익', v:30, col:'#1B7F4A', sign:'≈'},
+    ];
+    const recs = [
+      {q:'2024 Q1', rev:71.9, op:6.6, opm:9.2, yoy:'흑자전환', note:'메모리 회복 시작'},
+      {q:'2024 Q2', rev:74.1, op:10.4, opm:14.0, yoy:'+15.3배', note:'AI 수요 본격화'},
+      {q:'2024 Q3', rev:79.1, op:9.2, opm:11.6, yoy:'흑자유지', note:'HBM 공급 확대'},
+      {q:'2024 Q4', rev:75.8, op:6.5, opm:8.6, yoy:'+130%', note:'계절적 둔화'},
+      {q:'2025 Q1', rev:79.1, op:6.7, opm:8.5, yoy:'+1.5%', note:'업황 회복 준비'},
+      {q:'2025 Q2', rev:88.0, op:14.9, opm:16.9, yoy:'↑', note:'HBM 공급 급증'},
+      {q:'2025 Q3', rev:87.2, op:11.3, opm:13.0, yoy:'↑', note:'수요 지속'},
+      {q:'2025 Q4', rev:93.7, op:20.0, opm:21.3, yoy:'↑', note:'역대 최대(당시)'},
+      {q:'2026 Q1 ★', rev:133.0, op:57.2, opm:43.0, yoy:'+755%', note:'역대 최대 경신', highlight:true},
+    ];
+    const insights = [
+      {num:'755%', tone:'grn', title:'영업이익 YoY 증가율', body:'1년 전 같은 분기보다 8.5배. 반도체 다운사이클에서 슈퍼사이클로 전환한 속도.'},
+      {num:'57.2조', tone:'acc', title:'분기 영업이익 = 연간 초과', body:'2025년 연간 영업이익(43.6조)을 단 한 분기 만에 뛰어넘었다.'},
+      {num:'43%', tone:'amb', title:'영업이익률 역사적 고점', body:'팔면 팔수록 남는다. HBM·서버 D램이 고단가로 팔리는 구조.'},
+      {num:'리스크', tone:'red', title:'사이클 의존의 양날', body:'메모리 가격이 다시 꺾이면 실적도 급락. 파운드리는 TSMC에 뒤처진 과제.'},
+    ];
+    return `
+    <style>
+      .ss-page{
+        --ss-bg:#F4F6FA;--ss-bg2:#EBEEF7;--ss-bg3:#E2E6F2;--ss-sur:#FFFFFF;--ss-sur2:#F8F9FE;
+        --ss-bor:#DDE2F0;--ss-bor2:#C5CCDF;--ss-t1:#0F1530;--ss-t2:#4A5270;--ss-t3:#8892B0;
+        --ss-blu:#1428A0;--ss-blu2:#1E3FCC;--ss-acc:#1565C0;--ss-acc2:rgba(21,101,192,.1);
+        --ss-grn:#1B7F4A;--ss-grn2:rgba(27,127,74,.1);--ss-amb:#7B5000;--ss-amb2:rgba(123,80,0,.1);
+        --ss-red:#C62828;--ss-red2:rgba(198,40,40,.08);--ss-rad:10px;--ss-rad2:16px;
+        position:relative;margin:-32px -28px -60px;padding:0 28px 80px;background:var(--ss-bg);overflow:hidden;
+        font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--ss-t1);
+      }
+      .ss-page::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(30,63,204,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(30,63,204,.06) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+      .ss-wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;}
+      .ss-hero{padding:48px 0 36px;display:flex;align-items:flex-end;gap:32px;}
+      .ss-hero-left{flex:1;}
+      .ss-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(21,101,192,.1);border:1px solid rgba(21,101,192,.25);border-radius:100px;font-size:11px;font-weight:500;color:var(--ss-acc);letter-spacing:.06em;margin-bottom:16px;}
+      .ss-badge-live{width:7px;height:7px;border-radius:50%;background:#1B7F4A;animation:sslive 1.4s ease-in-out infinite;}
+      @keyframes sslive{0%,100%{opacity:1;}50%{opacity:.2;}}
+      .ss-title{font-family:'Bebas Neue','DM Sans','Noto Sans KR',sans-serif;font-size:clamp(44px,7vw,80px);letter-spacing:.04em;line-height:.95;color:var(--ss-t1);margin-bottom:12px;}
+      .ss-title span{color:var(--ss-acc);}
+      .ss-sub{font-size:13.5px;color:var(--ss-t2);line-height:1.65;max-width:500px;font-weight:300;}
+      .ss-hero-right{flex-shrink:0;text-align:right;}
+      .ss-shock{background:linear-gradient(135deg,rgba(21,101,192,.08),rgba(30,63,204,.05));border:1px solid rgba(21,101,192,.2);border-radius:var(--ss-rad2);padding:18px 22px;text-align:center;}
+      .ss-shock-label{font-size:10px;color:var(--ss-acc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;font-weight:600;}
+      .ss-shock-val{font-family:'Bebas Neue','DM Sans','Noto Sans KR',sans-serif;font-size:52px;letter-spacing:.02em;color:var(--ss-grn);line-height:1;}
+      .ss-shock-unit{font-size:13px;color:var(--ss-t2);margin-top:3px;}
+      .ss-shock-tag{display:inline-block;font-size:11px;font-weight:700;color:var(--ss-grn);background:var(--ss-grn2);border-radius:4px;padding:2px 8px;margin-top:6px;letter-spacing:.04em;}
+      .ss-alert{background:linear-gradient(90deg,rgba(27,127,74,.06),rgba(21,101,192,.04));border-left:3px solid var(--ss-grn);border-radius:0 var(--ss-rad) var(--ss-rad) 0;padding:12px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px;}
+      .ss-alert-icon{font-size:18px;flex-shrink:0;}
+      .ss-alert-text{font-size:12.5px;color:var(--ss-t2);line-height:1.5;}
+      .ss-alert-text strong{color:var(--ss-grn);}
+      .ss-mets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+      .ss-met{background:var(--ss-sur);border:1px solid var(--ss-bor);border-radius:var(--ss-rad2);padding:15px 16px;transition:all .2s;position:relative;overflow:hidden;}
+      .ss-met::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.6;}
+      .ss-met.ss-grn::before{background:var(--ss-grn);}
+      .ss-met.ss-acc::before{background:var(--ss-acc);}
+      .ss-met.ss-amb::before{background:var(--ss-amb);}
+      .ss-met.ss-red::before{background:var(--ss-red);}
+      .ss-met:hover{border-color:var(--ss-bor2);background:var(--ss-sur2);}
+      .ss-met-lbl{font-size:10px;color:var(--ss-t3);font-weight:500;letter-spacing:.05em;margin-bottom:6px;}
+      .ss-met-val{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--ss-t1);}
+      .ss-met-val.grn{color:var(--ss-grn);}
+      .ss-met-val.acc{color:var(--ss-acc);}
+      .ss-met-val.amb{color:var(--ss-amb);}
+      .ss-met-sub{font-size:10px;color:var(--ss-t3);margin-top:4px;}
+      .ss-met-chg{font-size:10px;font-weight:700;margin-top:4px;color:var(--ss-grn);}
+      .ss-sec{margin-bottom:26px;}
+      .ss-sec-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+      .ss-sec-chip{background:var(--ss-blu2);color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:.06em;font-family:'DM Sans',sans-serif;}
+      .ss-sec-title{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--ss-t1);}
+      .ss-sec-line{flex:1;height:1px;background:var(--ss-bor);}
+      .ss-sec-note{font-size:10.5px;color:var(--ss-t3);}
+      .ss-card{background:var(--ss-sur);border:1px solid var(--ss-bor);border-radius:var(--ss-rad2);padding:18px 20px;transition:border-color .2s;}
+      .ss-card:hover{border-color:var(--ss-bor2);}
+      .ss-card-t{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--ss-t1);margin-bottom:3px;}
+      .ss-card-d{font-size:11px;color:var(--ss-t3);margin-bottom:14px;line-height:1.5;}
+      .ss-g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+      .ss-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+      .ss-biz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px;}
+      .ss-biz-card{background:var(--ss-sur);border:1px solid var(--ss-bor);border-radius:var(--ss-rad2);padding:16px 18px;transition:all .2s;}
+      .ss-biz-card:hover{border-color:var(--ss-bor2);background:var(--ss-sur2);}
+      .ss-biz-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+      .ss-biz-icon{font-size:24px;}
+      .ss-biz-name{font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:700;color:var(--ss-t1);}
+      .ss-biz-en{font-size:10px;color:var(--ss-t3);margin-top:1px;}
+      .ss-biz-share{margin-left:auto;text-align:right;}
+      .ss-biz-pct{font-family:'DM Sans',sans-serif;font-size:20px;font-weight:700;line-height:1;}
+      .ss-biz-pct-lbl{font-size:9.5px;color:var(--ss-t3);}
+      .ss-biz-bar-bg{background:rgba(0,0,0,.07);border-radius:3px;height:5px;overflow:hidden;margin-bottom:8px;}
+      .ss-biz-bar{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+      .ss-biz-stats{display:flex;gap:12px;flex-wrap:wrap;}
+      .ss-biz-stat{font-size:11px;color:var(--ss-t3);}
+      .ss-biz-stat strong{color:var(--ss-t1);font-weight:600;}
+      .ss-bd{display:flex;flex-direction:column;gap:6px;}
+      .ss-bd-row{display:flex;align-items:center;gap:8px;}
+      .ss-bd-lbl{font-size:11px;color:var(--ss-t2);min-width:150px;text-align:right;}
+      .ss-bd-bg{flex:1;background:rgba(0,0,0,.07);border-radius:3px;height:14px;overflow:hidden;}
+      .ss-bd-bar{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+      .ss-bd-val{font-size:11px;font-weight:700;min-width:78px;text-align:right;}
+      .ss-rec-table{width:100%;border-collapse:collapse;}
+      .ss-rec-table th{padding:8px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--ss-t3);letter-spacing:.06em;border-bottom:1px solid var(--ss-bor);background:var(--ss-bg3);}
+      .ss-rec-table td{padding:10px 14px;border-bottom:1px solid var(--ss-bor);font-size:12.5px;vertical-align:middle;}
+      .ss-rec-table tr:last-child td{border-bottom:none;}
+      .ss-rec-table tr:hover td{background:rgba(0,0,0,.02);}
+      .ss-rec-table tr.highlight td{background:rgba(27,127,74,.06);}
+      .ss-chg-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+      .ss-chg-up{background:var(--ss-grn2);color:var(--ss-grn);}
+      .ss-ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+      .ss-ins{background:var(--ss-sur);border:1px solid var(--ss-bor);border-radius:var(--ss-rad2);padding:14px 15px;transition:all .2s;}
+      .ss-ins:hover{border-color:var(--ss-bor2);transform:translateY(-2px);}
+      .ss-ins-num{font-family:'DM Sans',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:5px;letter-spacing:-.02em;}
+      .ss-ins-num.grn{color:var(--ss-grn);}
+      .ss-ins-num.acc{color:var(--ss-acc);}
+      .ss-ins-num.amb{color:var(--ss-amb);}
+      .ss-ins-num.red{color:var(--ss-red);}
+      .ss-ins-t{font-size:12px;font-weight:700;color:var(--ss-t1);margin-bottom:3px;}
+      .ss-ins-b{font-size:11px;color:var(--ss-t3);line-height:1.5;}
+      .ss-sim{background:var(--ss-sur);border:1px solid var(--ss-bor);border-radius:var(--ss-rad2);padding:18px 20px;margin-bottom:12px;}
+      .ss-sl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+      .ss-sl-lbl{font-size:11.5px;color:var(--ss-t2);min-width:130px;font-weight:400;}
+      .ss-sl-row input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(0,0,0,.12);border-radius:2px;outline:none;cursor:pointer;}
+      .ss-sl-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--ss-acc);cursor:pointer;}
+      .ss-sl-val{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;min-width:70px;text-align:right;color:var(--ss-t1);}
+      .ss-sim-outs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+      .ss-so{background:var(--ss-bg3);border-radius:var(--ss-rad);padding:10px 12px;border:1px solid var(--ss-bor);}
+      .ss-so-l{font-size:10px;color:var(--ss-t3);margin-bottom:4px;font-weight:500;}
+      .ss-so-v{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;}
+      .ss-footer{text-align:center;padding:24px 0 0;border-top:1px solid var(--ss-bor);font-size:11px;color:var(--ss-t3);}
+      @media(max-width:720px){
+        .ss-page{margin:-32px -20px -60px;padding:0 20px 80px;}
+        .ss-hero{flex-direction:column;gap:20px;}
+        .ss-hero-right{text-align:left;}
+        .ss-mets,.ss-g2,.ss-g3,.ss-biz-grid,.ss-ins-grid,.ss-sim-outs{grid-template-columns:1fr;}
+      }
+    </style>
+    <div class="ss-page">
+      <div class="ss-wrap">
+        <div class="ss-hero">
+          <div class="ss-hero-left">
+            <div class="ss-badge"><span class="ss-badge-live"></span>2026년 1분기 잠정실적 반영</div>
+            <div class="ss-title">삼성전자는<br>어떻게 <span>돈을</span><br>버나</div>
+            <div class="ss-sub">반도체·스마트폰·디스플레이·가전 — 4개 사업부가 만드는 수익 구조와 AI 메모리 슈퍼사이클이 바꾼 역대 최대 실적의 해부</div>
+          </div>
+          <div class="ss-hero-right">
+            <div class="ss-shock">
+              <div class="ss-shock-label">2026 Q1 영업이익</div>
+              <div class="ss-shock-val">57.2</div>
+              <div class="ss-shock-unit">조원 — 역대 최대</div>
+              <div class="ss-shock-tag">▲ 755% YoY</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ss-alert">
+          <span class="ss-alert-icon">🚨</span>
+          <div class="ss-alert-text"><strong>어닝 서프라이즈</strong> — 시장 예상치 40~50조를 훌쩍 뛰어넘은 57.2조원. 1분기 영업이익이 2025년 연간 영업이익(43.6조)을 단숨에 넘어섰다. 글로벌 기업 이익 순위 엔비디아·애플에 이어 3위 수준.</div>
+        </div>
+
+        <div class="ss-mets">
+          <div class="ss-met ss-grn">
+            <div class="ss-met-lbl">2026 Q1 매출</div>
+            <div class="ss-met-val grn">133조원</div>
+            <div class="ss-met-sub">분기 사상 최초 100조 돌파</div>
+            <div class="ss-met-chg">▲ 68.1% YoY</div>
+          </div>
+          <div class="ss-met ss-acc">
+            <div class="ss-met-lbl">2026 Q1 영업이익</div>
+            <div class="ss-met-val acc">57.2조원</div>
+            <div class="ss-met-sub">역대 최대치 경신</div>
+            <div class="ss-met-chg">▲ 755% YoY</div>
+          </div>
+          <div class="ss-met ss-amb">
+            <div class="ss-met-lbl">영업이익률</div>
+            <div class="ss-met-val amb">43%</div>
+            <div class="ss-met-sub">역사적 고점 수준</div>
+            <div class="ss-met-chg">▲ 2025 Q4 대비 +17%p</div>
+          </div>
+          <div class="ss-met ss-red">
+            <div class="ss-met-lbl">시가총액</div>
+            <div class="ss-met-val">~400조원</div>
+            <div class="ss-met-sub">코스피 대장주</div>
+            <div class="ss-met-chg">실적 발표 후 +3% ↑</div>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">01</span><span class="ss-sec-title">4개 사업부 — 어디서 얼마를 버나</span><div class="ss-sec-line"></div><span class="ss-sec-note">2026 Q1 추정 기준 (확정 실적 4/30 발표)</span></div>
+          <div class="ss-biz-grid">
+            ${bizUnits.map(unit=>`
+              <div class="ss-biz-card">
+                <div class="ss-biz-top">
+                  <span class="ss-biz-icon">${unit.icon}</span>
+                  <div><div class="ss-biz-name">${unit.name}</div><div class="ss-biz-en">${unit.en}</div></div>
+                  <div class="ss-biz-share"><div class="ss-biz-pct" style="color:${unit.color};">${unit.pct}</div><div class="ss-biz-pct-lbl">매출 비중</div></div>
+                </div>
+                <div class="ss-biz-bar-bg"><div class="ss-biz-bar" style="width:${unit.width}%;background:${unit.color};"></div></div>
+                <div class="ss-biz-stats">
+                  ${unit.stats.map((stat, idx)=>`<div class="ss-biz-stat">${idx===0 ? '추정 영업이익 <strong style="color:'+unit.color+';">'+stat.replace('추정 영업이익 ','')+'</strong>' : stat}</div>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">02</span><span class="ss-sec-title">수익 구조 — 어디서 돈이 나오나</span><div class="ss-sec-line"></div></div>
+          <div class="ss-g2">
+            <div class="ss-card">
+              <div class="ss-card-t">사업부별 매출 비중 (2026 Q1 추정)</div>
+              <div class="ss-card-d">반도체가 절반 이상 — AI 메모리가 실적을 이끈다</div>
+              <div style="height:210px;position:relative;"><canvas id="ss-bizChart"></canvas></div>
+            </div>
+            <div class="ss-card">
+              <div class="ss-card-t">분기별 영업이익 추이</div>
+              <div class="ss-card-d">반도체 사이클과 함께 롤러코스터를 탄다</div>
+              <div style="height:210px;position:relative;"><canvas id="ss-trendChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">03</span><span class="ss-sec-title">핵심 수익원 분해 — 반도체 133조원의 여정</span><div class="ss-sec-line"></div></div>
+          <div class="ss-g2">
+            <div class="ss-card">
+              <div class="ss-card-t">HBM이 핵심 — AI 메모리 수익 구조</div>
+              <div class="ss-card-d">HBM 1개 가격은 일반 D램의 5~7배. 엔비디아 H100/H200에 필수 부품.</div>
+              <div class="ss-bd">
+                ${hbm.map(item=>{
+                  const pct = Math.round(item.v/73*100);
+                  const textColor = item.sign === '≈' ? 'var(--ss-grn)' : item.sign === '+' ? 'var(--ss-acc)' : 'var(--ss-red)';
+                  return `<div class="ss-bd-row"><span class="ss-bd-lbl">${item.lbl}</span><div class="ss-bd-bg"><div class="ss-bd-bar" style="width:${pct}%;background:${item.col};"></div></div><span class="ss-bd-val" style="color:${textColor};">${item.sign} ${item.v}조원</span></div>`;
+                }).join('')}
+              </div>
+            </div>
+            <div class="ss-card">
+              <div class="ss-card-t">반도체 제품별 매출 비중 (추정)</div>
+              <div class="ss-card-d">메모리가 80% — DRAM·NAND 가격 동반 급등</div>
+              <div style="height:210px;position:relative;"><canvas id="ss-semChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">04</span><span class="ss-sec-title">분기별 실적 비교 — 기록이 기록을 깨다</span><div class="ss-sec-line"></div></div>
+          <div class="ss-card" style="padding:0;overflow:hidden;">
+            <table class="ss-rec-table">
+              <thead><tr><th>분기</th><th>매출</th><th>영업이익</th><th>영업이익률</th><th>YoY 영업이익</th><th>비고</th></tr></thead>
+              <tbody>
+                ${recs.map(r=>`
+                  <tr${r.highlight?' class="highlight"':''}>
+                    <td style="font-weight:${r.highlight?'700':'400'};color:${r.highlight?'var(--ss-grn)':'var(--ss-t1)'};">${r.q}</td>
+                    <td>${r.rev}조원</td>
+                    <td style="font-weight:${r.highlight?'700':'400'};color:${r.highlight?'var(--ss-grn)':'var(--ss-t1)'};">${r.op}조원</td>
+                    <td>${r.opm.toFixed(1)}%</td>
+                    <td><span class="ss-chg-badge ss-chg-up">${r.yoy}</span></td>
+                    <td style="font-size:11px;color:var(--ss-t3);">${r.note}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">05</span><span class="ss-sec-title">왜 지금 이렇게 버나 — AI 메모리 슈퍼사이클</span><div class="ss-sec-line"></div></div>
+          <div class="ss-g3">
+            <div class="ss-card">
+              <div class="ss-card-t" style="color:var(--ss-grn);">🤖 AI 서버 폭증</div>
+              <div class="ss-card-d" style="margin-bottom:0;">엔비디아 AI 가속기 1개당 HBM이 6~12개 필요. 데이터센터 투자가 끊이지 않는다. 삼성·SK하이닉스가 양분.</div>
+            </div>
+            <div class="ss-card">
+              <div class="ss-card-t" style="color:var(--ss-acc);">📈 D램 가격 +148%</div>
+              <div class="ss-card-d" style="margin-bottom:0;">2026년 D램 가격 전년 대비 +148% 전망. NAND +111%. 재고가 1~2주 수준으로 떨어져 사실상 완판 상태.</div>
+            </div>
+            <div class="ss-card">
+              <div class="ss-card-t" style="color:var(--ss-amb);">💱 원화 약세 효과</div>
+              <div class="ss-card-d" style="margin-bottom:0;">달러로 매출, 원화로 비용. 원달러 환율 상승 시 해외 매출 원화 환산액 자동 증가. 이익률 방어 효과.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">06</span><span class="ss-sec-title">수익 시뮬레이터</span><div class="ss-sec-line"></div></div>
+          <div class="ss-sim">
+            <div class="ss-card-t" style="margin-bottom:3px;">메모리 가격과 판매량이 달라지면?</div>
+            <div class="ss-card-d" style="margin-bottom:14px;">삼성전자 실적이 메모리 가격에 얼마나 민감한지 확인해보세요</div>
+            <div class="ss-sl-row"><label class="ss-sl-lbl">분기 D램 판매량 (십억 GB)</label><input type="range" min="50" max="200" value="100" step="5" id="ss-sl-dram" oninput="ssCalc()"><span class="ss-sl-val" id="ss-v-dram">100B GB</span></div>
+            <div class="ss-sl-row"><label class="ss-sl-lbl">D램 평균 단가 ($/GB)</label><input type="range" min="2" max="15" value="6" step="0.5" id="ss-sl-price" oninput="ssCalc()"><span class="ss-sl-val" id="ss-v-price">$6/GB</span></div>
+            <div class="ss-sl-row"><label class="ss-sl-lbl">영업이익률 (%)</label><input type="range" min="5" max="60" value="43" step="1" id="ss-sl-mar" oninput="ssCalc()"><span class="ss-sl-val" id="ss-v-mar">43%</span></div>
+            <div class="ss-sl-row"><label class="ss-sl-lbl">원달러 환율</label><input type="range" min="1100" max="1700" value="1450" step="10" id="ss-sl-fx" oninput="ssCalc()"><span class="ss-sl-val" id="ss-v-fx">1,450원</span></div>
+            <div class="ss-sim-outs">
+              <div class="ss-so"><div class="ss-so-l">D램 분기 매출</div><div class="ss-so-v" id="ss-s-drev" style="color:var(--ss-grn);">87조원</div></div>
+              <div class="ss-so"><div class="ss-so-l">전체 추정 매출</div><div class="ss-so-v" id="ss-s-total">145조원</div></div>
+              <div class="ss-so"><div class="ss-so-l">영업이익 추정</div><div class="ss-so-v" id="ss-s-op" style="color:var(--ss-acc);">62조원</div></div>
+              <div class="ss-so"><div class="ss-so-l">연간 환산 영업이익</div><div class="ss-so-v" id="ss-s-annual" style="color:var(--ss-amb);">248조원</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">07</span><span class="ss-sec-title">글로벌 빅테크 1분기 영업이익 비교</span><div class="ss-sec-line"></div><span class="ss-sec-note">2026 Q1 기준 — 삼성이 알파벳·MS·아마존을 추월</span></div>
+          <div class="ss-card" style="margin-bottom:12px;">
+            <div class="ss-card-t">1분기 영업이익 순위 (추정)</div>
+            <div class="ss-card-d">엔비디아·애플에 이어 3위 — 알파벳·MS·아마존을 단숨에 추월</div>
+            <div style="height:220px;position:relative;"><canvas id="ss-globalChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="ss-sec">
+          <div class="ss-sec-head"><span class="ss-sec-chip">08</span><span class="ss-sec-title">핵심 인사이트</span><div class="ss-sec-line"></div></div>
+          <div class="ss-ins-grid">
+            ${insights.map(item=>`
+              <div class="ss-ins">
+                <div class="ss-ins-num ${item.tone}">${item.num}</div>
+                <div class="ss-ins-t">${item.title}</div>
+                <div class="ss-ins-b">${item.body}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="ss-footer">데이터 출처: 삼성전자 공식 공시 (2026.04.07), Samsung Newsroom, 뉴스1, 카운터포인트 리서치, 각 증권사 리포트 · 사업부별 수치는 확정 실적(4/30) 발표 전 추정치</div>
+      </div>
+    </div>`;
+  },
+  charts(){
+    mc('ss-bizChart',{
+      type:'doughnut',
+      data:{labels:['반도체(DS) 55%','MX·네트워크 25%','디스플레이(SDC) 12%','VD·가전 8%'],datasets:[{data:[55,25,12,8],backgroundColor:['#1B7F4A','#1565C0','#7B5000','#C62828'],borderWidth:0,hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:10}}}}
+    });
+    const quarters=['23Q1','23Q2','23Q3','23Q4','24Q1','24Q2','24Q3','24Q4','25Q1','25Q2','25Q3','25Q4','26Q1'];
+    const ops=[-4.6,0.6,2.4,2.8,6.6,10.4,9.2,6.5,6.7,14.9,11.3,20.0,57.2];
+    mc('ss-trendChart',{
+      type:'bar',
+      data:{labels:quarters,datasets:[{label:'영업이익(조원)',data:ops,backgroundColor:ops.map(v=>v<0?'rgba(198,40,40,.55)':v===57.2?'rgba(27,127,74,.85)':'rgba(21,101,192,.55)'),borderColor:ops.map(v=>v<0?'#C62828':v===57.2?'#1B7F4A':'#1565C0'),borderWidth:1,borderRadius:4,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` 영업이익: ${c.parsed.y}조원`}}},scales:{x:{ticks:{color:tc,font:{size:10},maxRotation:45},grid:{display:false}},y:{ticks:{color:tc,callback:v=>(v>=0?'':'-')+'₩'+Math.abs(v)+'조'},grid:{color:gc}}}}
+    });
+    mc('ss-semChart',{
+      type:'doughnut',
+      data:{labels:['HBM/서버 D램 40%','일반 D램 30%','NAND 20%','파운드리·시스템 10%'],datasets:[{data:[40,30,20,10],backgroundColor:['#1B7F4A','rgba(27,127,74,.45)','rgba(21,101,192,.55)','rgba(123,80,0,.55)'],borderWidth:0,hoverOffset:5}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:8}}}}
+    });
+    mc('ss-globalChart',{
+      type:'bar',indexAxis:'y',
+      data:{labels:['엔비디아','애플','삼성전자 ★','알파벳','메타','마이크로소프트','TSMC','아마존'],datasets:[{data:[39,30,57.2,32,28,35,14,26],backgroundColor:['rgba(21,101,192,.45)','rgba(21,101,192,.45)','rgba(27,127,74,.8)','rgba(21,101,192,.3)','rgba(21,101,192,.3)','rgba(21,101,192,.3)','rgba(21,101,192,.25)','rgba(21,101,192,.25)'],borderColor:['#1565C0','#1565C0','#1B7F4A','rgba(21,101,192,.5)','rgba(21,101,192,.5)','rgba(21,101,192,.5)','rgba(21,101,192,.4)','rgba(21,101,192,.4)'],borderWidth:1,borderRadius:4}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` 영업이익: $${c.parsed.x}B 수준 (환산)`}}},scales:{x:{ticks:{color:tc,callback:v=>'$'+v+'B'},grid:{color:gc}},y:{ticks:{color:tc,font:{size:11.5}},grid:{display:false}}}}
+    });
+    window.ssCalc = function(){
+      const dram=parseInt(document.getElementById('ss-sl-dram').value,10);
+      const price=parseFloat(document.getElementById('ss-sl-price').value);
+      const mar=parseInt(document.getElementById('ss-sl-mar').value,10);
+      const fx=parseInt(document.getElementById('ss-sl-fx').value,10);
+      document.getElementById('ss-v-dram').textContent=dram+'B GB';
+      document.getElementById('ss-v-price').textContent='$'+price+'/GB';
+      document.getElementById('ss-v-mar').textContent=mar+'%';
+      document.getElementById('ss-v-fx').textContent=fx.toLocaleString()+'원';
+      const dramUSD=dram*price;
+      const dramKRW=Math.round(dramUSD*fx/1e12*10)/10;
+      const totalKRW=Math.round(dramKRW*1.65);
+      const opKRW=Math.round(totalKRW*mar/100*10)/10;
+      const annualKRW=Math.round(opKRW*4*10)/10;
+      document.getElementById('ss-s-drev').textContent=dramKRW+'조원';
+      document.getElementById('ss-s-total').textContent=totalKRW+'조원';
+      document.getElementById('ss-s-op').textContent=opKRW+'조원';
+      document.getElementById('ss-s-annual').textContent=annualKRW+'조원';
+    };
+    window.ssCalc();
   }
 },
 
