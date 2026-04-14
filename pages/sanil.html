@@ -94,9 +94,19 @@ body::before{
 .footer{margin-top:20px;padding-top:18px;border-top:1px solid var(--bor);color:var(--t3);font-size:10.5px;line-height:1.7}.footer strong{color:var(--t2)}.footer .src{margin-top:8px;display:grid;gap:4px}
 @media(max-width:820px){.hero{flex-direction:column;align-items:flex-start}.hero-right{width:100%;max-width:360px;height:220px}.mets,.driver-grid,.takeaways,.g3,.pulse-grid{grid-template-columns:1fr 1fr}.g2,.flow,.geo-note{grid-template-columns:1fr}}
 @media(max-width:640px){.wrap{padding:0 16px 80px}.mets,.driver-grid,.takeaways,.g3,.pulse-grid{grid-template-columns:1fr}.statement{flex-direction:column;text-align:center}.st-right{min-width:unset}.bd-lbl{min-width:116px;text-align:left}.hero-title{font-size:40px}}
+html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
 </style>
 </head>
 <body>
+<script>const EMBED_MODE = new URLSearchParams(location.search).get('embed') === '1'; if (EMBED_MODE) document.documentElement.classList.add('embedded');</script>
 <div class="wrap">
 
   <section class="hero">

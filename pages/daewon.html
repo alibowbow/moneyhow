@@ -141,9 +141,19 @@ body::before{content:'';position:fixed;inset:0;background-image:
   .g2,.g3,.cmp,.ins-grid,.source-list{grid-template-columns:1fr;} 
   .paradox{flex-direction:column;text-align:center;} 
 }
+html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
 </style>
 </head>
 <body>
+<script>const EMBED_MODE = new URLSearchParams(location.search).get('embed') === '1'; if (EMBED_MODE) document.documentElement.classList.add('embedded');</script>
 <div class="wrap">
 
 <div class="hero">

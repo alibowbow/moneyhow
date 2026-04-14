@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -332,9 +332,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
   .dg-hero-right { width: 160px; height: 160px; }
   .dg-mets, .dg-ins-grid, .dg-g2 { grid-template-columns: 1fr; }
 }
+html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
 </style>
 </head>
 <body>
+<script>const EMBED_MODE = new URLSearchParams(location.search).get('embed') === '1'; if (EMBED_MODE) document.documentElement.classList.add('embedded');</script>
 
 <div class="sb-ov" id="sbOverlay" onclick="closeSidebar()"></div>
 <aside class="sb" id="sidebar">
@@ -555,6 +565,12 @@ const PAGE_FILE_MAP = {
   "destcafe": "destcafe.html",
   "rider": "rider.html"
 };
+
+function getEmbeddedSrc(file){
+  if(!EMBED_MODE) return file;
+  const sep = file.includes('?') ? '&' : '?';
+  return `${file}${sep}embed=1`;
+}
 const HOME_FILE = "../index.html";
 const STATIC_PAGE = 'youtube';
 const HOME_TITLE = "머니하우 | 메인";
@@ -569,7 +585,7 @@ function navigate(id, _fromStatic = false){
   if(window.innerWidth <= 900) { closeSidebar(); }
   const targetFile = PAGE_FILE_MAP[id];
   if(targetFile && targetFile !== getCurrentFileName()) {
-    location.href = targetFile;
+    location.href = getEmbeddedSrc(targetFile);
     return;
   }
   currentId = id;
@@ -1234,7 +1250,16 @@ leaderboard: {
         .lb2-kpis,.lb2-insights,.lb2-podium,.lb2-tier-grid{grid-template-columns:1fr;}
         .lb2-board-head{flex-direction:column;align-items:flex-start;}
       }
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
     <div class="lb2-page">
       <div class="lb2-wrap">
         <div class="lb2-hero">
@@ -1844,7 +1869,16 @@ spacex: {
       .sp-tl-title { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
       .sp-tl-desc { font-size: 12px; color: var(--t2); line-height: 1.6; }
       .sp-tl-badge { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; background: var(--acc2); color: var(--acc); }
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
 
     <div class="sp-hero">
       <h1 class="sp-hero-title">스페이스엑스는<br>어떻게 <span>돈을 버나</span></h1>
@@ -2162,7 +2196,16 @@ nvidia: {
         .nv-rm-item{border-right:none;border-bottom:1px solid var(--nv-bor);}
         .nv-rm-item:last-child{border-bottom:none;}
       }
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
     <div class="nv-page">
       <div class="nv-wrap">
         <div class="nv-masthead">
@@ -3078,7 +3121,16 @@ gamsgo: {
         .gg-slider-row{flex-direction:column;align-items:stretch;}
         .gg-slider-label,.gg-slider-val{min-width:0;text-align:left;}
       }
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
     <div class="gg-page">
       <div class="gg-wrap">
         <div class="gg-badge"><span class="gg-badge-dot"></span>수익의 구조 분석</div>
@@ -3360,7 +3412,16 @@ tron: {
         .tr-step-grid{grid-template-columns:1fr 1fr;}
         .tr-fw-panel{grid-template-columns:1fr;}
       }
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
     <div class="pg-head">
       <div class="pg-badges">
         <span class="pg-badge">웹3</span>
@@ -3625,7 +3686,16 @@ samsung: {
         .ss-hero-right{text-align:left;}
         .ss-mets,.ss-g2,.ss-g3,.ss-biz-grid,.ss-ins-grid,.ss-sim-outs{grid-template-columns:1fr;}
       }
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
     <div class="ss-page">
       <div class="ss-wrap">
         <div class="ss-hero">
@@ -3959,7 +4029,16 @@ nanoentek: {
       .ne-source{background:var(--sur);border:1px solid var(--bor);border-radius:16px;padding:16px 18px;font-size:11px;color:var(--t2);line-height:1.7;}
       @media(max-width:900px){.ne-page{margin:-20px -16px -40px;padding:0 16px 56px;}.ne-hero{grid-template-columns:1fr;}.ne-mets,.ne-insights{grid-template-columns:repeat(2,1fr);}}
       @media(max-width:700px){.ne-grid,.ne-cmp,.ne-insights,.ne-mets{grid-template-columns:1fr;}.ne-callout{flex-direction:column;text-align:center;}.ne-row-l{min-width:112px;font-size:10.5px;}}
-    </style>
+    html.embedded body{display:block;height:auto;overflow:auto;}
+html.embedded .sb,
+html.embedded .topbar,
+html.embedded .sb-ov{display:none !important;}
+html.embedded .main{flex:1;width:100%;min-width:0;}
+html.embedded .content{padding:0 !important;overflow:visible !important;}
+html.embedded .page-frame{height:auto;min-height:0;border:0;}
+html.embedded .wrap{padding-top:24px;padding-bottom:48px;}
+html.embedded .hero{padding-top:28px;}
+</style>
     <div class="ne-page">
       <div class="ne-wrap">
         <div class="ne-hero">

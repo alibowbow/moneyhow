@@ -77,7 +77,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
 .w-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px;}
 .chip{padding:8px 16px;background:var(--sur);border:1px solid var(--bor);border-radius:100px;font-size:13px;color:var(--t2);cursor:pointer;transition:all .15s;font-weight:500;}
 .chip:hover{border-color:var(--acc);color:var(--amb);background:var(--amb2);}
-.page-frame{width:100%;height:calc(100vh - 128px);min-height:860px;border:1px solid var(--bor);border-radius:14px;background:#fff;display:block;}
+.page-frame{width:100%;height:calc(100vh - 128px);min-height:860px;border:0;display:block;background:transparent;}
 
 /* PAGE */
 .pg-head{margin-bottom:28px;}
@@ -566,6 +566,48 @@ const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
 const HOME_TITLE = "머니하우 | 메인";
 
+function buildEmbeddedSrc(filePath){
+  const sep = filePath.includes('?') ? '&' : '?';
+  return `${filePath}${sep}embed=1`;
+}
+
+const EMBED_LAYOUT_FIX_CSS = `
+  html.embedded body{display:block;height:auto;overflow:auto;}
+  html.embedded .sb,
+  html.embedded .topbar,
+  html.embedded .sb-ov{display:none !important;}
+  html.embedded .main{flex:1;width:100%;min-width:0;}
+  html.embedded .content{padding:0 !important;overflow:visible !important;}
+  html.embedded .page-frame{height:auto;min-height:0;border:0;}
+  html.embedded .wrap,
+  html.embedded .dg-wrap-outer,
+  html.embedded .dg-wrap,
+  html.embedded .lb2-page,
+  html.embedded .lb2-wrap,
+  html.embedded .nv-wrap,
+  html.embedded .gg-wrap,
+  html.embedded .ss-wrap,
+  html.embedded .ne-wrap{
+    max-width:none !important;
+    width:100% !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+`;
+
+function applyEmbeddedLayoutFix(frame){
+  try {
+    const doc = frame.contentDocument;
+    if(!doc || doc.getElementById('embed-layout-fix')) return;
+    const style = doc.createElement('style');
+    style.id = 'embed-layout-fix';
+    style.textContent = EMBED_LAYOUT_FIX_CSS;
+    doc.head.appendChild(style);
+  } catch (err) {
+    // Same-origin pages should accept the style injection; if not, keep the page functional.
+  }
+}
+
 function getCurrentFileName(){
   const trimmed = location.pathname.replace(/\/+$/, '');
   const last = trimmed.split('/').pop();
@@ -587,7 +629,13 @@ function navigate(id, _fromStatic = false){
   }
   const content = document.getElementById('content');
   if(targetFile) {
-    content.innerHTML = `<iframe class="page-frame" src="${targetFile}" title="${label}" loading="lazy"></iframe>`;
+    const iframe = document.createElement('iframe');
+    iframe.className = 'page-frame';
+    iframe.src = buildEmbeddedSrc(targetFile);
+    iframe.title = label;
+    iframe.loading = 'lazy';
+    iframe.addEventListener('load', () => applyEmbeddedLayoutFix(iframe), { once: true });
+    content.replaceChildren(iframe);
   } else if(PAGES[id]) {
     const page = PAGES[id];
     content.innerHTML = page.render();
