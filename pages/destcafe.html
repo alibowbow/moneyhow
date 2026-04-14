@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>??? ?? ?? | ????</title>
+<title>Destination Cafe | MoneyHow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <!-- 폰트 두께 700(Bold) 유지, 당근마켓용 Noto Sans KR 추가 -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -547,7 +547,7 @@ const PAGE_FILE_MAP = {
 };
 const HOME_FILE = "../index.html";
 const STATIC_PAGE = 'destcafe';
-const HOME_TITLE = "???? | ??";
+const HOME_TITLE = "MoneyHow | Home";
 
 function getCurrentFileName(){
   const trimmed = location.pathname.replace(/\/+$/, '');
@@ -566,8 +566,8 @@ function navigate(id, _fromStatic = false){
   buildNav(document.getElementById('searchInput')?.value || '');
   const page = PAGES[id];
   if(!page) return;
-  document.title = `${page.label} | ????`;
-  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="?">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">${page.label}</span>`;
+  document.title = `${page.label} | MoneyHow`;
+  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="Home">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">${page.label}</span>`;
   const bb = document.getElementById('bookmarkBtn');
   if(bb) {
     bb.textContent = bookmarks.includes(id) ? '?' : '?';
@@ -668,7 +668,7 @@ async function generateAIPage(){
   const josa = getEunNeun(topic);
   const exactTitle = `${topic}${josa} 어떻게 돈을 버나`;
   
-  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="홈">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">AI 분석 중</span>`;
+  document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="Home">${HOME_ICON}</div><span class="bc-sep" style="opacity:.4"> / </span><span class="bc-cur">AI 분석 중</span>`;
   document.getElementById('content').innerHTML = `
   <div class="ai-loader">
     <div class="spinner-icon">✦</div>
@@ -2261,9 +2261,252 @@ rider: {
   }
 }
 
-﻿,
+,
 
 // CUSTOM STATIC PAGES
+gamsgo: {
+  label: 'GamsGo',
+  meta: { margin: 18, tags: ['subscription sharing', 'marketplace', 'fee model', 'consumer savings'], currency: '$' },
+  render(){
+    const offers = [
+      {icon:'N', name:'Netflix 4K', full:'$17/mo', shared:'$6.8', discount:60, fee:'15-20%'},
+      {icon:'AI', name:'ChatGPT Plus', full:'$20/mo', shared:'$9', discount:55, fee:'18-25%'},
+      {icon:'YT', name:'YouTube Premium', full:'$14.9/mo', shared:'$6.7', discount:55, fee:'15-18%'},
+      {icon:'SP', name:'Spotify Family', full:'$16.3/mo', shared:'$9.8', discount:40, fee:'12-18%'},
+      {icon:'CV', name:'Canva Pro', full:'$17/mo', shared:'$5.9', discount:65, fee:'18-25%'},
+      {icon:'VPN', name:'NordVPN', full:'$14/mo', shared:'$5.5', discount:61, fee:'15-22%'},
+    ];
+    const levels = [
+      {name:'Starter', fee:'up to 25%', limit:'$50/mo', warranty:'7 days', color:C.gray},
+      {name:'Bronze', fee:'up to 22%', limit:'$200/mo', warranty:'14 days', color:C.amber},
+      {name:'Silver', fee:'up to 18%', limit:'$500/mo', warranty:'21 days', color:C.blue},
+      {name:'Gold', fee:'up to 14%', limit:'$1,500/mo', warranty:'30 days', color:C.teal},
+      {name:'Diamond', fee:'up to 10%', limit:'Unlimited', warranty:'60 days', color:C.purple},
+    ];
+    const feeRows = [
+      {cat:'Video streaming', item:'Netflix, Disney+, Crunchyroll', orig:'$15-22', sale:'$5-9', rate:'15-20%'},
+      {cat:'AI tools', item:'ChatGPT Plus, Midjourney, Perplexity', orig:'$10-30', sale:'$4-14', rate:'18-25%'},
+      {cat:'Music', item:'Spotify, Deezer, Tidal', orig:'$10-18', sale:'$4-9', rate:'12-18%'},
+      {cat:'Productivity', item:'Canva Pro, Office 365, Autodesk', orig:'$15-60', sale:'$5-25', rate:'18-25%'},
+      {cat:'Security', item:'NordVPN, 1Password', orig:'$4-14', sale:'$1.5-6', rate:'15-22%'},
+      {cat:'Education', item:'Duolingo, Scribd, learning apps', orig:'$6-12', sale:'$2.5-5', rate:'15-20%'},
+    ];
+    return `
+    <style>
+      .gg-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:14px;margin-bottom:16px;}
+      .gg-panel{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:18px 20px;}
+      .gg-panel.alt{background:var(--bg);}
+      .gg-kicker{font-size:11px;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+      .gg-big{font-family:'DM Serif Display',Georgia,serif;font-size:34px;line-height:1.05;color:var(--t1);margin-bottom:10px;}
+      .gg-sub{font-size:13px;color:var(--t2);line-height:1.7;}
+      .gg-pill-list{display:flex;flex-direction:column;gap:8px;}
+      .gg-pill{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--sur);border:1px solid var(--bor);}
+      .gg-pill-icon{font-size:12px;min-width:30px;font-weight:700;color:var(--acc);}
+      .gg-pill-name{flex:1;font-size:13px;color:var(--t1);font-weight:600;}
+      .gg-pill-price{font-size:11px;color:var(--grn);font-weight:700;}
+      .gg-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+      .gg-step{background:var(--bg);border:1px solid var(--bor);border-radius:10px;padding:14px 14px 16px;}
+      .gg-step-num{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+      .gg-step-title{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px;}
+      .gg-step-body{font-size:12px;color:var(--t2);line-height:1.6;}
+      .gg-share-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+      .gg-share-card{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:14px;}
+      .gg-share-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+      .gg-share-icon{font-size:12px;font-weight:700;color:var(--acc);min-width:32px;}
+      .gg-share-name{font-size:13px;font-weight:700;color:var(--t1);}
+      .gg-share-full{font-size:11px;color:var(--t3);text-decoration:line-through;margin-bottom:4px;}
+      .gg-share-price{font-size:24px;font-weight:700;color:var(--grn);line-height:1;}
+      .gg-share-meta{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:11px;color:var(--t2);}
+      .gg-share-bar{height:6px;border-radius:999px;background:var(--bg);overflow:hidden;margin-top:10px;}
+      .gg-share-bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--grn));border-radius:999px;}
+      .gg-levels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+      .gg-level{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:13px 12px;}
+      .gg-level-name{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:10px;}
+      .gg-level-row{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--t2);padding:4px 0;border-top:1px solid rgba(0,0,0,.05);}
+      .gg-level-row:first-of-type{border-top:none;padding-top:0;}
+      .gg-table{width:100%;border-collapse:collapse;}
+      .gg-table th,.gg-table td{padding:11px 14px;border-top:1px solid var(--bor);text-align:left;}
+      .gg-table th{font-size:11px;color:var(--t3);font-weight:700;background:var(--bg);}
+      .gg-table td{font-size:12px;color:var(--t2);vertical-align:top;}
+      .gg-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--amb2);color:var(--amb);font-size:11px;font-weight:700;}
+      .gg-risk-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+      .gg-risk-item{background:var(--bg);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.6;}
+      @media(max-width:1000px){
+        .gg-hero,.gg-flow,.gg-share-grid,.gg-levels,.gg-risk-list{grid-template-columns:1fr 1fr;}
+      }
+      @media(max-width:720px){
+        .gg-hero,.gg-flow,.gg-share-grid,.gg-levels,.gg-risk-list{grid-template-columns:1fr;}
+      }
+    </style>
+    <div class="pg-head">
+      <div class="pg-badges">
+        <span class="pg-badge">Platform</span>
+        ${this.meta.tags.map(t=>`<span class="pg-badge tag">#${t}</span>`).join('')}
+      </div>
+      <div class="pg-title">How GamsGo Makes Money</div>
+      <div class="pg-sub">GamsGo connects spare subscription slots with discount-hunting buyers, handles payment and guarantee flow, and keeps a platform fee on each transaction.</div>
+    </div>
+    ${metHtml([
+      {l:'Core revenue',v:'Marketplace fee',s:'15-25% take rate'},
+      {l:'Users',v:'1M+',s:'180+ countries'},
+      {l:'Buyer savings',v:'Up to 70%',s:'vs official plan price',c:'g'},
+      {l:'Catalog',v:'100+',s:'streaming, AI, productivity'},
+    ])}
+    <div class="gg-hero">
+      <div class="gg-panel">
+        <div class="gg-kicker">Subscription carpool</div>
+        <div class="gg-big">It does not create the product.<br>It monetizes the match.</div>
+        <div class="gg-sub">A seller brings the unused seat, a buyer brings price-sensitive demand, and the platform brings trust, payment processing, and replacement support. That middle layer is where the margin lives.</div>
+      </div>
+      <div class="gg-panel alt">
+        <div class="gg-kicker">Typical deals</div>
+        <div class="gg-pill-list">
+          ${offers.slice(0,5).map(o=>`<div class="gg-pill"><span class="gg-pill-icon">${o.icon}</span><span class="gg-pill-name">${o.name}</span><span class="gg-pill-price">${o.discount}% off</span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-t">Flow of money</div>
+      <div class="card-d">The seller contributes access, the buyer funds the transaction, and the platform keeps a fee for matching, support, and guarantee coverage.</div>
+      <div class="gg-flow">
+        <div class="gg-step"><div class="gg-step-num">Step 1</div><div class="gg-step-title">Seller lists a spare seat</div><div class="gg-step-body">Unused family-plan capacity becomes marketplace supply.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 2</div><div class="gg-step-title">Buyer pays a discount price</div><div class="gg-step-body">Lower-than-retail pricing pulls in demand from cost-sensitive users.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 3</div><div class="gg-step-title">Platform manages risk</div><div class="gg-step-body">Payment collection, warranty rules, support, and account replacement reduce trust friction.</div></div>
+        <div class="gg-step"><div class="gg-step-num">Step 4</div><div class="gg-step-title">Payout after hold period</div><div class="gg-step-body">Seller payout is released after a hold, while the platform keeps its cut.</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-t">Price and fee snapshot</div>
+      <div class="card-d">The product feels cheap to the buyer because the buyer only pays for a seat. The platform still takes a meaningful slice of every seat sold.</div>
+      <div class="gg-share-grid">
+        ${offers.map(o=>`<div class="gg-share-card"><div class="gg-share-top"><span class="gg-share-icon">${o.icon}</span><span class="gg-share-name">${o.name}</span></div><div class="gg-share-full">Official ${o.full}</div><div class="gg-share-price">${o.shared}</div><div class="gg-share-meta"><span>Platform fee</span><strong>${o.fee}</strong></div><div class="gg-share-bar"><span style="width:${o.discount}%;"></span></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="cg">
+      <div class="card">
+        <div class="card-t">One transaction, simplified</div>
+        <div class="card-d">Example: a $9 ChatGPT Plus seat sold through the marketplace.</div>
+        ${bdHtml([
+          {lbl:'Buyer payment',v:9,col:C.blue,s:'+'},
+          {lbl:'Underlying seat cost',v:-5.5,col:C.coral,s:'-'},
+          {lbl:'Payment processing',v:-0.25,col:C.purple,s:'-'},
+          {lbl:'Support and reserve',v:-0.8,col:C.gray,s:'-'},
+          {lbl:'Seller payout',v:-1.65,col:C.gray,s:'-'},
+          {lbl:'Platform profit',v:0.8,col:C.teal,s:'='},
+        ], 9, '$')}
+      </div>
+      <div class="card">
+        <div class="card-t">Fee stack</div>
+        <div class="card-d">The visible take rate is only part of the story. Fixed fees and risk coverage matter too.</div>
+        <div class="ch-wrap" style="height:220px;"><canvas id="gg-fee"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-t">Seller level system</div>
+      <div class="card-d">The supply side is sticky when reliable sellers earn lower fees and faster unlocks.</div>
+      <div class="gg-levels">
+        ${levels.map(level=>`<div class="gg-level" style="border-top:3px solid ${level.color};"><div class="gg-level-name">${level.name}</div><div class="gg-level-row"><span>Fee</span><strong>${level.fee}</strong></div><div class="gg-level-row"><span>Limit</span><strong>${level.limit}</strong></div><div class="gg-level-row"><span>Warranty</span><strong>${level.warranty}</strong></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
+      <div style="padding:18px 20px 0;">
+        <div class="card-t">Estimated fee structure by category</div>
+        <div class="card-d">Higher discounts, more fragile accounts, and more support work usually imply a higher take rate.</div>
+      </div>
+      <table class="gg-table">
+        <thead><tr><th>Category</th><th>Examples</th><th>Official price</th><th>Seat price</th><th>Take rate</th></tr></thead>
+        <tbody>
+          ${feeRows.map(row=>`<tr><td><span class="gg-badge">${row.cat}</span></td><td>${row.item}</td><td>${row.orig}</td><td style="color:var(--grn);font-weight:700;">${row.sale}</td><td>${row.rate}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="sim-card">
+      <div class="card-t">Revenue simulator</div>
+      <div class="card-d" style="margin-bottom:14px;">Adjust transaction count, ticket size, and fee rate to see how quickly marketplace revenue scales.</div>
+      <div class="sl-row"><label class="sl-lbl">Monthly transactions</label><input type="range" min="1000" max="200000" value="50000" step="1000" id="gg-tx" oninput="ggCalc()"><span class="sl-val" id="gg-tx-v">50k</span></div>
+      <div class="sl-row"><label class="sl-lbl">Average order value</label><input type="range" min="5" max="50" value="12" step="1" id="gg-amt" oninput="ggCalc()"><span class="sl-val" id="gg-amt-v">$12</span></div>
+      <div class="sl-row"><label class="sl-lbl">Platform fee rate</label><input type="range" min="5" max="35" value="18" step="1" id="gg-fee-rate" oninput="ggCalc()"><span class="sl-val" id="gg-fee-rate-v">18%</span></div>
+      <div class="sl-row"><label class="sl-lbl">Affiliate mix</label><input type="range" min="0" max="50" value="20" step="5" id="gg-aff" oninput="ggCalc()"><span class="sl-val" id="gg-aff-v">20%</span></div>
+      <div class="sim-outs">
+        <div class="so"><div class="so-l">Monthly GMV</div><div class="so-v" id="gg-out-gmv">$600K</div></div>
+        <div class="so"><div class="so-l">Fee revenue</div><div class="so-v" id="gg-out-fee" style="color:var(--grn);">$108K</div></div>
+        <div class="so"><div class="so-l">Affiliate revenue</div><div class="so-v" id="gg-out-aff">$6K</div></div>
+        <div class="so"><div class="so-l">Total revenue</div><div class="so-v" id="gg-out-total" style="color:var(--acc);">$114K</div></div>
+      </div>
+    </div>
+    <div class="cg">
+      <div class="card">
+        <div class="card-t">Scale scenarios</div>
+        <div class="card-d">A fee-led marketplace gets a lot of operating leverage once transaction volume compounds.</div>
+        <div class="ch-wrap" style="height:220px;"><canvas id="gg-scenario"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Revenue mix</div>
+        <div class="card-d">Marketplace fees dominate, while affiliate and first-party products remain secondary.</div>
+        <div class="ch-wrap" style="height:220px;"><canvas id="gg-mix"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:18px;">
+      <div class="card-t">Model risks</div>
+      <div class="card-d">The same asset-light model that makes the business attractive also makes it fragile.</div>
+      <div class="gg-risk-list">
+        <div class="gg-risk-item">Official services can tighten family-plan sharing rules and reduce supply overnight.</div>
+        <div class="gg-risk-item">Gray-area policy exposure can raise chargeback risk, support costs, and account churn.</div>
+        <div class="gg-risk-item">If seller payouts feel slow or unfair, trusted supply can leave the marketplace.</div>
+        <div class="gg-risk-item">Competing slot-sharing platforms can force take rates down through price competition.</div>
+      </div>
+    </div>
+    ${insHtml([
+      {n:'18%',t:'Typical fee rate',b:'A meaningful cut for a platform that does not own the underlying content.'},
+      {n:'70%',t:'Headline savings',b:'Big consumer savings are the core demand engine of the marketplace.'},
+      {n:'0 inventory',t:'Asset-light model',b:'The platform does not need to pre-buy subscriptions to make money.'},
+      {n:'Lv.5',t:'Supply lock-in',b:'Better economics for proven sellers makes high-quality supply harder to leave.'},
+    ])}
+    ${relHtml(['netflix','google','youtube'])}`;
+  },
+  charts(){
+    mc('gg-fee',{
+      type:'doughnut',
+      data:{labels:['Variable fee','Fixed fee','Payment cost','Support and reserve'],datasets:[{data:[55,20,15,10],backgroundColor:[C.blue,C.purple,C.amber,C.gray],borderWidth:0}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:8}}}}
+    });
+    mc('gg-scenario',{
+      type:'bar',
+      data:{labels:['10k','50k','100k','500k','1M'],datasets:[{label:'Fee revenue ($K)',data:[22,108,216,1080,2160],backgroundColor:'rgba(59,139,212,.68)',borderRadius:4,borderSkipped:false},{label:'Affiliate revenue ($K)',data:[0.4,1.8,3.6,18,36],backgroundColor:'rgba(30,143,93,.58)',borderRadius:4,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},scales:{x:{ticks:{color:tc},grid:{display:false}},y:{ticks:{color:tc,callback:v=>v>=1000?'$'+(v/1000).toFixed(1)+'M':'$'+v+'K'},grid:{color:gc}}}}
+    });
+    mc('gg-mix',{
+      type:'doughnut',
+      data:{labels:['Marketplace fees 75%','Affiliate 15%','First-party AI 7%','Other 3%'],datasets:[{data:[75,15,7,3],backgroundColor:[C.blue,C.teal,C.purple,C.gray],borderWidth:0}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:10},boxWidth:10,padding:6}}}}
+    });
+    window.ggCalc = function(){
+      const tx = parseInt(document.getElementById('gg-tx').value, 10);
+      const amt = parseInt(document.getElementById('gg-amt').value, 10);
+      const fee = parseInt(document.getElementById('gg-fee-rate').value, 10);
+      const aff = parseInt(document.getElementById('gg-aff').value, 10);
+      document.getElementById('gg-tx-v').textContent = tx >= 1000 ? (tx / 1000).toFixed(tx % 1000 === 0 ? 0 : 1) + 'k' : String(tx);
+      document.getElementById('gg-amt-v').textContent = '$' + amt;
+      document.getElementById('gg-fee-rate-v').textContent = fee + '%';
+      document.getElementById('gg-aff-v').textContent = aff + '%';
+      const gmv = tx * amt;
+      const feeRev = Math.round(gmv * fee / 100);
+      const affRev = Math.round(gmv * aff / 100 * 0.03);
+      const total = feeRev + affRev;
+      const fmt = (n) => {
+        if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace('.0', '') + 'M';
+        if (n >= 1000) return '$' + (n / 1000).toFixed(0) + 'K';
+        return '$' + n.toLocaleString();
+      };
+      document.getElementById('gg-out-gmv').textContent = fmt(gmv);
+      document.getElementById('gg-out-fee').textContent = fmt(feeRev);
+      document.getElementById('gg-out-aff').textContent = fmt(affRev);
+      document.getElementById('gg-out-total').textContent = fmt(total);
+    };
+    window.ggCalc();
+  }
+},
+
 tron: {
   label: '트론 (USDT)',
   meta: { margin: 68, tags: ['웹3', '스테이블코인', '네트워크 효과', '블록체인'], currency: '$' },
@@ -2651,5 +2894,6 @@ if (STATIC_PAGE && PAGES[STATIC_PAGE]) {
 </script>
 </body>
 </html>
+
 
 
