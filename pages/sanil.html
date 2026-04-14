@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>산일전기 — 어떻게 돈을 버나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F7FAFC;--bg2:#EEF3F7;--sur:#FFFFFF;--sur2:#F6FAFD;--sur3:#EDF5FA;
+  --bor:#D8E3EC;--bor2:#BCD0DD;--t1:#173042;--t2:#446173;--t3:#6F8898;
+  --elec:#0E7AA8;--elec2:rgba(14,122,168,.10);--elec3:rgba(14,122,168,.22);
+  --mint:#118C6E;--mint2:rgba(17,140,110,.10);--amber:#C98A24;--amber2:rgba(201,138,36,.10);
+  --red:#D65763;--red2:rgba(214,87,99,.10);--steel:#7A93A6;--rad:12px;--rad2:18px;--rad3:28px;
+  --shadow:0 10px 26px rgba(22,48,66,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;
+  background:linear-gradient(180deg,#FBFDFF 0%, #F7FAFC 45%, #F2F7FB 100%);
+  color:var(--t1);min-height:100vh;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(14,122,168,.08) 0%, transparent 28%),
+    radial-gradient(circle at 80% 10%, rgba(17,140,110,.06) 0%, transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(201,138,36,.05) 0%, transparent 28%);
+}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 20px 88px}
+.hero{padding:56px 0 40px;display:flex;align-items:center;gap:34px}
+.hero-left{flex:1}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px;
+  background:var(--elec2);border:1px solid var(--elec3);color:var(--elec);
+  font-size:11px;font-weight:800;letter-spacing:.06em;margin-bottom:16px
+}
+.spark{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--elec),var(--mint));box-shadow:0 0 14px rgba(83,213,255,.7)}
+.hero-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(34px,5vw,56px);line-height:1.06;letter-spacing:-.03em;margin-bottom:12px}
+.hero-title em{font-style:italic;color:var(--elec)}
+.hero-sub{color:var(--t2);font-size:14px;line-height:1.72;max-width:470px;font-weight:300}
+.hero-right{width:255px;height:228px;flex-shrink:0;position:relative}
+.gridbox{
+  width:100%;height:100%;border-radius:30px;background:linear-gradient(180deg,#F9FCFE,#EDF4F8);
+  border:1px solid var(--bor2);box-shadow:var(--shadow);overflow:hidden;position:relative;padding:16px
+}
+.gridbox::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(14,122,168,.08) 1px, transparent 1px),linear-gradient(90deg, rgba(14,122,168,.08) 1px, transparent 1px);
+  background-size:24px 24px;mask-image:linear-gradient(180deg,rgba(255,255,255,.9),transparent)
+}
+.g-top{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.g-badge{font-size:10px;font-weight:700;color:var(--elec);padding:4px 8px;border-radius:999px;border:1px solid var(--elec3);background:rgba(255,255,255,.82)}
+.g-stat{font-size:11px;color:var(--t3)}
+.transformer{position:relative;z-index:2;width:120px;height:128px;margin:12px auto 8px}
+.tr-core{
+  position:absolute;inset:14px 26px 12px;border-radius:18px;background:linear-gradient(180deg,#EAF4FA,#DCEBF4);
+  border:1px solid rgba(14,122,168,.26);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9), 0 8px 24px rgba(14,122,168,.10)
+}
+.tr-core::before,.tr-core::after{
+  content:'';position:absolute;top:18px;bottom:18px;width:18px;border-radius:12px;
+  background:linear-gradient(180deg,rgba(14,122,168,.15),rgba(17,140,110,.12));border:1px solid rgba(83,213,255,.24)
+}
+.tr-core::before{left:-14px}.tr-core::after{right:-14px}
+.coil{position:absolute;left:16px;right:16px;height:12px;border-radius:999px;background:linear-gradient(90deg,rgba(201,138,36,.82),rgba(14,122,168,.82));box-shadow:0 0 14px rgba(83,213,255,.14)}
+.coil.c1{top:30px}.coil.c2{top:52px}.coil.c3{top:74px}.coil.c4{top:96px}
+.g-bars{position:relative;z-index:2;display:flex;justify-content:center;gap:8px;margin-top:12px}
+.g-bar{width:22px;border-radius:8px 8px 4px 4px;align-self:flex-end;background:linear-gradient(180deg, rgba(14,122,168,.9), rgba(17,140,110,.55));border:1px solid rgba(83,213,255,.18)}
+.g-bar:nth-child(1){height:42px}.g-bar:nth-child(2){height:64px}.g-bar:nth-child(3){height:88px}.g-bar:nth-child(4){height:116px}
+.g-caption{position:relative;z-index:2;margin-top:10px;text-align:center;color:var(--t2);font-size:11px;line-height:1.5}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.met{background:linear-gradient(180deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease}
+.met:hover{transform:translateY(-2px);border-color:var(--elec3)}
+.met-icon{font-size:18px;margin-bottom:8px}.met-lbl{font-size:10px;color:var(--t3);letter-spacing:.06em;font-weight:700;margin-bottom:6px}.met-val{font-size:24px;font-weight:800;line-height:1;letter-spacing:-.02em}.met-val.elec{color:var(--elec)}.met-val.mint{color:var(--mint)}.met-sub{font-size:10.5px;color:var(--t3);margin-top:6px}
+.sec{margin-bottom:28px}.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}.sec-num{font-family:'DM Serif Display',Georgia,serif;font-size:13px;color:var(--elec);opacity:.72}.sec-title{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--t2)}.sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--bor2),transparent)}
+.statement{background:linear-gradient(135deg,var(--sur) 0%, #F1F8FC 100%);border:1px solid var(--bor);border-radius:var(--rad3);padding:22px 24px;display:flex;gap:22px;align-items:center;box-shadow:var(--shadow)}
+.st-left{flex:1}.st-title{font-family:'DM Serif Display',Georgia,serif;font-size:24px;line-height:1.2;margin-bottom:10px}.st-title em{font-style:italic;color:var(--elec)}.st-body{color:var(--t2);font-size:13px;line-height:1.72;font-weight:300}.st-right{min-width:170px;text-align:center;padding:12px 8px}.st-big{font-family:'DM Serif Display',Georgia,serif;font-size:58px;line-height:1;color:var(--elec)}.st-small{font-size:11px;color:var(--t3);margin-top:4px}.st-arrow{font-size:26px;color:var(--bor2);margin:6px 0}.st-note{font-size:12px;color:var(--mint);font-weight:700}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.card{background:linear-gradient(180deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;box-shadow:var(--shadow)}
+.card-t{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:4px}.card-d{font-size:11px;color:var(--t3);line-height:1.6;margin-bottom:14px}
+.rev-stream{display:flex;flex-direction:column;gap:10px}
+.rs-item{background:linear-gradient(180deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:all .2s ease;box-shadow:var(--shadow)}
+.rs-item:hover,.rs-item.on{border-color:var(--elec3);transform:translateY(-1px)}.rs-item.on{background:linear-gradient(180deg,#F7FBFE,#EEF6FA)}
+.rs-icon-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}.rs-body{flex:1}.rs-head{display:flex;gap:8px;align-items:baseline;margin-bottom:5px}.rs-name{font-size:13.5px;font-weight:800}.rs-share{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px}.rs-desc{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:8px}.rs-bar-bg{background:#EAF1F6;border-radius:999px;height:7px;overflow:hidden;border:1px solid rgba(23,48,66,.04)}.rs-bar{height:100%;border-radius:999px;transition:width .8s cubic-bezier(.4,0,.2,1)}.rs-detail{overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1);font-size:12px;color:var(--t2)}.rs-detail.open{max-height:220px}.rs-detail-inner{padding-top:12px;border-top:1px solid var(--bor);margin-top:10px;line-height:1.65}
+.bd{display:flex;flex-direction:column;gap:8px}.bd-row{display:flex;align-items:center;gap:9px}.bd-lbl{font-size:11px;color:var(--t2);min-width:150px;text-align:right}.bd-bg{flex:1;height:14px;background:#EAF1F6;border-radius:999px;overflow:hidden}.bd-bar{height:100%;border-radius:999px;transition:width .8s cubic-bezier(.4,0,.2,1)}.bd-val{font-size:11px;font-weight:800;min-width:60px;text-align:right}
+.pulse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pulse{background:var(--bg2);border:1px solid var(--bor);border-radius:var(--rad);padding:12px 13px}.pulse-l{font-size:10px;color:var(--t3);margin-bottom:5px}.pulse-v{font-size:18px;font-weight:800}.pulse-v.elec{color:var(--elec)}.pulse-v.mint{color:var(--mint)}.pulse-v.amber{color:var(--amber)}
+.geo-note{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.smallbox{background:var(--bg2);border:1px solid var(--bor);border-radius:var(--rad);padding:12px 13px}.smallbox .k{font-size:10px;color:var(--t3);margin-bottom:5px}.smallbox .v{font-size:17px;font-weight:800}
+.driver-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.driver{background:linear-gradient(180deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:16px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease}.driver:hover{transform:translateY(-2px);border-color:var(--elec3)}.driver-no{font-family:'DM Serif Display',Georgia,serif;font-size:28px;line-height:1;color:var(--elec);margin-bottom:7px}.driver-t{font-size:12.5px;font-weight:800;margin-bottom:4px}.driver-b{font-size:11px;color:var(--t3);line-height:1.6}
+.flow{display:grid;grid-template-columns:1.1fr .8fr 1fr;gap:12px}.flow-col{background:linear-gradient(180deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:16px;box-shadow:var(--shadow)}.flow-title{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}.flow-item{background:var(--bg2);border:1px solid var(--bor);border-radius:12px;padding:11px 12px;margin-bottom:8px}.flow-item:last-child{margin-bottom:0}.flow-item strong{display:block;font-size:12.5px;color:var(--t1);margin-bottom:3px}.flow-item span{font-size:11px;color:var(--t2);line-height:1.55}.flow-arrow-col{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--elec)}.flow-arrow{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--elec2);border:1px solid var(--elec3);font-size:24px}.flow-tag{font-size:10.5px;color:var(--t3);text-align:center;line-height:1.5;max-width:110px}
+.takeaways{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tk{background:linear-gradient(180deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:var(--rad2);padding:15px 16px;box-shadow:var(--shadow)}.tk-num{font-family:'DM Serif Display',Georgia,serif;font-size:30px;color:var(--elec);line-height:1;margin-bottom:6px}.tk-t{font-size:12.5px;font-weight:800;margin-bottom:4px}.tk-b{font-size:11px;color:var(--t3);line-height:1.6}
+.footer{margin-top:20px;padding-top:18px;border-top:1px solid var(--bor);color:var(--t3);font-size:10.5px;line-height:1.7}.footer strong{color:var(--t2)}.footer .src{margin-top:8px;display:grid;gap:4px}
+@media(max-width:820px){.hero{flex-direction:column;align-items:flex-start}.hero-right{width:100%;max-width:360px;height:220px}.mets,.driver-grid,.takeaways,.g3,.pulse-grid{grid-template-columns:1fr 1fr}.g2,.flow,.geo-note{grid-template-columns:1fr}}
+@media(max-width:640px){.wrap{padding:0 16px 80px}.mets,.driver-grid,.takeaways,.g3,.pulse-grid{grid-template-columns:1fr}.statement{flex-direction:column;text-align:center}.st-right{min-width:unset}.bd-lbl{min-width:116px;text-align:left}.hero-title{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow"><span class="spark"></span>SPECIAL TRANSFORMER</div>
+      <h1 class="hero-title">산일전기는<br>어떻게 <em>돈을 버나</em></h1>
+      <p class="hero-sub">
+        산일전기는 광고 회사가 아니라 <strong>전력기기 제조 회사</strong>입니다. 돈은 주로 <strong>변압기와 리액터를 만들어 팔아서</strong> 벌고,
+        그중에서도 <strong>신재생·ESS·데이터센터향 특수변압기</strong>가 성장 엔진 역할을 합니다.
+        최신 공식 연간 실적 기준으로 2025년 매출 5,019억원, 영업이익 1,790억원을 기록했습니다.
+      </p>
+    </div>
+    <div class="hero-right">
+      <div class="gridbox">
+        <div class="g-top">
+          <span class="g-badge">INDUSTRIAL POWER</span>
+          <span class="g-stat">산업용 전력 인프라</span>
+        </div>
+        <div class="transformer">
+          <div class="tr-core"></div>
+          <div class="coil c1"></div><div class="coil c2"></div><div class="coil c3"></div><div class="coil c4"></div>
+        </div>
+        <div class="g-bars">
+          <div class="g-bar"></div><div class="g-bar"></div><div class="g-bar"></div><div class="g-bar"></div>
+        </div>
+        <div class="g-caption">수주 → 설계 → 생산 → 납품<br>이 흐름이 매출과 이익으로 연결됩니다</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mets">
+    <div class="met"><div class="met-icon">⚡</div><div class="met-lbl">2025 매출액</div><div class="met-val elec">5,019억</div><div class="met-sub">전년 대비 +50.3%</div></div>
+    <div class="met"><div class="met-icon">💼</div><div class="met-lbl">2025 영업이익</div><div class="met-val">1,790억</div><div class="met-sub">전년 대비 +63.9%</div></div>
+    <div class="met"><div class="met-icon">📈</div><div class="met-lbl">영업이익률</div><div class="met-val mint">35.7%</div><div class="met-sub">제조업치고 매우 높은 수준</div></div>
+    <div class="met"><div class="met-icon">🌎</div><div class="met-lbl">수출 비중</div><div class="met-val elec">97%</div><div class="met-sub">수출 구성에서 미국 비중 84.7%</div></div>
+  </section>
+
+  <section class="sec">
+    <div class="statement">
+      <div class="st-left">
+        <div class="st-title">핵심은 <em>비싼 특수변압기</em>를 많이 파는 것</div>
+        <div class="st-body">
+          산일전기의 돈 버는 원리는 단순합니다. <strong>고객이 원하는 사양의 변압기</strong>를 만들어 납품하고, 납품된 금액이 매출이 됩니다.
+          여기서 수익성을 끌어올리는 건 단가와 마진이 높은 <strong>신재생·ESS·데이터센터향 특수변압기 비중</strong>입니다.
+          2025년 사업보고서 기준으로 전방산업별 매출 비중은 <strong>전력망 33%, 신재생·특수변압기 64%, 기타 3%</strong>였습니다.
+        </div>
+      </div>
+      <div class="st-right">
+        <div class="st-big">64%</div><div class="st-small">신재생·특수변압기 비중</div><div class="st-arrow">↓</div>
+        <div class="st-note">고부가 제품 믹스가 이익률을 밀어 올림</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">돈 버는 구조 — 무엇을 팔아서 돈 버나</span><div class="sec-line"></div></div>
+    <div class="rev-stream" id="revStreams"></div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">한 장으로 보는 손익 구조</span><div class="sec-line"></div></div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-t">2025년 매출 100원은 어떻게 남나</div>
+        <div class="card-d">공식 재무정보를 100원 기준으로 단순화한 그림입니다.</div>
+        <div class="bd" id="marginBars"></div>
+      </div>
+      <div class="card">
+        <div class="card-t">2022→2025 실적 점프</div>
+        <div class="card-d">매출과 영업이익이 함께 커졌고, 이익률도 가파르게 개선됐습니다.</div>
+        <div style="height:240px;position:relative"><canvas id="trendChart"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">최신 실적 스냅샷</span><div class="sec-line"></div></div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-t">2025년 4분기 포인트</div>
+        <div class="card-d">가장 최근 분기 실적에서 무엇이 좋았는지 빠르게 보기.</div>
+        <div class="pulse-grid">
+          <div class="pulse"><div class="pulse-l">4Q25 매출</div><div class="pulse-v elec">1,421억</div></div>
+          <div class="pulse"><div class="pulse-l">4Q25 영업이익</div><div class="pulse-v mint">550억</div></div>
+          <div class="pulse"><div class="pulse-l">4Q25 영업이익률</div><div class="pulse-v amber">38.7%</div></div>
+          <div class="pulse"><div class="pulse-l">4Q25 신규수주</div><div class="pulse-v">1,767억</div></div>
+          <div class="pulse"><div class="pulse-l">수주잔고</div><div class="pulse-v">4,489억</div></div>
+          <div class="pulse"><div class="pulse-l">4Q25 특수변압기 매출</div><div class="pulse-v elec">828억</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-t">매출 믹스와 지역 노출</div>
+        <div class="card-d">무엇을 팔고, 어디에 많이 파는지가 이 회사의 핵심입니다.</div>
+        <div style="height:210px;position:relative"><canvas id="mixChart"></canvas></div>
+        <div class="geo-note">
+          <div class="smallbox"><div class="k">수출 비중</div><div class="v" style="color:var(--elec)">97%</div></div>
+          <div class="smallbox"><div class="k">수출 구성 내 미국 비중</div><div class="v" style="color:var(--mint)">84.7%</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">왜 돈이 잘 남나</span><div class="sec-line"></div></div>
+    <div class="driver-grid">
+      <div class="driver"><div class="driver-no">01</div><div class="driver-t">고ASP 특수변압기</div><div class="driver-b">ESS·신재생·데이터센터용 제품은 사양이 복잡하고 맞춤형이 많아 일반 변압기보다 단가와 마진이 높습니다.</div></div>
+      <div class="driver"><div class="driver-no">02</div><div class="driver-t">수출 중심 구조</div><div class="driver-b">2025년 수출 비중이 97%였고, 특히 미국 비중이 높습니다. 글로벌 전력 인프라 투자 사이클을 직접 받습니다.</div></div>
+      <div class="driver"><div class="driver-no">03</div><div class="driver-t">수주잔고가 방패 역할</div><div class="driver-b">연간 신규수주 5,660억원, 연말 수주잔고 4,489억원으로 앞으로 매출로 바뀔 파이프라인이 두껍습니다.</div></div>
+      <div class="driver"><div class="driver-no">04</div><div class="driver-t">생산 효율과 규모의 경제</div><div class="driver-b">매출이 커질수록 고정비 부담은 상대적으로 얇아지고, 자동화·증설 효과가 이익률 개선으로 이어집니다.</div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">고객 → 제품 → 현금 흐름</span><div class="sec-line"></div></div>
+    <div class="flow">
+      <div class="flow-col">
+        <div class="flow-title">누가 산일전기 제품을 사나</div>
+        <div class="flow-item"><strong>전력망 인프라 고객</strong><span>배전망 교체와 확장에 필요한 일반 변압기를 주문합니다.</span></div>
+        <div class="flow-item"><strong>신재생·ESS·데이터센터 고객</strong><span>더 높은 사양의 특수변압기를 주문합니다. 최근 성장의 핵심입니다.</span></div>
+        <div class="flow-item"><strong>EPC·산업 플랜트 고객</strong><span>프로젝트별 맞춤 전력기기를 발주합니다.</span></div>
+      </div>
+      <div class="flow-arrow-col">
+        <div class="flow-arrow">→</div><div class="flow-tag">설계형 제조 + 프로젝트 납품</div><div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-col">
+        <div class="flow-title">어떻게 돈이 되나</div>
+        <div class="flow-item"><strong>1. 수주를 받는다</strong><span>고객 스펙에 맞춘 제품을 설계하고 생산 계획을 잡습니다.</span></div>
+        <div class="flow-item"><strong>2. 납품하면 매출이 된다</strong><span>변압기·리액터·소프트스타터 등 장비 판매가 매출의 대부분입니다.</span></div>
+        <div class="flow-item"><strong>3. 제품 믹스가 이익을 바꾼다</strong><span>고마진 특수변압기 비중이 높아질수록 영업이익률이 좋아집니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">06</span><span class="sec-title">핵심 takeaway</span><div class="sec-line"></div></div>
+    <div class="takeaways">
+      <div class="tk"><div class="tk-num">93%</div><div class="tk-t">변압기가 사실상 본업</div><div class="tk-b">2025 사업보고서 기준으로 변압기가 누적 매출의 93%를 차지했습니다. 이 회사는 거의 순수한 변압기 플레이어에 가깝습니다.</div></div>
+      <div class="tk"><div class="tk-num">35.7%</div><div class="tk-t">제조업치고 높은 이익률</div><div class="tk-b">2025년 영업이익률 35.7%는 제품 믹스가 얼마나 좋아졌는지 보여주는 숫자입니다.</div></div>
+      <div class="tk"><div class="tk-num">5,660억</div><div class="tk-t">앞으로의 매출 씨앗</div><div class="tk-b">연간 신규수주가 5,660억원이어서, 이미 받은 주문이 다음 실적의 재료가 됩니다.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div><strong>주요 출처:</strong> 산일전기 재무정보(2022~2025), 산일전기 2025 사업보고서 정정 공시, 산일전기 IR 공지, 2025년 4분기 실적 관련 보도 요약.</div>
+    <div class="src"></div>
+  </footer>
+
+</div>
+
+<script>
+const tc = '#5B778A';
+const gc = 'rgba(23,48,66,.08)';
+
+const STREAMS = [
+  {
+    icon:'🔋', iconBg:'rgba(83,213,255,.12)', name:'신재생·ESS·데이터센터향 특수변압기',
+    share:'64%', shareCol:'#0E7AA8', shareBg:'rgba(83,213,255,.12)',
+    desc:'산일전기의 성장 엔진. 일반 제품보다 사양이 까다롭고 단가가 높아 매출과 이익을 동시에 끌어올립니다.',
+    barW:64, barCol:'#0E7AA8',
+    detail:'태양광·풍력·ESS·데이터센터용 제품은 맞춤 설계 요구가 많고, 고사양일수록 평균판매가격(ASP)이 높아집니다. 최근 실적 급증의 중심도 이 부문입니다.'
+  },
+  {
+    icon:'🏭', iconBg:'rgba(58,213,174,.12)', name:'전력망 일반변압기',
+    share:'33%', shareCol:'#118C6E', shareBg:'rgba(58,213,174,.12)',
+    desc:'미국을 포함한 전력망 교체·확장 수요를 받는 기본 축입니다. 특수변압기보다 마진은 낮지만 실적의 하방을 받쳐 줍니다.',
+    barW:33, barCol:'#118C6E',
+    detail:'노후 배전망 교체와 증설 수요가 이어지는 시장에서 꾸준한 물량을 확보하는 역할을 합니다. 특수변압기가 상방, 전력망이 하방을 지지하는 구조로 볼 수 있습니다.'
+  },
+  {
+    icon:'🧩', iconBg:'rgba(244,187,98,.12)', name:'기타 제품군',
+    share:'3%', shareCol:'#C98A24', shareBg:'rgba(244,187,98,.12)',
+    desc:'리액터, 소프트스타터 등 나머지 제품군입니다. 비중은 작지만 제품 포트폴리오를 넓혀 줍니다.',
+    barW:3, barCol:'#C98A24',
+    detail:'매출 비중은 작아도 고객 접점을 넓히고 프로젝트 제안 범위를 넓혀 줍니다. 메인 엔진은 아니지만 보조 엔진 역할을 합니다.'
+  }
+];
+
+let openIdx = 0;
+function renderStreams(){
+  document.getElementById('revStreams').innerHTML = STREAMS.map((s,i)=>`
+    <div class="rs-item ${i===openIdx?'on':''}" onclick="toggleStream(${i})">
+      <div class="rs-icon-wrap" style="background:${s.iconBg}">${s.icon}</div>
+      <div class="rs-body">
+        <div class="rs-head">
+          <span class="rs-name">${s.name}</span>
+          <span class="rs-share" style="color:${s.shareCol};background:${s.shareBg}">${s.share}</span>
+        </div>
+        <div class="rs-desc">${s.desc}</div>
+        <div class="rs-bar-bg"><div class="rs-bar" style="width:${s.barW}%;background:${s.barCol}"></div></div>
+        <div class="rs-detail ${i===openIdx?'open':''}">
+          <div class="rs-detail-inner">${s.detail}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function toggleStream(i){ openIdx = openIdx === i ? -1 : i; renderStreams(); }
+renderStreams();
+
+const MARGIN = [
+  {lbl:'매출원가', val:53.4, col:'#214059', txt:'53.4원', tc:'#AEC3D3'},
+  {lbl:'판관비', val:11.0, col:'#C98A24', txt:'11.0원', tc:'#C98A24'},
+  {lbl:'영업이익', val:35.7, col:'#118C6E', txt:'35.7원', tc:'#118C6E'}
+];
+document.getElementById('marginBars').innerHTML = MARGIN.map(m=>`
+  <div class="bd-row">
+    <span class="bd-lbl">${m.lbl}</span>
+    <div class="bd-bg"><div class="bd-bar" style="width:${m.val}%;background:${m.col}"></div></div>
+    <span class="bd-val" style="color:${m.tc}">${m.txt}</span>
+  </div>
+`).join('');
+
+new Chart(document.getElementById('trendChart'),{
+  data:{
+    labels:['2022','2023','2024','2025'],
+    datasets:[
+      {
+        type:'bar',
+        label:'매출액(억원)',
+        data:[1076,2145,3340,5019],
+        backgroundColor:['rgba(83,213,255,.28)','rgba(83,213,255,.38)','rgba(83,213,255,.52)','rgba(83,213,255,.78)'],
+        borderRadius:8,
+        yAxisID:'y'
+      },
+      {
+        type:'line',
+        label:'영업이익(억원)',
+        data:[122,466,1092,1790],
+        borderColor:'#118C6E',
+        backgroundColor:'rgba(58,213,174,.08)',
+        tension:.35,
+        pointRadius:4,
+        fill:false,
+        yAxisID:'y1'
+      }
+    ]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:11},boxWidth:10}}},
+    scales:{
+      x:{ticks:{color:tc},grid:{display:false}},
+      y:{position:'left',ticks:{color:tc,callback:v=>v.toLocaleString()},grid:{color:gc}},
+      y1:{position:'right',ticks:{color:'#118C6E',callback:v=>v.toLocaleString()},grid:{drawOnChartArea:false}}
+    }
+  }
+});
+
+new Chart(document.getElementById('mixChart'),{
+  type:'doughnut',
+  data:{
+    labels:['신재생·특수변압기','전력망 일반변압기','기타'],
+    datasets:[{data:[64,33,3],backgroundColor:['#0E7AA8','#118C6E','#C98A24'],borderWidth:0,hoverOffset:6}]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    cutout:'62%',
+    plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:10,padding:10}}}
+  }
+});
+</script>
+</body>
+</html>
