@@ -466,6 +466,9 @@ let NAV = [
     {id:'skhynix',label:'SK하이닉스'},
     {id:'samsung',label:'삼성전자'},
   ]},
+  { cat:'바이오/헬스케어', items:[
+    {id:'nanoentek',label:'나노엔텍'},
+  ]},
   { cat:'빅테크', items:[
     {id:'nvidia',label:'엔비디아'},
     {id:'google',label:'구글'},
@@ -541,6 +544,7 @@ const PAGE_FILE_MAP = {
   "tron": "tron.html",
   "skhynix": "skhynix.html",
   "samsung": "samsung.html",
+  "nanoentek": "nanoentek.html",
   "nvidia": "nvidia.html",
   "google": "google.html",
   "netflix": "netflix.html",
@@ -3857,6 +3861,293 @@ samsung: {
   }
 },
 
+// ═══════════════════════════════════════════════════════ NANOENTEK
+nanoentek: {
+  label: '나노엔텍',
+  meta: { margin: 2.9, tags: ['바이오', '의료기기', '체외진단', '반복매출'], currency: '₩' },
+  render(){
+    return `
+    <style>
+      .ne-page{--bg:#F4FAFB;--bg2:#EAF3F4;--sur:#fff;--sur2:#F9FCFC;--bor:#D9E7E8;--bor2:#BFD5D8;--t1:#14242A;--t2:#506A72;--t3:#8AA0A6;--pri:#0F7D86;--pri2:rgba(15,125,134,.10);--nav:#1A3F63;--mint:#28A9A4;--ice:#5A87A8;--gold:#C2A35A;--red:#C65A5A;position:relative;margin:-32px -28px -60px;padding:0 28px 80px;background:var(--bg);overflow:hidden;font-family:'Noto Sans KR',system-ui,sans-serif;color:var(--t1);}
+      .ne-page::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 15% 22%, rgba(15,125,134,.05) 0%, transparent 32%),radial-gradient(circle at 82% 18%, rgba(26,63,99,.04) 0%, transparent 28%),radial-gradient(circle at 65% 82%, rgba(40,169,164,.04) 0%, transparent 26%);pointer-events:none;}
+      .ne-wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;}
+      .ne-hero{padding:54px 0 42px;display:grid;grid-template-columns:1fr 240px;gap:34px;align-items:center;}
+      .ne-eye{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;background:var(--pri2);border:1px solid rgba(15,125,134,.18);border-radius:999px;font-size:11px;font-weight:700;color:var(--pri);letter-spacing:.04em;margin-bottom:14px;}
+      .ne-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.025em;margin-bottom:10px;}
+      .ne-title em{font-style:italic;color:var(--pri);}
+      .ne-sub{font-size:14px;color:var(--t2);line-height:1.68;max-width:470px;font-weight:300;}
+      .ne-device{position:relative;height:308px;background:linear-gradient(180deg,#fff 0%,#F7FBFC 100%);border-radius:34px;border:2px solid var(--bor2);overflow:hidden;box-shadow:0 12px 38px rgba(20,36,42,.10);}
+      .ne-orb{position:absolute;border-radius:50%;opacity:.85;}
+      .ne-orb.one{width:74px;height:74px;background:rgba(15,125,134,.09);top:-10px;right:-10px;}
+      .ne-orb.two{width:56px;height:56px;background:rgba(26,63,99,.10);bottom:10px;left:-12px;}
+      .ne-device-top{height:52px;background:linear-gradient(90deg,var(--nav) 0%,var(--pri) 100%);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;}
+      .ne-device-screen{margin:18px 18px 12px;border-radius:22px;background:linear-gradient(180deg,#EAF6F7 0%,#F8FCFD 100%);border:1px solid var(--bor);padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;}
+      .ne-chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+      .ne-chip{font-size:10px;font-weight:700;padding:5px 10px;border-radius:999px;}
+      .ne-screen-bar{height:8px;border-radius:999px;background:var(--bg2);overflow:hidden;}
+      .ne-screen-bar span{display:block;height:100%;width:78%;background:linear-gradient(90deg,var(--pri),var(--mint));}
+      .ne-device-cards{padding:0 18px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+      .ne-mini{background:#fff;border:1px solid var(--bor);border-radius:16px;padding:12px 12px 10px;}
+      .ne-mini-k{font-size:10px;color:var(--t3);margin-bottom:5px;}
+      .ne-mini-v{font-size:14px;font-weight:700;line-height:1.1;}
+      .ne-callout{background:linear-gradient(135deg,var(--sur) 0%,var(--sur2) 100%);border:1px solid var(--bor);border-radius:16px;padding:20px 24px;margin-bottom:28px;display:flex;gap:24px;align-items:center;}
+      .ne-callout-title{font-family:'DM Serif Display',Georgia,serif;font-size:22px;line-height:1.2;margin-bottom:8px;}
+      .ne-callout-title em{font-style:italic;color:var(--pri);}
+      .ne-callout-body{font-size:13px;color:var(--t2);line-height:1.68;font-weight:300;}
+      .ne-callout-big{text-align:center;min-width:180px;}
+      .ne-callout-num{font-family:'DM Serif Display',Georgia,serif;font-size:54px;line-height:1;color:var(--pri);}
+      .ne-callout-sub{font-size:11px;color:var(--t3);margin-top:4px;}
+      .ne-mets,.ne-insights{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+      .ne-mets{margin-bottom:28px;}
+      .ne-met,.ne-insight,.ne-card{background:var(--sur);border:1px solid var(--bor);border-radius:16px;}
+      .ne-met{padding:16px 18px;transition:all .2s;}
+      .ne-met:hover,.ne-insight:hover,.ne-card:hover{border-color:var(--bor2);}
+      .ne-met-l{font-size:10px;color:var(--t3);letter-spacing:.04em;margin-bottom:5px;font-weight:500;}
+      .ne-met-v{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1;}
+      .ne-met-s{font-size:10.5px;color:var(--t3);margin-top:4px;}
+      .ne-sec{margin-bottom:28px;}
+      .ne-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+      .ne-sec-num{font-family:'DM Serif Display',Georgia,serif;font-size:13px;color:var(--pri);opacity:.65;}
+      .ne-sec-title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);}
+      .ne-sec-line{flex:1;height:1px;background:var(--bor);}
+      .ne-streams{display:flex;flex-direction:column;gap:10px;}
+      .ne-stream{background:var(--sur);border:1px solid var(--bor);border-radius:16px;padding:16px 18px;display:flex;gap:14px;cursor:pointer;transition:all .2s;}
+      .ne-stream:hover,.ne-stream.on{border-color:var(--pri);background:var(--sur2);box-shadow:0 2px 16px rgba(15,125,134,.10);}
+      .ne-stream-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+      .ne-stream-name{font-size:13px;font-weight:700;}
+      .ne-stream-badge{font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;margin-left:8px;}
+      .ne-stream-desc{font-size:12px;color:var(--t2);line-height:1.55;margin:4px 0 8px;}
+      .ne-bar{height:6px;background:var(--bg2);border-radius:999px;overflow:hidden;}
+      .ne-bar span{display:block;height:100%;border-radius:999px;}
+      .ne-stream-detail{overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1);}
+      .ne-stream-detail.open{max-height:320px;}
+      .ne-stream-detail-inner{padding-top:12px;border-top:1px solid var(--bor);margin-top:10px;font-size:12px;color:var(--t2);line-height:1.62;}
+      .ne-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+      .ne-card{padding:18px 20px;transition:border-color .2s;}
+      .ne-card-t{font-size:13px;font-weight:700;margin-bottom:3px;}
+      .ne-card-d{font-size:11px;color:var(--t3);margin-bottom:14px;line-height:1.55;}
+      .ne-rows{display:flex;flex-direction:column;gap:7px;}
+      .ne-row{display:flex;align-items:center;gap:8px;}
+      .ne-row-l{font-size:11px;color:var(--t2);min-width:150px;text-align:right;}
+      .ne-row-bg{flex:1;background:var(--bg2);border-radius:4px;height:14px;overflow:hidden;}
+      .ne-row-bg span{display:block;height:100%;border-radius:4px;}
+      .ne-row-v{font-size:11px;font-weight:700;min-width:84px;text-align:right;}
+      .ne-funnel{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0;}
+      .ne-fn-box{border-radius:8px;height:42px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:#fff;}
+      .ne-fn-l{font-size:10.5px;color:var(--t2);margin-top:4px;text-align:center;line-height:1.45;}
+      .ne-fn-arrow{font-size:14px;color:var(--bor2);line-height:1.2;}
+      .ne-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+      .ne-cmp-col{border:1px solid var(--bor);border-radius:16px;padding:14px;background:var(--sur);}
+      .ne-cmp-col.hl{border:2px solid var(--pri);background:var(--pri2);}
+      .ne-cmp-b{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
+      .ne-cmp-t{font-size:12.5px;font-weight:700;margin-bottom:10px;}
+      .ne-cmp-row{display:flex;justify-content:space-between;gap:10px;font-size:11px;padding:4px 0;border-bottom:1px solid var(--bor);}
+      .ne-cmp-row:last-child{border:none;font-weight:700;padding-top:6px;}
+      .ne-timeline{display:flex;flex-direction:column;}
+      .ne-tl{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--bor);}
+      .ne-tl:last-child{border-bottom:none;}
+      .ne-tl-y{font-size:11px;font-weight:700;color:var(--pri);min-width:58px;font-family:'DM Serif Display',Georgia,serif;}
+      .ne-tl-dot{width:8px;height:8px;border-radius:50%;background:var(--pri);opacity:.55;margin-top:4px;flex-shrink:0;}
+      .ne-tl-title{font-size:13px;font-weight:700;margin-bottom:3px;}
+      .ne-tl-body{font-size:11.5px;color:var(--t2);line-height:1.55;}
+      .ne-tag{display:inline-block;font-size:9.5px;padding:2px 7px;border-radius:3px;font-weight:700;margin-top:4px;letter-spacing:.04em;}
+      .ne-insight{padding:14px 16px;transition:all .2s;}
+      .ne-ins-num{font-family:'DM Serif Display',Georgia,serif;font-size:26px;line-height:1;margin-bottom:5px;color:var(--pri);}
+      .ne-ins-t{font-size:12px;font-weight:700;margin-bottom:3px;}
+      .ne-ins-b{font-size:11px;color:var(--t3);line-height:1.55;}
+      .ne-source{background:var(--sur);border:1px solid var(--bor);border-radius:16px;padding:16px 18px;font-size:11px;color:var(--t2);line-height:1.7;}
+      @media(max-width:900px){.ne-page{margin:-20px -16px -40px;padding:0 16px 56px;}.ne-hero{grid-template-columns:1fr;}.ne-mets,.ne-insights{grid-template-columns:repeat(2,1fr);}}
+      @media(max-width:700px){.ne-grid,.ne-cmp,.ne-insights,.ne-mets{grid-template-columns:1fr;}.ne-callout{flex-direction:column;text-align:center;}.ne-row-l{min-width:112px;font-size:10.5px;}}
+    </style>
+    <div class="ne-page">
+      <div class="ne-wrap">
+        <div class="ne-hero">
+          <div>
+            <div class="ne-eye">🧪 Revenue Architecture</div>
+            <div class="ne-title">나노엔텍은<br>어떻게 <em>돈을 버나</em></div>
+            <div class="ne-sub">랩온어칩 기반 의료기기 회사처럼 보이지만, 실제 현금흐름의 중심은 장비를 한 번 파는 데서 끝나지 않습니다. 검사가 반복될수록 다시 팔리는 키트·칩·소모품, 그리고 미국 중심의 체외진단 매출이 수익 구조의 핵심입니다.</div>
+          </div>
+          <div class="ne-device">
+            <div class="ne-orb one"></div>
+            <div class="ne-orb two"></div>
+            <div class="ne-device-top"><small>NanoEnTek</small><small>IVD / LS</small></div>
+            <div class="ne-device-screen">
+              <div class="ne-chip-row">
+                <span class="ne-chip" style="background:rgba(15,125,134,.10);color:#0F7D86;">FREND Kit</span>
+                <span class="ne-chip" style="background:rgba(40,169,164,.12);color:#28A9A4;">Repeat order</span>
+              </div>
+              <div style="font-size:11px;line-height:1.45;font-weight:700;">장비 판매 → 검사 수행 → 키트·칩 재주문</div>
+              <div class="ne-screen-bar"><span></span></div>
+              <div style="font-size:10px;line-height:1.4;color:var(--t3);">2025 product mix 중 소모품 비중 77.8%</div>
+            </div>
+            <div class="ne-device-cards">
+              <div class="ne-mini"><div class="ne-mini-k">미국 매출</div><div class="ne-mini-v">193.9억</div></div>
+              <div class="ne-mini"><div class="ne-mini-k">체외진단</div><div class="ne-mini-v">240.0억</div></div>
+              <div class="ne-mini"><div class="ne-mini-k">매출총이익률</div><div class="ne-mini-v">58.7%</div></div>
+              <div class="ne-mini"><div class="ne-mini-k">영업이익률</div><div class="ne-mini-v">2.9%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ne-callout">
+          <div style="flex:1;">
+            <div class="ne-callout-title">겉은 장비 회사,<br>속은 <em>반복매출</em> 회사</div>
+            <div class="ne-callout-body">나노엔텍은 장비를 파는 회사로 보이지만, 2025년 연결 매출 기준으로 장비 비중은 11.3%에 그쳤고, 소모품 비중은 77.8%였습니다. 검사를 할수록 다시 사야 하는 키트와 칩이 쌓이기 때문에, 장비 1대 판매보다 설치 이후의 반복 주문이 더 중요합니다.</div>
+          </div>
+          <div class="ne-callout-big">
+            <div class="ne-callout-num">77.8%</div>
+            <div class="ne-callout-sub">소모품 매출 비중</div>
+            <div style="font-size:28px;margin:6px 0;opacity:.3;">↓</div>
+            <div style="font-size:13px;font-weight:700;color:var(--mint);">진짜 돈은 반복 구매에서 생김</div>
+          </div>
+        </div>
+
+        <div class="ne-mets">
+          <div class="ne-met"><div class="ne-met-l">2025 연결 매출</div><div class="ne-met-v" style="color:var(--pri);">381.3억</div><div class="ne-met-s">전년 대비 +25.2%</div></div>
+          <div class="ne-met"><div class="ne-met-l">2025 영업이익</div><div class="ne-met-v">11.0억</div><div class="ne-met-s">전년 대비 +77.4%</div></div>
+          <div class="ne-met"><div class="ne-met-l">미국 매출</div><div class="ne-met-v" style="color:var(--nav);">193.9억</div><div class="ne-met-s">연결 매출의 50.9%</div></div>
+          <div class="ne-met"><div class="ne-met-l">매출총이익률</div><div class="ne-met-v" style="color:var(--mint);">58.7%</div><div class="ne-met-s">2024년 55.9% → 2025년 58.7%</div></div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">01</span><span class="ne-sec-title">수익 구조 - 4개의 기둥</span><div class="ne-sec-line"></div></div>
+          <div class="ne-streams" id="ne-streams"></div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">02</span><span class="ne-sec-title">무엇을 팔아 돈을 버나</span><div class="ne-sec-line"></div></div>
+          <div class="ne-grid">
+            <div class="ne-card"><div class="ne-card-t">2025 제품 유형별 매출 비중</div><div class="ne-card-d">장비보다 키트·칩 같은 소모품이 훨씬 큽니다.</div><div class="ne-rows" id="ne-productBars"></div></div>
+            <div class="ne-card"><div class="ne-card-t">제품 믹스 한눈에 보기</div><div class="ne-card-d">체외진단 소모품이 가장 큰 덩어리입니다.</div><div style="height:210px;position:relative;"><canvas id="ne-mixDonut"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">03</span><span class="ne-sec-title">반복매출 엔진 & 지역 믹스</span><div class="ne-sec-line"></div></div>
+          <div class="ne-grid">
+            <div class="ne-card"><div class="ne-card-t">장비 1대보다 중요한 건 설치 이후</div><div class="ne-card-d">검사가 반복될수록 키트와 칩 주문이 다시 발생합니다.</div><div class="ne-funnel" id="ne-funnel"></div></div>
+            <div class="ne-card"><div class="ne-card-t">지역별 매출</div><div class="ne-card-d">미국이 가장 큰 시장이고, 유럽이 그 뒤를 받칩니다.</div><div class="ne-rows" id="ne-geoBars"></div><div style="height:210px;position:relative;margin-top:14px;"><canvas id="ne-geoChart"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">04</span><span class="ne-sec-title">최근 실적 흐름</span><div class="ne-sec-line"></div></div>
+          <div class="ne-grid">
+            <div class="ne-card"><div class="ne-card-t">2024 → 2025 실적 점프</div><div class="ne-card-d">매출은 커졌고, 영업이익도 늘었습니다.</div><div style="height:220px;position:relative;"><canvas id="ne-financialChart"></canvas></div></div>
+            <div class="ne-card"><div class="ne-card-t">수익성 변화</div><div class="ne-card-d">매출총이익률은 좋아졌지만, 순이익률은 비용과 환율 영향으로 흔들렸습니다.</div><div style="height:220px;position:relative;"><canvas id="ne-marginChart"></canvas></div></div>
+          </div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">05</span><span class="ne-sec-title">성장 동력 vs 비용 압력</span><div class="ne-sec-line"></div></div>
+          <div class="ne-cmp">
+            <div class="ne-cmp-col hl">
+              <span class="ne-cmp-b" style="background:rgba(15,125,134,.10);color:#0F7D86;">Growth</span>
+              <div class="ne-cmp-t">무엇이 매출을 키웠나</div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">미국 진단 제품</span><span>남성호르몬·PSA 공급 확대</span></div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">유럽</span><span>독일 법인 매출 증가</span></div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">신규 연결</span><span>AAI헬스케어 4Q 편입</span></div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">CGT/LS</span><span>세포분석·유전자전달 확대</span></div>
+              <div class="ne-cmp-row"><span>핵심 메시지</span><span style="color:#0F7D86;">미국+체외진단이 엔진</span></div>
+            </div>
+            <div class="ne-cmp-col">
+              <span class="ne-cmp-b" style="background:rgba(198,90,90,.10);color:#C65A5A;">Pressure</span>
+              <div class="ne-cmp-t">무엇이 이익을 눌렀나</div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">미국 관세</span><span>비용 부담 증가</span></div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">물류·인센티브</span><span>남성호르몬 매출 확대로 증가</span></div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">독일 법인</span><span>마케팅비 확대</span></div>
+              <div class="ne-cmp-row"><span style="color:var(--t2);">환율 효과</span><span>외환 관련 이익 감소</span></div>
+              <div class="ne-cmp-row"><span>핵심 메시지</span><span style="color:#C65A5A;">외형보다 수익성 관리가 숙제</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">06</span><span class="ne-sec-title">타임라인 - 돈 버는 축의 변화</span><div class="ne-sec-line"></div></div>
+          <div class="ne-card"><div class="ne-timeline" id="ne-timeline"></div></div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">07</span><span class="ne-sec-title">핵심 인사이트</span><div class="ne-sec-line"></div></div>
+          <div class="ne-insights">
+            <div class="ne-insight"><div class="ne-ins-num">63%</div><div class="ne-ins-t">체외진단 비중</div><div class="ne-ins-b">2025년 연결 매출의 가장 큰 덩어리는 체외진단입니다. FREND와 혈액제제분석 제품군이 중심입니다.</div></div>
+            <div class="ne-insight"><div class="ne-ins-num" style="color:var(--nav);">50.9%</div><div class="ne-ins-t">미국 의존도</div><div class="ne-ins-b">연결 매출의 절반 이상이 미국에서 나왔습니다. 미국 시장이 성장 엔진이자 동시에 리스크 요인입니다.</div></div>
+            <div class="ne-insight"><div class="ne-ins-num" style="color:var(--mint);">77.8%</div><div class="ne-ins-t">소모품 매출</div><div class="ne-ins-b">장비를 깔아두면 이후 검사 때마다 키트와 칩을 계속 사게 됩니다. 그래서 반복매출 성격이 강합니다.</div></div>
+            <div class="ne-insight"><div class="ne-ins-num" style="color:var(--gold);">4Q</div><div class="ne-ins-t">AAI 편입 효과</div><div class="ne-ins-b">2025년 10월부터 AAI헬스케어가 연결 편입되며 헬스케어 서비스 매출이 새 축으로 들어왔습니다.</div></div>
+          </div>
+        </div>
+
+        <div class="ne-sec">
+          <div class="ne-sec-head"><span class="ne-sec-num">08</span><span class="ne-sec-title">출처 메모</span><div class="ne-sec-line"></div></div>
+          <div class="ne-source">데이터 기준: 나노엔텍 2025 사업보고서(2026.03.23), 2026.03.16 매출액 또는 손익구조 변동 공시, 2025 반기 및 3분기 실적 기사, 나노엔텍 공식 홈페이지 공개 자료.</div>
+        </div>
+      </div>
+    </div>`;
+  },
+  charts(){
+    const tcNe='#8AA0A6', gcNe='rgba(20,36,42,.06)';
+    const streams=[
+      {icon:'🧪',bg:'rgba(15,125,134,.10)',name:'체외진단 부문',share:'63.0%',shareCol:'#0F7D86',shareBg:'rgba(15,125,134,.10)',desc:'2025년 연결 매출 239.99억원. FREND 면역진단과 ADAM 혈액제제 분석이 핵심이며, 반복 소모품 매출이 큽니다.',bar:63,color:'#0F7D86',detail:'미국 남성호르몬·전립선 진단 공급 확대와 ADAM-rWBC 라인업이 핵심입니다. 장비보다 키트 매출 비중이 훨씬 커서 검사량 증가가 바로 재주문으로 이어집니다.'},
+      {icon:'🔬',bg:'rgba(26,63,99,.10)',name:'생명공학 / CGT 부문',share:'26.2%',shareCol:'#1A3F63',shareBg:'rgba(26,63,99,.10)',desc:'2025년 연결 매출 99.82억원. 세포계수기, 이미지 분석기, 유전자 전달 시스템과 관련 소모품을 팝니다.',bar:26.2,color:'#1A3F63',detail:'EVE, ADAM-MC 계열 장비가 연구실·바이오텍·제약 고객에게 들어가고, C-chip 같은 소모품이 반복매출을 만듭니다. 2026년에는 EVE-HT A26 글로벌 출시가 예정돼 있습니다.'},
+      {icon:'💬',bg:'rgba(40,169,164,.12)',name:'헬스케어 서비스',share:'4.9%',shareCol:'#28A9A4',shareBg:'rgba(40,169,164,.12)',desc:'AAI헬스케어가 2025년 10월 연결 편입되며 들어온 새 축. 보험사·기업 대상 건강상담, 플랫폼 구축, 병원라운지 서비스 수수료가 중심입니다.',bar:4.9,color:'#28A9A4',detail:'2025년 4분기 기준 서비스 매출 18.82억원. 비중은 아직 작지만 비기기형 매출원이라는 점이 포인트입니다.'},
+      {icon:'📦',bg:'rgba(194,163,90,.12)',name:'상품 및 기타',share:'5.9%',shareCol:'#C2A35A',shareBg:'rgba(194,163,90,.12)',desc:'신속키트 및 기타 품목 매출. 본업 외 보완적 매출입니다.',bar:5.9,color:'#C2A35A',detail:'2025년 연결 매출 22.68억원. 자체 주력 플랫폼만으로 설명되지 않는 보완적 품목이 들어갑니다.'}
+    ];
+    window.neOpenIdx = 0;
+    window.neRenderStreams = function(){
+      const el=document.getElementById('ne-streams');
+      if(!el) return;
+      el.innerHTML=streams.map((s,i)=>`<div class="ne-stream${i===window.neOpenIdx?' on':''}" onclick="window.neToggleStream(${i})"><div class="ne-stream-icon" style="background:${s.bg};">${s.icon}</div><div style="flex:1;"><div><span class="ne-stream-name">${s.name}</span><span class="ne-stream-badge" style="color:${s.shareCol};background:${s.shareBg};">${s.share}</span></div><div class="ne-stream-desc">${s.desc}</div><div class="ne-bar"><span style="width:${s.bar}%;background:${s.color};"></span></div><div class="ne-stream-detail${i===window.neOpenIdx?' open':''}"><div class="ne-stream-detail-inner">${s.detail}</div></div></div></div>`).join('');
+    };
+    window.neToggleStream = function(i){ window.neOpenIdx = window.neOpenIdx === i ? -1 : i; window.neRenderStreams(); };
+    window.neRenderStreams();
+
+    const productBars=[
+      {lbl:'체외진단 소모품',val:59.6,col:'#0F7D86',amt:'227.3억'},
+      {lbl:'생명공학 소모품',val:18.2,col:'#28A9A4',amt:'69.4억'},
+      {lbl:'생명공학 장비',val:8.0,col:'#1A3F63',amt:'30.4억'},
+      {lbl:'상품 및 기타',val:5.9,col:'#C2A35A',amt:'22.7억'},
+      {lbl:'헬스케어 서비스',val:4.9,col:'#5A87A8',amt:'18.8억'},
+      {lbl:'체외진단 장비',val:3.3,col:'#7FBFC4',amt:'12.7억'}
+    ];
+    const productEl=document.getElementById('ne-productBars');
+    if(productEl){productEl.innerHTML=productBars.map(i=>`<div class="ne-row"><span class="ne-row-l">${i.lbl}</span><div class="ne-row-bg"><span style="width:${i.val}%;background:${i.col};"></span></div><span class="ne-row-v" style="color:${i.col};">${i.amt}</span></div>`).join('');}
+    mc('ne-mixDonut',{type:'doughnut',data:{labels:productBars.map(d=>d.lbl),datasets:[{data:productBars.map(d=>d.val),backgroundColor:productBars.map(d=>d.col),borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{color:tcNe,font:{size:11},boxWidth:10,padding:8}}}}});
+
+    const funnel=[
+      {lbl:'장비 설치',val:'FREND · ADAM이 고객 현장에 깔림',w:100,col:'rgba(26,63,99,.82)'},
+      {lbl:'검사/실험 수행',val:'혈액제제 검사 · 호르몬/PSA 검사 · 세포실험',w:82,col:'rgba(15,125,134,.78)'},
+      {lbl:'키트·칩 재주문',val:'FREND Kit · rWBC Kit · C-Chip 반복 구매',w:62,col:'rgba(40,169,164,.75)'},
+      {lbl:'서비스·업셀',val:'유지관리 + 신규 라인업 + 플랫폼 서비스',w:38,col:'rgba(90,135,168,.72)'},
+      {lbl:'매출 확대',val:'검사량이 늘수록 반복매출이 누적',w:24,col:'rgba(194,163,90,.82)'}
+    ];
+    const funnelEl=document.getElementById('ne-funnel');
+    if(funnelEl){funnelEl.innerHTML=funnel.map((f,i)=>`<div style="width:100%;display:flex;flex-direction:column;align-items:center;"><div class="ne-fn-box" style="width:${f.w}%;background:${f.col};">${f.lbl}</div><div class="ne-fn-l">${f.val}</div></div>${i<funnel.length-1?'<div class="ne-fn-arrow">▼</div>':''}`).join('');}
+
+    const geo=[
+      {lbl:'미국',val:193.9,pct:50.9,col:'#0F7D86'},
+      {lbl:'유럽',val:89.6,pct:23.5,col:'#1A3F63'},
+      {lbl:'기타',val:50.7,pct:13.3,col:'#5A87A8'},
+      {lbl:'국내',val:47.1,pct:12.4,col:'#28A9A4'}
+    ];
+    const geoEl=document.getElementById('ne-geoBars');
+    if(geoEl){geoEl.innerHTML=geo.map(i=>`<div class="ne-row"><span class="ne-row-l">${i.lbl}</span><div class="ne-row-bg"><span style="width:${i.pct}%;background:${i.col};"></span></div><span class="ne-row-v" style="color:${i.col};">${i.val.toFixed(1)}억</span></div>`).join('');}
+    mc('ne-geoChart',{type:'polarArea',data:{labels:geo.map(d=>d.lbl),datasets:[{data:geo.map(d=>d.val),backgroundColor:geo.map(d=>d.col),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:tcNe,font:{size:11},boxWidth:10,padding:8}}},scales:{r:{grid:{color:gcNe},ticks:{display:false}}}}});
+
+    mc('ne-financialChart',{type:'bar',data:{labels:['2024','2025'],datasets:[{label:'매출액(억)',data:[304.6,381.3],backgroundColor:'rgba(15,125,134,.78)',borderRadius:6},{label:'영업이익(억)',data:[6.2,11.0],backgroundColor:'rgba(26,63,99,.78)',borderRadius:6},{label:'순이익(억)',data:[35.9,15.8],backgroundColor:'rgba(40,169,164,.78)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tcNe,font:{size:11},boxWidth:10}}},scales:{x:{ticks:{color:tcNe},grid:{display:false}},y:{ticks:{color:tcNe,callback:v=>v+'억'},grid:{color:gcNe},beginAtZero:true}}}});
+    mc('ne-marginChart',{type:'line',data:{labels:['2023','2024','2025'],datasets:[{label:'매출총이익률',data:[46.0,55.9,58.7],borderColor:'#0F7D86',backgroundColor:'rgba(15,125,134,.08)',fill:false,tension:.35,pointRadius:3},{label:'영업이익률',data:[-8.3,2.0,2.9],borderColor:'#1A3F63',backgroundColor:'rgba(26,63,99,.08)',fill:false,tension:.35,pointRadius:3},{label:'당기순이익률',data:[-13.7,11.8,4.1],borderColor:'#28A9A4',backgroundColor:'rgba(40,169,164,.08)',fill:false,tension:.35,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tcNe,font:{size:10},boxWidth:10}}},scales:{x:{ticks:{color:tcNe},grid:{display:false}},y:{ticks:{color:tcNe,callback:v=>v+'%'},grid:{color:gcNe}}}}});
+
+    const timeline=[
+      {yr:'2024',t:'체외진단과 LS 기반 회복',d:'2024년 연결 매출 304.6억, 영업이익 6.2억으로 흑자 기반을 다시 만들었습니다. 2024년 6월 ADAMII-CD34 미국 FDA 승인도 확보했습니다.',tag:{c:'rgba(15,125,134,.10)',tc:'#0F7D86',l:'기반'}},
+      {yr:'2025 H1',t:'반기 매출 169억, 영업흑자 전환',d:'상반기 매출 169억원, 영업이익 2.6억원을 기록했습니다. 미국 공급 확대와 해외 판매 회복이 눈에 띄었습니다.',tag:{c:'rgba(26,63,99,.10)',tc:'#1A3F63',l:'상반기'}},
+      {yr:'2025 9M',t:'누적 매출 255억',d:'3분기 누적 기준 매출 255억원, 영업이익 1.9억원. FREND와 ADAM 제품의 판매 확대가 외형 성장을 이어갔습니다.',tag:{c:'rgba(40,169,164,.12)',tc:'#28A9A4',l:'누적'}},
+      {yr:'2025 FY',t:'연결 매출 381.3억, AAI 편입',d:'미국 남성호르몬·전립선 진단 공급 증가, 독일 법인 성장, AAI헬스케어 4분기 연결 편입으로 연간 매출이 25.2% 늘었습니다.',tag:{c:'rgba(194,163,90,.12)',tc:'#9A7B33',l:'점프'}},
+      {yr:'2026',t:'신제품과 신규 응용처 확장',d:'EVE-HT A26 글로벌 출시, 로레알과 공동 개발한 피부노화측정장치의 글로벌 필드테스트 공급, 체외진단 라인업 확대가 예정돼 있습니다.',tag:{c:'rgba(15,125,134,.10)',tc:'#0F7D86',l:'확장'}}
+    ];
+    const tlEl=document.getElementById('ne-timeline');
+    if(tlEl){tlEl.innerHTML=timeline.map(t=>`<div class="ne-tl"><div class="ne-tl-y">${t.yr}</div><div class="ne-tl-dot"></div><div><div class="ne-tl-title">${t.t}</div><div class="ne-tl-body">${t.d}</div><span class="ne-tag" style="background:${t.tag.c};color:${t.tag.tc};">${t.tag.l}</span></div></div>`).join('');}
+  }
+},
+
 skhynix: {
   label: 'SK하이닉스',
   meta: { margin: 34, tags: ['반도체', 'HBM', 'AI 인프라', '메모리'], currency: '₩' },
@@ -4101,5 +4392,7 @@ if (STATIC_PAGE && PAGES[STATIC_PAGE]) {
 </script>
 </body>
 </html>
+
+
 
 
