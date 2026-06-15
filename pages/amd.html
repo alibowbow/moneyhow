@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AMD는 어떻게 돈을 버나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#FFF3F3;--bg2:#FFE8E8;--bg3:#FFD6D6;
+  --sur:#FFFFFF;--sur2:#FFF8F8;
+  --bor:#F5CECE;--bor2:#EDA0A0;
+  --t1:#1A0808;--t2:#5C2020;--t3:#A06060;
+  --red:#E53935;--red2:rgba(229,57,53,.1);--red3:rgba(229,57,53,.2);
+  --teal:#00897B;--teal2:rgba(0,137,123,.1);
+  --mint:#43A047;--mint2:rgba(67,160,71,.1);
+  --amber:#F57C00;--amber2:rgba(245,124,0,.12);
+  --blue:#1565C0;--blue2:rgba(21,101,192,.1);
+  --pur:#6A1B9A;--pur2:rgba(106,27,154,.1);
+  --rad:10px;--rad2:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse at 15% 20%, rgba(229,57,53,.08) 0%, transparent 55%),
+  radial-gradient(ellipse at 85% 75%, rgba(0,137,123,.06) 0%, transparent 50%),
+  radial-gradient(ellipse at 50% 50%, rgba(229,57,53,.03) 0%, transparent 70%);
+pointer-events:none;z-index:0;}
+
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(229,57,53,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(229,57,53,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;z-index:0;}
+
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 22px 80px;}
+
+/* ─ HERO ─ */
+.hero{padding:48px 0 36px;display:flex;gap:32px;align-items:center;}
+.hero-l{flex:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;background:var(--red2);border:1px solid var(--red3);border-radius:100px;font-size:11px;font-weight:600;color:var(--red);letter-spacing:.04em;margin-bottom:18px;}
+.badge-pulse{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+.hero-title{font-family:'Fraunces',serif;font-size:clamp(34px,5.5vw,62px);font-weight:800;font-optical-sizing:auto;letter-spacing:-.02em;line-height:1.05;color:var(--t1);margin-bottom:12px;}
+.hero-title em{font-style:italic;color:var(--red);font-variation-settings:'WONK' 1;}
+.hero-sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:480px;font-weight:300;}
+.hero-r{flex-shrink:0;}
+.kpi-block{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:22px 26px;box-shadow:0 6px 28px rgba(229,57,53,.1);min-width:210px;}
+.kpi-lbl{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;}
+.kpi-val{font-family:'DM Mono',monospace;font-size:40px;font-weight:500;color:var(--red);line-height:1;letter-spacing:-.01em;}
+.kpi-sub{font-size:12px;color:var(--t2);margin-top:5px;}
+.kpi-tag{display:inline-block;font-size:11px;font-weight:700;color:var(--mint);background:var(--mint2);padding:3px 10px;border-radius:5px;margin-top:8px;}
+
+/* ─ STATS BAND ─ */
+.band{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--bor);border:1.5px solid var(--bor);border-radius:var(--rad2);overflow:hidden;margin-bottom:28px;box-shadow:0 2px 12px rgba(229,57,53,.06);}
+.band-cell{background:var(--sur);padding:14px 16px;transition:background .15s;}
+.band-cell:hover{background:var(--bg2);}
+.bc-lbl{font-size:9.5px;color:var(--t3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;}
+.bc-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--t1);line-height:1;}
+.bc-chg{font-size:10px;font-weight:600;margin-top:3px;}
+.up{color:var(--mint);}
+.dn{color:var(--red);}
+.neu{color:var(--t3);}
+
+/* ─ SEC ─ */
+.sec{margin-bottom:28px;}
+.sec-head{display:flex;align-items:center;gap:9px;margin-bottom:16px;}
+.sec-num{font-family:'Fraunces',serif;font-size:11px;font-weight:700;font-style:italic;background:var(--red);color:#fff;padding:2px 10px;border-radius:5px;letter-spacing:.02em;font-optical-sizing:auto;}
+.sec-title{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.01em;font-optical-sizing:auto;}
+.sec-line{flex:1;height:1px;background:var(--bor);}
+.sec-note{font-size:10px;color:var(--t3);}
+
+/* ─ CARD ─ */
+.card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;transition:all .2s;}
+.card:hover{border-color:var(--bor2);box-shadow:0 3px 16px rgba(229,57,53,.08);}
+.card-t{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px;letter-spacing:-.01em;font-optical-sizing:auto;}
+.card-d{font-size:11px;color:var(--t3);margin-bottom:14px;line-height:1.5;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* ─ HOW MONEY WORKS — 4SEG FLOW ─ */
+.flow4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);overflow:hidden;margin-bottom:26px;box-shadow:0 2px 12px rgba(229,57,53,.06);}
+.f4-node{padding:16px 14px;text-align:center;border-left:1px solid var(--bor);}
+.f4-node:first-child{border-left:none;}
+.f4-node.hi{background:linear-gradient(145deg,var(--red2),rgba(0,137,123,.06));}
+.f4-icon{font-size:26px;margin-bottom:7px;display:block;}
+.f4-name{font-family:'Fraunces',serif;font-size:12px;font-weight:700;color:var(--t1);margin-bottom:5px;}
+.f4-rev{font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:var(--red);margin-bottom:6px;}
+.f4-items{display:flex;flex-direction:column;gap:4px;text-align:left;}
+.f4-item{font-size:10px;color:var(--t2);display:flex;align-items:flex-start;gap:5px;line-height:1.4;}
+.f4-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+
+/* ─ VS TABLE ─ */
+.vs-grid{display:grid;grid-template-columns:1fr 80px 1fr;gap:0;background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);overflow:hidden;margin-bottom:26px;}
+.vs-col{padding:0;}
+.vs-head{padding:12px 16px;font-family:'Fraunces',serif;font-size:13px;font-weight:700;color:var(--t1);background:var(--bg2);}
+.vs-head.rd{color:var(--red);}
+.vs-mid-head{padding:12px 8px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t3);writing-mode:vertical-lr;text-orientation:mixed;letter-spacing:.1em;}
+.vs-row{display:flex;align-items:center;padding:9px 16px;border-top:1px solid var(--bor);font-size:11.5px;color:var(--t2);}
+.vs-row.hi{background:rgba(229,57,53,.04);}
+.vs-row span:first-child{flex:1;}
+.vs-row span:last-child{font-weight:600;color:var(--t1);}
+.vs-mid-row{display:flex;align-items:center;justify-content:center;padding:9px 6px;border-top:1px solid var(--bor);font-size:9px;font-weight:700;color:var(--t3);text-align:center;line-height:1.4;}
+
+/* ─ BD BARS ─ */
+.bd{display:flex;flex-direction:column;gap:7px;}
+.bd-row{display:flex;align-items:center;gap:9px;}
+.bd-lbl{font-size:11px;color:var(--t2);min-width:120px;max-width:160px;text-align:right;flex-shrink:0;}
+.bd-bg{flex:1;background:var(--bg2);border-radius:2px;height:14px;overflow:hidden;}
+.bd-bar{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.bd-val{font-size:11px;font-weight:700;min-width:85px;text-align:right;}
+
+/* ─ QUARTERLY TABLE ─ */
+.q-tbl{width:100%;border-collapse:collapse;}
+.q-tbl th{padding:8px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);border-bottom:1.5px solid var(--bor2);background:var(--bg2);}
+.q-tbl td{padding:9px 13px;border-bottom:1px solid var(--bor);font-size:12.5px;vertical-align:middle;}
+.q-tbl tr.hl td{background:rgba(229,57,53,.05);font-weight:600;}
+.q-tbl tr:hover td{background:var(--sur2);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.b-up{background:var(--mint2);color:var(--mint);}
+.b-rd{background:var(--red2);color:var(--red);}
+.b-neu{background:rgba(0,0,0,.06);color:var(--t3);}
+
+/* ─ AI SECTION ─ */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+.ai-card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:14px 15px;transition:all .2s;}
+.ai-card:hover{border-color:var(--red3);box-shadow:0 2px 12px rgba(229,57,53,.08);}
+.ai-card-icon{font-size:20px;margin-bottom:6px;}
+.ai-card-t{font-family:'Fraunces',serif;font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.ai-card-b{font-size:11.5px;color:var(--t2);line-height:1.5;}
+
+/* ─ SIM ─ */
+.sim{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;}
+.sl-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.sl-lbl{font-size:11.5px;color:var(--t2);min-width:160px;}
+.sl-row input[type=range]{flex:1;accent-color:var(--red);cursor:pointer;}
+.sl-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;min-width:75px;text-align:right;color:var(--t1);}
+.sim-outs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.so{background:var(--bg2);border-radius:var(--rad);padding:11px 13px;border:1px solid var(--bor);}
+.so-l{font-size:10px;color:var(--t3);margin-bottom:4px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.so-v{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--t1);}
+
+/* ─ INS ─ */
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.ins{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:15px;transition:all .2s;border-top:3px solid;}
+.ins:hover{box-shadow:0 4px 16px rgba(229,57,53,.1);transform:translateY(-2px);}
+.ins-num{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;line-height:1;margin-bottom:5px;}
+.ins-t{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.ins-b{font-size:11px;color:var(--t3);line-height:1.5;}
+
+/* ─ RISK ─ */
+.risk{background:rgba(229,57,53,.05);border:1.5px solid rgba(229,57,53,.2);border-radius:var(--rad2);padding:16px 20px;margin-bottom:26px;}
+.risk-title{font-family:'Fraunces',serif;font-size:12px;font-weight:700;color:var(--red);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.risk-item{font-size:12px;color:var(--t2);display:flex;gap:6px;line-height:1.55;}
+
+.footer{text-align:center;padding:22px 0 0;border-top:1px solid var(--bor);font-size:11px;color:var(--t3);line-height:1.7;}
+
+@media(max-width:720px){
+  .wrap{padding:0 14px 60px;}
+  .hero{flex-direction:column;gap:16px;padding:28px 0 22px;}
+  .hero-title{font-size:clamp(28px,8vw,42px);}
+  .hero-r{width:100%;}
+  .kpi-block{min-width:auto;width:100%;}
+  .kpi-val{font-size:34px;}
+  .band{grid-template-columns:repeat(2,1fr);}
+  .flow4{grid-template-columns:1fr 1fr;gap:0;}
+  .f4-node{border-top:1px solid var(--bor);}
+  .f4-node:nth-child(-n+2){border-top:none;}
+  .g2,.g3,.ai-grid,.risk-grid{grid-template-columns:1fr;}
+  .ins-grid{grid-template-columns:repeat(2,1fr);}
+  .sim-outs{grid-template-columns:repeat(2,1fr);}
+  .vs-grid{grid-template-columns:1fr;}
+  .vs-mid-head,.vs-mid-row{display:none;}
+  .bd-lbl{min-width:90px;max-width:110px;font-size:10px;}
+  .bd-val{min-width:55px;font-size:10px;}
+  .q-tbl{font-size:11px;}
+  .q-tbl th,.q-tbl td{padding:7px 8px;}
+  .sl-lbl{min-width:100px;font-size:10.5px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-badge"><span class="badge-pulse"></span>NASDAQ: AMD · 2025 최신 데이터</div>
+    <div class="hero-title">AMD는<br>어떻게 <em>돈을 버나</em></div>
+    <div class="hero-sub">NVIDIA와 AI GPU, Intel과 CPU — 두 전선을 동시에 싸우는 팹리스 반도체 기업. Instinct MI300 시리즈가 AI 데이터센터를 끌어들이고, EPYC 서버 CPU가 Intel의 점유율을 잠식하면서 2025년 들어 분기 매출이 $70억을 넘었다.</div>
+  </div>
+  <div class="hero-r">
+    <div class="kpi-block">
+      <div class="kpi-lbl">2025 Q1 매출</div>
+      <div class="kpi-val">$74.4억</div>
+      <div class="kpi-sub">YoY +36% · 데이터센터 YoY +57%</div>
+      <div class="kpi-tag">▲ 비-GAAP GM 54% · OM ~24%</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAND -->
+<div class="band">
+  <div class="band-cell">
+    <div class="bc-lbl">데이터센터 (2025 Q1)</div>
+    <div class="bc-val">$37.0억</div>
+    <div class="bc-chg up">▲ 57% YoY · EPYC+MI300</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">클라이언트 (2025 Q1)</div>
+    <div class="bc-val">$23.0억</div>
+    <div class="bc-chg up">▲ 68% YoY · Ryzen 9000</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">비-GAAP 매출총이익률</div>
+    <div class="bc-val">54%</div>
+    <div class="bc-chg up">2025 Q1 · 전년비 +2pp</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">EPYC 서버 CPU 점유율</div>
+    <div class="bc-val">~26%</div>
+    <div class="bc-chg up">Intel 점유율 빠르게 잠식</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">FY2024 연간 매출</div>
+    <div class="bc-val">$25.8B</div>
+    <div class="bc-chg up">YoY +14% · 데이터센터 주도</div>
+  </div>
+</div>
+
+<!-- PRODUCT SEGMENTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">4대 세그먼트 — 각각 다른 시장, 하나의 IP 전략</span><div class="sec-line"></div><span class="sec-note">2025 Q1 기준</span></div>
+  <div class="flow4">
+    <div class="f4-node hi">
+      <span class="f4-icon">🖥️</span>
+      <div class="f4-name">데이터센터</div>
+      <div class="f4-rev">$37.0억</div>
+      <div class="f4-items">
+        <div class="f4-item"><div class="f4-dot" style="background:var(--red);"></div>Instinct MI300X/MI350 (AI GPU)</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--red);"></div>EPYC 4·5세대 서버 CPU</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--teal);"></div>YoY +57% 폭증</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--teal);"></div>MS·AWS·메타·오라클 고객</div>
+      </div>
+    </div>
+    <div class="f4-node">
+      <span class="f4-icon">💻</span>
+      <div class="f4-name">클라이언트</div>
+      <div class="f4-rev">$23.0억</div>
+      <div class="f4-items">
+        <div class="f4-item"><div class="f4-dot" style="background:var(--blue);"></div>Ryzen 9000 (데스크탑)</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--blue);"></div>Ryzen AI 300 (노트북)</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--teal);"></div>YoY +68% 강세</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--t3);"></div>Intel Core와 정면 경쟁</div>
+      </div>
+    </div>
+    <div class="f4-node">
+      <span class="f4-icon">🧩</span>
+      <div class="f4-name">임베디드</div>
+      <div class="f4-rev">$11.4억</div>
+      <div class="f4-items">
+        <div class="f4-item"><div class="f4-dot" style="background:var(--amber);"></div>산업·통신·자동차·의료</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--amber);"></div>Xilinx 인수(2022)로 확보</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--teal);"></div>YoY +150% 재고조정 후 회복</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--t3);"></div>FPGA·Versal 플랫폼</div>
+      </div>
+    </div>
+    <div class="f4-node">
+      <span class="f4-icon">🎮</span>
+      <div class="f4-name">게이밍</div>
+      <div class="f4-rev">$3.0억</div>
+      <div class="f4-items">
+        <div class="f4-item"><div class="f4-dot" style="background:var(--t3);"></div>Radeon GPU (Navi)</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--t3);"></div>Xbox·PS5 커스텀 칩 (만료↓)</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--red);"></div>YoY -59% 급감</div>
+        <div class="f4-item"><div class="f4-dot" style="background:var(--t3);"></div>콘솔 사이클 하락 국면</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">매출 성장 궤적 & 세그먼트 구성</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">세그먼트별 분기 매출 (스택 바)</div>
+      <div class="card-d">데이터센터가 전체를 이끌고, 게이밍은 줄고, 임베디드는 저점에서 반등</div>
+      <div style="height:220px;position:relative;"><canvas id="segChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-t">2025 Q1 세그먼트 구성</div>
+      <div class="card-d">데이터센터 50% 첫 돌파 — AI GPU + EPYC 양축</div>
+      <div style="height:220px;position:relative;"><canvas id="mixChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- VS TABLE -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">AMD의 두 전선 — NVIDIA와 Intel을 동시에 공략</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">AI GPU 전선 — AMD Instinct vs NVIDIA</div>
+      <div class="card-d">시장점유율은 열세지만 가성비·대용량 HBM·오픈 생태계로 틈새 공략</div>
+      <table class="q-tbl">
+        <thead><tr><th>항목</th><th>AMD (Instinct MI300)</th><th>NVIDIA (H100/H200)</th></tr></thead>
+        <tbody>
+          <tr><td>AI 학습 성능</td><td>경쟁력 있음</td><td>업계 표준 (우위)</td></tr>
+          <tr><td>소프트웨어 생태계</td><td>ROCm (성장 중)</td><td>CUDA (압도적)</td></tr>
+          <tr><td>HBM 메모리 용량</td><td>192GB (MI300X)</td><td>80~141GB</td></tr>
+          <tr><td>AI 추론 가성비</td><td>높음</td><td>중간</td></tr>
+          <tr class="hl"><td>시장점유율 (추정)</td><td>~10~15%</td><td>~80%+</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-t">서버 CPU 전선 — AMD EPYC vs Intel Xeon</div>
+      <div class="card-d">칩렛 구조의 수율 우위와 코어당 비용 효율로 점유율을 빠르게 늘리는 중</div>
+      <table class="q-tbl">
+        <thead><tr><th>항목</th><th>AMD (EPYC Turin)</th><th>Intel (Xeon Granite Rapids)</th></tr></thead>
+        <tbody>
+          <tr><td>최대 코어 수</td><td>192코어 (EPYC 9965P)</td><td>128코어</td></tr>
+          <tr><td>제조 공정</td><td>TSMC N3E/N4</td><td>Intel 18A (전환 중)</td></tr>
+          <tr><td>서버 TCO</td><td>낮음 (코어당 비용↓)</td><td>중간~높음</td></tr>
+          <tr><td>클라우드 채택</td><td>AWS·Azure·GCP 전부</td><td>점유율 방어 중</td></tr>
+          <tr class="hl"><td>시장점유율</td><td>~26% (상승)</td><td>~74% (하락)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- QUARTERLY TABLE -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">분기별 실적 상세</span><div class="sec-line"></div><span class="sec-note">2024 Q1 ~ 2025 Q1</span></div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="q-tbl">
+      <thead><tr><th>분기</th><th>매출</th><th>데이터센터</th><th>비-GAAP 매출총이익률</th><th>비-GAAP EPS</th><th>YoY</th></tr></thead>
+      <tbody id="qTbl"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- P&L BREAKDOWN -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">칩 매출 $100의 분해 — 팹리스 수익 구조</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">비-GAAP 기준 수익 분해</div>
+      <div class="card-d">TSMC 위탁생산비 제외 후 54% 매출총이익, R&D·SG&A 비용 제하면 영업이익 ~23%</div>
+      <div class="bd" id="bdBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">비-GAAP 마진 추이</div>
+      <div class="card-d">데이터센터 믹스 개선에 따라 마진이 우상향 — FY2024~2025</div>
+      <div style="height:210px;position:relative;"><canvas id="marginChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- AI STRATEGY -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><span class="sec-title">AI가 AMD를 다시 쓰는 방식</span><div class="sec-line"></div></div>
+  <div class="ai-grid">
+    <div class="ai-card">
+      <div class="ai-card-icon">🔴</div>
+      <div class="ai-card-t">Instinct MI300/MI350 시리즈</div>
+      <div class="ai-card-b">192GB HBM3 탑재로 대형 모델 추론에 특화. 마이크로소프트·AWS·메타가 채택. 2025년 MI350·MI400 로드맵으로 NVIDIA와 성능 격차 줄이기 도전.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-icon">⚡</div>
+      <div class="ai-card-t">EPYC Turin — 서버 CPU 패권 도전</div>
+      <div class="ai-card-b">최대 192코어, TSMC N3 공정. 코어당 TCO(총소유비용)에서 Intel 대비 압도적 우위. AWS·Azure·GCP·메타 등 하이퍼스케일러 전부 EPYC 도입 확대 중.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-icon">🧠</div>
+      <div class="ai-card-t">ROCm — CUDA 생태계 추격</div>
+      <div class="ai-card-b">AMD의 AI 소프트웨어 스택. PyTorch·TensorFlow 네이티브 지원 확대. CUDA 전환 비용이 높은 기업보다 신규 AI 워크로드에서 침투 유리. 오픈소스 전략으로 커뮤니티 확보 중.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATOR -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">07</span><span class="sec-title">AMD 수익 시뮬레이터</span><div class="sec-line"></div></div>
+  <div class="sim">
+    <div class="card-t" style="margin-bottom:3px;">세그먼트별 매출과 마진이 달라지면?</div>
+    <div class="card-d" style="margin-bottom:12px;">분기 실적 추정 — 실제와 다를 수 있습니다</div>
+    <div class="sl-row"><label class="sl-lbl">데이터센터 분기 매출 ($B)</label><input type="range" min="2.0" max="6.0" value="3.70" step="0.1" id="sl-dc" oninput="calc()"><span class="sl-val" id="v-dc">$3.70B</span></div>
+    <div class="sl-row"><label class="sl-lbl">클라이언트 분기 매출 ($B)</label><input type="range" min="1.0" max="3.5" value="2.30" step="0.1" id="sl-cl" oninput="calc()"><span class="sl-val" id="v-cl">$2.30B</span></div>
+    <div class="sl-row"><label class="sl-lbl">임베디드+게이밍 ($B)</label><input type="range" min="0.8" max="2.5" value="1.44" step="0.1" id="sl-oth" oninput="calc()"><span class="sl-val" id="v-oth">$1.44B</span></div>
+    <div class="sl-row"><label class="sl-lbl">비-GAAP 영업이익률 (%)</label><input type="range" min="15" max="35" value="23" step="0.5" id="sl-om" oninput="calc()"><span class="sl-val" id="v-om">23%</span></div>
+    <div class="sim-outs">
+      <div class="so"><div class="so-l">분기 총매출 ($B)</div><div class="so-v" id="s-rev" style="color:var(--red);">—</div></div>
+      <div class="so"><div class="so-l">분기 영업이익 ($B)</div><div class="so-v" id="s-op" style="color:var(--mint);">—</div></div>
+      <div class="so"><div class="so-l">연간 환산 매출 ($B)</div><div class="so-v" id="s-ann" style="color:var(--amber);">—</div></div>
+      <div class="so"><div class="so-l">데이터센터 비중</div><div class="so-v" id="s-dc" style="color:var(--blue);">—</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RISK -->
+<div class="risk">
+  <div class="risk-title">⚠ 리스크 — 두 전선 동시 싸움의 위험</div>
+  <div class="risk-grid">
+    <div class="risk-item"><span>🟢</span><span><strong>NVIDIA 생태계 벽:</strong> CUDA 생태계 전환 비용이 너무 높다. 기존 CUDA 코드베이스 보유 기업은 AMD로 옮기려면 막대한 재개발 비용 발생.</span></div>
+    <div class="risk-item"><span>🇨🇳</span><span><strong>중국 수출통제:</strong> MI300 등 AI GPU의 중국 수출 금지 확대. 중국향 매출 의존도가 높아 규제 강화 시 직격탄.</span></div>
+    <div class="risk-item"><span>🏭</span><span><strong>TSMC 집중 리스크:</strong> 자체 팹 없음. TSMC 파운드리 의존 — 공정 우선순위, 가격, 지정학적 리스크에 노출.</span></div>
+    <div class="risk-item"><span>📉</span><span><strong>게이밍·임베디드 사이클:</strong> 콘솔 주기 하락 + 임베디드 재고 조정 여파. 비-AI 세그먼트의 회복 속도가 느릴 경우 혼합 마진 훼손.</span></div>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">08</span><span class="sec-title">핵심 인사이트</span><div class="sec-line"></div></div>
+  <div class="ins-grid">
+    <div class="ins" style="border-top-color:var(--red);">
+      <div class="ins-num" style="color:var(--red);">$74.4억</div>
+      <div class="ins-t">2025 Q1 분기 매출</div>
+      <div class="ins-b">YoY +36%. 데이터센터 $37억이 전체를 이끌었다. 연환산 $29억 규모.</div>
+    </div>
+    <div class="ins" style="border-top-color:var(--teal);">
+      <div class="ins-num" style="color:var(--teal);">+57%</div>
+      <div class="ins-t">데이터센터 YoY 성장</div>
+      <div class="ins-b">MI300 AI GPU + EPYC CPU 동반 성장. 두 제품 동시 성공은 드문 시나리오.</div>
+    </div>
+    <div class="ins" style="border-top-color:var(--amber);">
+      <div class="ins-num" style="color:var(--amber);">26%</div>
+      <div class="ins-t">서버 CPU 시장점유율</div>
+      <div class="ins-b">EPYC로 Intel 점유율 잠식. 5년 전 한 자릿수에서 급성장. 클라우드 3사 모두 채택.</div>
+    </div>
+    <div class="ins" style="border-top-color:var(--blue);">
+      <div class="ins-num" style="color:var(--blue);">54%</div>
+      <div class="ins-t">비-GAAP 매출총이익률</div>
+      <div class="ins-b">2020년대 초 ~46%에서 지속 개선. 데이터센터 고마진 제품 믹스 효과.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  데이터: AMD 분기 실적 발표(2024~2025) 기반 · 비-GAAP 지표 기준 · 시장점유율은 추정치<br>
+  교육용 시각화이며 투자 권유가 아닙니다.
+</div>
+
+</div>
+
+<script>
+const tc='#A06060', gc='rgba(229,57,53,.07)';
+
+// SEGMENT STACKED BAR
+new Chart(document.getElementById('segChart'),{
+  type:'bar',
+  data:{
+    labels:['24Q1','24Q2','24Q3','24Q4','25Q1'],
+    datasets:[
+      {label:'데이터센터',data:[2.34,2.80,3.55,3.86,3.70],backgroundColor:'rgba(229,57,53,.75)',borderRadius:3,stack:'s'},
+      {label:'클라이언트',data:[1.37,1.49,1.88,2.34,2.30],backgroundColor:'rgba(0,137,123,.7)',borderRadius:3,stack:'s'},
+      {label:'임베디드',data:[0.84,0.86,0.93,1.10,1.14],backgroundColor:'rgba(245,124,0,.7)',borderRadius:3,stack:'s'},
+      {label:'게이밍',data:[0.92,0.65,0.46,0.36,0.30],backgroundColor:'rgba(106,27,154,.55)',borderRadius:3,stack:'s'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:10.5},boxWidth:10,padding:7}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y}B`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:10}},grid:{display:false},stacked:true},
+      y:{ticks:{color:tc,callback:v=>'$'+v+'B'},grid:{color:gc},stacked:true,min:0}
+    }
+  }
+});
+
+// MIX DOUGHNUT
+new Chart(document.getElementById('mixChart'),{
+  type:'doughnut',
+  data:{
+    labels:['데이터센터 50%','클라이언트 31%','임베디드 15%','게이밍 4%'],
+    datasets:[{
+      data:[50,31,15,4],
+      backgroundColor:['#E53935','#00897B','#F57C00','#6A1B9A'],
+      borderWidth:2,borderColor:'#FFF3F3',hoverOffset:6,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'58%',
+    plugins:{legend:{position:'right',labels:{color:tc,font:{size:10.5},boxWidth:10,padding:7}}}
+  }
+});
+
+// QUARTERLY TABLE
+const QT=[
+  {q:'2024 Q1',rev:5.47,dc:2.34,gm:52.0,eps:0.62,yoy:'+2%',cls:''},
+  {q:'2024 Q2',rev:5.84,dc:2.80,gm:53.0,eps:0.69,yoy:'+7%',cls:''},
+  {q:'2024 Q3',rev:6.82,dc:3.55,gm:54.0,eps:0.92,yoy:'+18%',cls:''},
+  {q:'2024 Q4',rev:7.66,dc:3.86,gm:53.5,eps:1.09,yoy:'+24%',cls:''},
+  {q:'2025 Q1 ★',rev:7.44,dc:3.70,gm:54.0,eps:1.57,yoy:'+36%',cls:'hl'},
+];
+document.getElementById('qTbl').innerHTML=QT.map(r=>`
+  <tr class="${r.cls}">
+    <td style="color:${r.cls==='hl'?'var(--red)':'var(--t1)'};font-weight:${r.cls?'600':'400'};">${r.q}</td>
+    <td>$${r.rev.toFixed(2)}B</td>
+    <td style="color:var(--t2);">$${r.dc.toFixed(2)}B</td>
+    <td style="color:${r.gm>=54?'var(--mint)':'var(--t2)'};">${r.gm}%</td>
+    <td>$${r.eps.toFixed(2)}</td>
+    <td><span class="badge b-up">${r.yoy}</span></td>
+  </tr>`).join('');
+
+// BD BARS
+const BD=[
+  {lbl:'고객 결제 (칩 매출)',v:100,col:'#E53935',s:'+'},
+  {lbl:'TSMC 위탁생산·패키징',v:-46,col:'#A06060',s:'-'},
+  {lbl:'R&D (CPU+GPU 병행)',v:-20,col:'#A06060',s:'-'},
+  {lbl:'판매관리비 (SG&A)',v:-11,col:'#A06060',s:'-'},
+  {lbl:'비-GAAP 영업이익 ~23%',v:23,col:'#43A047',s:'='},
+];
+document.getElementById('bdBars').innerHTML=BD.map(i=>{
+  const pct=Math.round(Math.abs(i.v)/100*100);
+  const col=i.lbl.includes('영업이익')?'var(--mint)':i.v<0?'var(--t3)':'var(--red)';
+  return`<div class="bd-row"><span class="bd-lbl">${i.lbl}</span><div class="bd-bg"><div class="bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="bd-val" style="color:${col};">${i.s} $${Math.abs(i.v)}</span></div>`;
+}).join('');
+
+// MARGIN TREND
+new Chart(document.getElementById('marginChart'),{
+  type:'line',
+  data:{
+    labels:['24Q1','24Q2','24Q3','24Q4','25Q1'],
+    datasets:[
+      {label:'비-GAAP 매출총이익률',data:[52.0,53.0,54.0,53.5,54.0],borderColor:'#E53935',backgroundColor:'rgba(229,57,53,.08)',fill:true,tension:.4,pointRadius:3,yAxisID:'yA'},
+      {label:'비-GAAP 영업이익률',data:[19.5,20.8,22.1,21.8,23.8],borderColor:'#43A047',backgroundColor:'transparent',tension:.4,pointRadius:3,yAxisID:'yA'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:10.5},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}%`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:9.5}},grid:{color:gc}},
+      yA:{ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},min:15,max:60}
+    }
+  }
+});
+
+function calc(){
+  const dc=parseFloat(document.getElementById('sl-dc').value);
+  const cl=parseFloat(document.getElementById('sl-cl').value);
+  const oth=parseFloat(document.getElementById('sl-oth').value);
+  const om=parseFloat(document.getElementById('sl-om').value);
+  document.getElementById('v-dc').textContent='$'+dc.toFixed(2)+'B';
+  document.getElementById('v-cl').textContent='$'+cl.toFixed(2)+'B';
+  document.getElementById('v-oth').textContent='$'+oth.toFixed(2)+'B';
+  document.getElementById('v-om').textContent=om+'%';
+  const rev=dc+cl+oth;
+  const op=rev*om/100;
+  const ann=rev*4;
+  const dcPct=Math.round(dc/rev*100);
+  document.getElementById('s-rev').textContent='$'+rev.toFixed(2)+'B';
+  document.getElementById('s-op').textContent='$'+op.toFixed(2)+'B';
+  document.getElementById('s-ann').textContent='$'+ann.toFixed(1)+'B';
+  document.getElementById('s-dc').textContent=dcPct+'%';
+}
+calc();
+</script>
+</body>
+</html>

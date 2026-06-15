@@ -708,6 +708,7 @@ let NAV = [
     {id:'youtube',label:'유튜브 광고'},
     {id:'meta',label:'메타'},
     {id:'mrvl',label:'마벨'},
+    {id:'amd',label:'AMD'},
   ]},
   { cat:'자영업', items:[
     {id:'chicken',label:'치킨집'},
@@ -757,6 +758,7 @@ const PAGE_META = {
   'rider':             { icon:'🛵', blurb:'배달 한 건의 실수령액을 끝까지 분해' },
   'meta':              { icon:'📘', blurb:'35억 명을 광고로 바꾸는 거대 머신' },
   'mrvl':              { icon:'🧩', blurb:'하이퍼스케일러의 맞춤형 AI 칩을 설계하는 숨은 설계자' },
+  'amd':               { icon:'🔴', blurb:'NVIDIA·Intel 두 전선을 동시에 공략하는 팹리스 반도체' },
 };
 
 // #RRGGBB → rgba(...)
@@ -856,7 +858,8 @@ const PAGE_FILE_MAP = {
   "destcafe": "pages/destcafe.html",
   "rider": "pages/rider.html",
   "meta": "pages/meta.html",
-  "mrvl": "pages/mrvl.html"
+  "mrvl": "pages/mrvl.html",
+  "amd": "pages/amd.html"
 };
 const STANDALONE_EMBED_IDS = new Set([
   'sanil',
@@ -880,7 +883,8 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'spacex',
   'tron',
   'meta',
-  'mrvl'
+  'mrvl',
+  'amd'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
