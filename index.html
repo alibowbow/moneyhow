@@ -86,7 +86,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
 .wt{font-family:'DM Serif Display',Georgia,serif;font-size:44px;color:var(--t1);letter-spacing:-.025em;margin-bottom:12px;line-height:1.15;}
 .wt em{font-style:italic;color:var(--amb);}
 .ws{font-size:15px;color:var(--t2);max-width:400px;line-height:1.6;margin-bottom:32px;}
-.w-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px;}
+.w-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:720px;}
 .chip{padding:8px 16px;background:var(--sur);border:1px solid var(--bor);border-radius:100px;font-size:13px;color:var(--t2);cursor:pointer;transition:all .15s;font-weight:500;}
 .chip:hover{border-color:var(--acc);color:var(--amb);background:var(--amb2);}
 .page-frame{width:100%;height:calc(100vh - 128px);min-height:860px;border:0;display:block;background:transparent;}
@@ -1442,85 +1442,20 @@ function showWelcome(){
   document.getElementById('breadcrumb').innerHTML = `<div class="bc-home" onclick="navigateHome()" title="홈">${HOME_ICON}</div><span style="opacity:.4;margin:0 2px;">/</span><span class="bc-cur">홈</span>`;
   document.getElementById('content').classList.remove('embed-standalone','embed-detail-shell','embed-shell');
 
-  const allItems = NAV.flatMap(c => c.items);
-  const totalReports = allItems.length;
-  const totalCats = NAV.filter(c => c.items.length).length;
-
-  // 즐겨찾기 섹션
-  let bmHtml = '';
-  const bmCards = bookmarks.filter(id => allItems.some(i => i.id === id))
-    .map(id => homeCard(id, CAT_META['🔥 하이라이트'].color)).join('');
-  if(bmCards){
-    bmHtml = `<section class="hx-cat">
-      <div class="hx-cat-head">
-        <div class="hx-cat-ico" style="background:${hexA('#D4A843',.15)};color:#D4A843;">★</div>
-        <div class="hx-cat-meta"><div class="hx-cat-name">즐겨찾기<span class="hx-cat-pill">${bookmarks.length}</span></div><div class="hx-cat-desc">내가 저장한 리포트</div></div>
-        <div class="hx-cat-line"></div>
-      </div>
-      <div class="hx-grid">${bmCards}</div>
-    </section>`;
-  }
-
-  // 최근 본 리포트 섹션
-  let recentHtml = '';
-  const recentIds = getRecent().filter(id => allItems.some(i => i.id === id)).slice(0, 6);
-  if(recentIds.length){
-    const rCards = recentIds.map(id => homeCard(id, '#5B7089')).join('');
-    recentHtml = `<section class="hx-cat">
-      <div class="hx-cat-head">
-        <div class="hx-cat-ico" style="background:${hexA('#5B7089',.16)};color:#5B7089;">🕘</div>
-        <div class="hx-cat-meta"><div class="hx-cat-name">최근 본 리포트<span class="hx-cat-pill">${recentIds.length}</span></div><div class="hx-cat-desc">이어서 살펴보기</div></div>
-        <div class="hx-cat-line"></div>
-      </div>
-      <div class="hx-grid">${rCards}</div>
-    </section>`;
-  }
-
-  // 카테고리 섹션
-  const catHtml = NAV.map(cat => {
-    if(!cat.items.length) return '';
-    const cm = CAT_META[cat.cat] || { icon:'📁', color:'#888780', desc:'' };
-    const cards = cat.items.map(it => {
-      const feature = (cat.cat === '🔥 하이라이트' && it.id === 'leaderboard');
-      return homeCard(it.id, cm.color, feature);
-    }).join('');
-    return `<section class="hx-cat">
-      <div class="hx-cat-head">
-        <div class="hx-cat-ico" style="background:${hexA(cm.color,.14)};color:${cm.color};">${cm.icon}</div>
-        <div class="hx-cat-meta"><div class="hx-cat-name">${cleanCatName(cat.cat)}<span class="hx-cat-pill">${cat.items.length}</span></div><div class="hx-cat-desc">${cm.desc}</div></div>
-        <div class="hx-cat-line"></div>
-      </div>
-      <div class="hx-grid">${cards}</div>
-    </section>`;
+  const allChips = NAV.flatMap(c => c.items).map(i => {
+    const pm = PAGE_META[i.id] || {};
+    const isLb = i.id === 'leaderboard';
+    const style = isLb ? ' style="border-color:var(--acc);color:var(--amb);background:var(--amb2);"' : '';
+    return `<div class="chip" onclick="navigate('${i.id}')"${style}>${pm.icon ? pm.icon+' ' : ''}${i.label}</div>`;
   }).join('');
 
   document.getElementById('content').innerHTML = `
-  <div class="hx">
-    <section class="hx-hero">
-      <div class="hx-hero-inner">
-        <span class="hx-eyebrow"><span class="dot"></span>돈의 흐름을 해부하는 인터랙티브 리포트</span>
-        <h1 class="hx-title">무엇이든,<br><em>어떻게 돈을 버나</em></h1>
-        <p class="hx-sub">기업·플랫폼·자영업·직업까지 — 매출이 어디서 나와 어디로 새는지, 숫자와 차트, 그리고 직접 만져보는 시뮬레이터로 파헤쳐 보세요.</p>
-        <div class="hx-cta">
-          <button class="hx-btn primary" onclick="openModal()">✨ AI로 새 주제 분석</button>
-          <button class="hx-btn ghost" onclick="navigate('leaderboard')">🏆 수익성 리더보드</button>
-        </div>
-        <div class="hx-stats">
-          <div class="hx-stat"><div class="hx-stat-v"><em>${totalReports}</em>+</div><div class="hx-stat-l">분석 리포트</div></div>
-          <div class="hx-stat-div"></div>
-          <div class="hx-stat"><div class="hx-stat-v">${totalCats}</div><div class="hx-stat-l">산업 카테고리</div></div>
-          <div class="hx-stat-div"></div>
-          <div class="hx-stat"><div class="hx-stat-v">∞</div><div class="hx-stat-l">AI 즉석 생성</div></div>
-        </div>
-      </div>
-    </section>
-    ${bmHtml}
-    ${recentHtml}
-    ${catHtml}
-    <div class="hx-final">
-      <h3>찾는 주제가 <em>없나요?</em></h3>
-      <p>궁금한 기업이나 직업을 입력하면 AI가 즉시 수익 구조를 분석해 시각화합니다.</p>
-      <button class="hx-btn primary" onclick="openModal()">⚡ 직접 분석해보기</button>
+  <div class="welcome">
+    <div class="wt">무엇이든,<br><em>어떻게 돈을 버나</em></div>
+    <div class="ws">기업, 플랫폼, 자영업, 직업까지 — 수익 구조를 숫자와 차트로 시각화합니다</div>
+    <div class="w-chips">
+      ${allChips}
+      <div class="chip" onclick="openModal()" style="border-style:dashed;">✨ AI로 직접 분석하기</div>
     </div>
   </div>`;
 }
