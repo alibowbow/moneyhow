@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>마벨은 어떻게 돈을 버나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#EEF2FF;--bg2:#E2E9FF;--bg3:#CBD7FF;
+  --sur:#FFFFFF;--sur2:#F5F7FF;
+  --bor:#CAD6F5;--bor2:#9DB2EC;
+  --t1:#0B1733;--t2:#33436B;--t3:#7385AE;
+  --sky:#3D5AFE;--sky2:rgba(61,90,254,.1);--sky3:rgba(61,90,254,.2);
+  --teal:#00BCD4;--teal2:rgba(0,188,212,.1);
+  --mint:#10B981;--mint2:rgba(16,185,129,.1);
+  --coral:#FF5C7A;--coral2:rgba(255,92,122,.1);
+  --gold:#FFA726;--gold2:rgba(255,167,38,.12);
+  --pur:#7C5CFC;--pur2:rgba(124,92,252,.1);
+  --rad:10px;--rad2:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;font-size:14px;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;}
+
+/* mesh gradient bg */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse at 15% 20%, rgba(61,90,254,.09) 0%, transparent 55%),
+  radial-gradient(ellipse at 85% 75%, rgba(0,188,212,.07) 0%, transparent 50%),
+  radial-gradient(ellipse at 50% 50%, rgba(124,92,252,.04) 0%, transparent 70%);
+pointer-events:none;z-index:0;}
+
+/* subtle grid */
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(61,90,254,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(61,90,254,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;z-index:0;}
+
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 22px 80px;}
+
+/* ─ HERO ─ */
+.hero{padding:48px 0 36px;display:flex;gap:32px;align-items:center;}
+.hero-l{flex:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;background:var(--sky2);border:1px solid var(--sky3);border-radius:100px;font-size:11px;font-weight:600;color:var(--sky);letter-spacing:.04em;margin-bottom:18px;}
+.badge-pulse{width:7px;height:7px;border-radius:50%;background:var(--sky);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+.hero-title{font-family:'Fraunces',serif;font-size:clamp(34px,5.5vw,62px);font-weight:800;font-optical-sizing:auto;letter-spacing:-.02em;line-height:1.05;color:var(--t1);margin-bottom:12px;}
+.hero-title em{font-style:italic;color:var(--sky);font-variation-settings:'WONK' 1;}
+.hero-sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:480px;font-weight:300;}
+.hero-r{flex-shrink:0;}
+.kpi-block{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:22px 26px;box-shadow:0 6px 28px rgba(61,90,254,.1);min-width:210px;}
+.kpi-lbl{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;}
+.kpi-val{font-family:'DM Mono',monospace;font-size:40px;font-weight:500;color:var(--sky);line-height:1;letter-spacing:-.01em;}
+.kpi-sub{font-size:12px;color:var(--t2);margin-top:5px;}
+.kpi-tag{display:inline-block;font-size:11px;font-weight:700;color:var(--mint);background:var(--mint2);padding:3px 10px;border-radius:5px;margin-top:8px;}
+
+/* ─ STATS BAND ─ */
+.band{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--bor);border:1.5px solid var(--bor);border-radius:var(--rad2);overflow:hidden;margin-bottom:28px;box-shadow:0 2px 12px rgba(61,90,254,.06);}
+.band-cell{background:var(--sur);padding:14px 16px;transition:background .15s;}
+.band-cell:hover{background:var(--bg2);}
+.bc-lbl{font-size:9.5px;color:var(--t3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;}
+.bc-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--t1);line-height:1;}
+.bc-chg{font-size:10px;font-weight:600;margin-top:3px;}
+.up{color:var(--mint);}
+.dn{color:var(--coral);}
+.neu{color:var(--t3);}
+
+/* ─ SEC ─ */
+.sec{margin-bottom:28px;}
+.sec-head{display:flex;align-items:center;gap:9px;margin-bottom:16px;}
+.sec-num{font-family:'Fraunces',serif;font-size:11px;font-weight:700;font-style:italic;background:var(--sky);color:#fff;padding:2px 10px;border-radius:5px;letter-spacing:.02em;font-optical-sizing:auto;}
+.sec-title{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.01em;font-optical-sizing:auto;}
+.sec-line{flex:1;height:1px;background:var(--bor);}
+.sec-note{font-size:10px;color:var(--t3);}
+
+/* ─ CARD ─ */
+.card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;transition:all .2s;}
+.card:hover{border-color:var(--bor2);box-shadow:0 3px 16px rgba(61,90,254,.08);}
+.card-t{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px;letter-spacing:-.01em;font-optical-sizing:auto;}
+.card-d{font-size:11px;color:var(--t3);margin-bottom:14px;line-height:1.5;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* ─ HOW MONEY WORKS — 3STEP FLOW ─ */
+.flow3{display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;align-items:stretch;gap:0;background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);overflow:hidden;margin-bottom:26px;box-shadow:0 2px 12px rgba(61,90,254,.06);}
+.f3-node{padding:18px 14px;text-align:center;}
+.f3-node.center{background:linear-gradient(145deg,var(--sky2),rgba(0,188,212,.08));border-left:1.5px solid var(--sky3);border-right:1.5px solid var(--sky3);}
+.f3-icon{font-size:26px;margin-bottom:7px;display:block;}
+.f3-name{font-family:'Fraunces',serif;font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:6px;}
+.f3-items{display:flex;flex-direction:column;gap:4px;text-align:left;}
+.f3-item{font-size:10.5px;color:var(--t2);display:flex;align-items:flex-start;gap:5px;line-height:1.45;}
+.f3-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.f3-arr{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--sky);opacity:.5;}
+
+/* ─ APP PILLARS ─ */
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:26px;}
+.app-card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:16px;transition:all .2s;}
+.app-card:hover{border-color:var(--bor2);box-shadow:0 3px 16px rgba(61,90,254,.1);transform:translateY(-2px);}
+.app-icon{font-size:26px;margin-bottom:8px;display:block;}
+.app-name{font-family:'Fraunces',serif;font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.app-mau{font-size:11px;color:var(--t3);margin-bottom:8px;}
+.app-role{font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:8px;}
+.app-bar-bg{background:var(--bg2);border-radius:2px;height:4px;overflow:hidden;}
+.app-bar{height:100%;border-radius:2px;transition:width .9s cubic-bezier(.4,0,.2,1);}
+.app-pct{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;margin-top:5px;}
+
+/* ─ BD BARS ─ */
+.bd{display:flex;flex-direction:column;gap:7px;}
+.bd-row{display:flex;align-items:center;gap:9px;}
+.bd-lbl{font-size:11px;color:var(--t2);min-width:120px;max-width:160px;text-align:right;flex-shrink:0;}
+.bd-bg{flex:1;background:var(--bg2);border-radius:2px;height:14px;overflow:hidden;}
+.bd-bar{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.bd-val{font-size:11px;font-weight:700;min-width:85px;text-align:right;}
+
+/* ─ QUARTERLY TABLE ─ */
+.q-tbl{width:100%;border-collapse:collapse;}
+.q-tbl th{padding:8px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);border-bottom:1.5px solid var(--bor2);background:var(--bg2);}
+.q-tbl td{padding:9px 13px;border-bottom:1px solid var(--bor);font-size:12.5px;vertical-align:middle;}
+.q-tbl tr.hl td{background:rgba(61,90,254,.05);font-weight:600;}
+.q-tbl tr.q1 td{background:rgba(16,185,129,.05);}
+.q-tbl tr:hover td{background:var(--sur2);}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.b-up{background:var(--mint2);color:var(--mint);}
+.b-sky{background:var(--sky2);color:var(--sky);}
+
+/* ─ RL LOSS BOX ─ */
+.rl-box{background:linear-gradient(135deg,rgba(255,92,122,.06),rgba(255,92,122,.02));border:1.5px solid var(--coral2);border-radius:var(--rad2);padding:16px 20px;margin-bottom:26px;display:flex;gap:14px;align-items:flex-start;}
+.rl-icon{font-size:24px;flex-shrink:0;}
+.rl-title{font-family:'Fraunces',serif;font-size:13px;font-weight:700;color:var(--coral);margin-bottom:6px;}
+.rl-body{font-size:12.5px;color:var(--t2);line-height:1.65;}
+
+/* ─ AI SECTION ─ */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+.ai-card{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:14px 15px;transition:all .2s;}
+.ai-card:hover{border-color:var(--sky3);box-shadow:0 2px 12px rgba(61,90,254,.08);}
+.ai-card-icon{font-size:20px;margin-bottom:6px;}
+.ai-card-t{font-family:'Fraunces',serif;font-size:12.5px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.ai-card-b{font-size:11.5px;color:var(--t2);line-height:1.5;}
+
+/* ─ GEO BARS ─ */
+.geo{display:flex;flex-direction:column;gap:8px;}
+.geo-row{display:flex;align-items:center;gap:8px;}
+.geo-name{font-size:11px;color:var(--t2);min-width:130px;}
+.geo-bg{flex:1;background:var(--bg2);border-radius:2px;height:16px;overflow:hidden;}
+.geo-bar{height:100%;border-radius:2px;}
+.geo-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;min-width:70px;text-align:right;}
+
+/* ─ SIM ─ */
+.sim{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:18px 20px;}
+.sl-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.sl-lbl{font-size:11.5px;color:var(--t2);min-width:160px;}
+.sl-row input[type=range]{flex:1;accent-color:var(--sky);cursor:pointer;}
+.sl-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;min-width:75px;text-align:right;color:var(--t1);}
+.sim-outs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.so{background:var(--bg2);border-radius:var(--rad);padding:11px 13px;border:1px solid var(--bor);}
+.so-l{font-size:10px;color:var(--t3);margin-bottom:4px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.so-v{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--t1);}
+
+/* ─ INS ─ */
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.ins{background:var(--sur);border:1.5px solid var(--bor);border-radius:var(--rad2);padding:15px;transition:all .2s;border-top:3px solid;}
+.ins:hover{box-shadow:0 4px 16px rgba(61,90,254,.1);transform:translateY(-2px);}
+.ins-num{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;line-height:1;margin-bottom:5px;}
+.ins-t{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.ins-b{font-size:11px;color:var(--t3);line-height:1.5;}
+
+/* ─ RISK ─ */
+.risk{background:rgba(255,92,122,.05);border:1.5px solid rgba(255,92,122,.2);border-radius:var(--rad2);padding:16px 20px;margin-bottom:26px;}
+.risk-title{font-family:'Fraunces',serif;font-size:12px;font-weight:700;color:var(--coral);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.risk-item{font-size:12px;color:var(--t2);display:flex;gap:6px;line-height:1.55;}
+
+.footer{text-align:center;padding:22px 0 0;border-top:1px solid var(--bor);font-size:11px;color:var(--t3);line-height:1.7;}
+
+@media(max-width:720px){
+  .wrap{padding:0 14px 60px;}
+  .hero{flex-direction:column;gap:16px;padding:28px 0 22px;}
+  .hero-title{font-size:clamp(28px,8vw,42px);}
+  .hero-r{width:100%;}
+  .kpi-block{min-width:auto;width:100%;}
+  .kpi-val{font-size:34px;}
+
+  .band{grid-template-columns:repeat(2,1fr);}
+
+  /* FLOW3 — 세로 스택 */
+  .flow3{display:flex;flex-direction:column;}
+  .f3-arr{padding:6px 0;font-size:18px;}
+  .f3-node{padding:14px 16px;border-left:none!important;border-right:none!important;border-top:1px solid var(--bor);}
+  .f3-node:first-child{border-top:none;}
+  .f3-node.center{border-top:1.5px solid var(--sky3);border-bottom:1.5px solid var(--sky3);}
+  .f3-items{gap:5px;}
+
+  /* GRIDS */
+  .g2,.g3,.ai-grid,.risk-grid{grid-template-columns:1fr;}
+  .app-grid,.ins-grid{grid-template-columns:repeat(2,1fr);}
+  .sim-outs{grid-template-columns:repeat(2,1fr);}
+
+  /* BD BARS */
+  .bd-lbl{min-width:90px;max-width:110px;font-size:10px;}
+  .bd-val{min-width:55px;font-size:10px;}
+
+  /* TABLE */
+  .q-tbl{font-size:11px;}
+  .q-tbl th,.q-tbl td{padding:7px 8px;}
+
+  /* GEO */
+  .geo-name{min-width:90px;font-size:10px;}
+  .geo-val{min-width:50px;font-size:11px;}
+
+  /* SIM */
+  .sl-lbl{min-width:110px;font-size:10.5px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-l">
+    <div class="hero-badge"><span class="badge-pulse"></span>NASDAQ: MRVL · FY2026 기준</div>
+    <div class="hero-title">마벨은<br>어떻게 <em>돈을 버나</em></div>
+    <div class="hero-sub">AI 데이터센터의 '숨은 설계자'. 아마존·마이크로소프트·구글 같은 하이퍼스케일러의 맞춤형 AI 칩(커스텀 실리콘)과 광(光) 인터커넥트를 설계하는 팹리스 반도체 기업. 직접 칩을 만들기보다, 고객사 전용 칩을 설계해 TSMC에 위탁 생산한다. FY2026 들어 분기 매출이 사상 처음 $20억을 돌파했다.</div>
+  </div>
+  <div class="hero-r">
+    <div class="kpi-block">
+      <div class="kpi-lbl">FY2025 연간 매출</div>
+      <div class="kpi-val">$57.7억</div>
+      <div class="kpi-sub">2025.2 종료 회계연도 · YoY +5%</div>
+      <div class="kpi-tag">▲ 데이터센터 부문 +88% 폭증</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAND -->
+<div class="band">
+  <div class="band-cell">
+    <div class="bc-lbl">FY26 Q2 매출 (최신)</div>
+    <div class="bc-val">$20.1억</div>
+    <div class="bc-chg up">▲ 58% YoY · 첫 $20억 돌파</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">데이터센터 매출 비중</div>
+    <div class="bc-val">~74%</div>
+    <div class="bc-chg up">FY26 · 비-AI 부문 회복 중</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">커스텀 실리콘 고객</div>
+    <div class="bc-val">3대 빅테크</div>
+    <div class="bc-chg neu">AWS · MS · 구글</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">FY26 Q3 매출 가이던스</div>
+    <div class="bc-val">~$20.6억</div>
+    <div class="bc-chg up">두 자릿수 성장 지속</div>
+  </div>
+  <div class="band-cell">
+    <div class="bc-lbl">비-GAAP 매출총이익률</div>
+    <div class="bc-val">~60%</div>
+    <div class="bc-chg neu">커스텀 칩이 소폭 희석</div>
+  </div>
+</div>
+
+<!-- HOW MONEY FLOWS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><span class="sec-title">마벨의 핵심 — 칩을 '만들지 않고' 돈을 번다</span><div class="sec-line"></div></div>
+  <div class="flow3">
+    <div class="f3-node">
+      <span class="f3-icon">☁️</span>
+      <div class="f3-name">하이퍼스케일러 (고객)</div>
+      <div class="f3-items">
+        <div class="f3-item"><div class="f3-dot" style="background:var(--sky);"></div>AWS·MS·구글·메타 등</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--sky);"></div>엔비디아 의존도를 낮추려 함</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--teal);"></div>자사 전용 AI 칩(XPU) 원함</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--t3);"></div>설계는 마벨에 위탁</div>
+      </div>
+    </div>
+    <div class="f3-arr">→</div>
+    <div class="f3-node center">
+      <span class="f3-icon">🧩</span>
+      <div class="f3-name">마벨 (팹리스 설계)</div>
+      <div class="f3-items">
+        <div class="f3-item"><div class="f3-dot" style="background:var(--coral);"></div>고객 전용 ASIC/XPU 설계</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--coral);"></div>광 DSP·SerDes·IP 라이선스</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--mint);"></div>TSMC에 위탁 생산</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--mint);"></div>완성 칩을 고객에 납품</div>
+      </div>
+    </div>
+    <div class="f3-arr">→</div>
+    <div class="f3-node">
+      <span class="f3-icon">🏢</span>
+      <div class="f3-name">AI 데이터센터 (최종)</div>
+      <div class="f3-items">
+        <div class="f3-item"><div class="f3-dot" style="background:var(--mint);"></div>맞춤 칩으로 학습·추론</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--mint);"></div>광 인터커넥트로 GPU 연결</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--mint);"></div>전력·비용 효율 극대화</div>
+        <div class="f3-item"><div class="f3-dot" style="background:var(--mint);"></div>차세대 칩 재발주 → 반복 매출</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT PILLARS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><span class="sec-title">4개 제품 기둥 — 데이터센터가 전부를 끌어올린다</span><div class="sec-line"></div><span class="sec-note">FY2026 기준</span></div>
+  <div class="app-grid">
+    <div class="app-card">
+      <span class="app-icon">🧩</span>
+      <div class="app-name">커스텀 실리콘 (XPU)</div>
+      <div class="app-mau">맞춤형 AI 가속기·ASIC</div>
+      <div class="app-role">하이퍼스케일러 전용 AI 칩을 설계. 가장 빠르게 성장하는 핵심 동력. 멀티세대 장기 계약으로 반복 매출 발생.</div>
+      <div class="app-bar-bg"><div class="app-bar" style="width:45%;background:var(--sky);"></div></div>
+      <div class="app-pct" style="color:var(--sky);">매출 기여 ~45%</div>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">💡</span>
+      <div class="app-name">전기광학 (옵틱스)</div>
+      <div class="app-mau">PAM4·코히어런트 DSP</div>
+      <div class="app-role">800G·1.6T 광 인터커넥트의 두뇌. AI 클러스터에서 GPU·서버를 빛으로 연결. Inphi 인수로 확보한 세계 1위 기술.</div>
+      <div class="app-bar-bg"><div class="app-bar" style="width:30%;background:var(--teal);"></div></div>
+      <div class="app-pct" style="color:var(--teal);">매출 기여 ~30%</div>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">🔀</span>
+      <div class="app-name">네트워킹·스위칭</div>
+      <div class="app-mau">이더넷 스위치·리타이머</div>
+      <div class="app-role">데이터센터 이더넷 스위치(Teralynx), PCIe 리타이머, NIC. AI 스케일아웃 네트워크의 핵심 부품.</div>
+      <div class="app-bar-bg"><div class="app-bar" style="width:15%;background:var(--mint);"></div></div>
+      <div class="app-pct" style="color:var(--mint);">매출 기여 ~15%</div>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">💾</span>
+      <div class="app-name">스토리지·기타</div>
+      <div class="app-mau">SSD 컨트롤러·자동차</div>
+      <div class="app-role">SSD 컨트롤러, 파이버채널, 자동차 이더넷. 경기 민감한 전통 사업으로, FY2025 저점에서 회복 중.</div>
+      <div class="app-bar-bg"><div class="app-bar" style="width:10%;background:var(--t3);"></div></div>
+      <div class="app-pct" style="color:var(--t3);">매출 기여 ~10%</div>
+    </div>
+  </div>
+</div>
+
+<!-- REVENUE CHARTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><span class="sec-title">매출 성장 궤적 & 세그먼트 구성</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">분기별 매출 추이</div>
+      <div class="card-d">FY24 사이클 저점 → FY25 Q1 트로프($11.6억) → FY26 Q2 첫 $20억 돌파</div>
+      <div style="height:220px;position:relative;"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-t">매출 구성 — 5대 엔드마켓</div>
+      <div class="card-d">FY2025 기준. 데이터센터가 ~72%, 나머지는 사이클 저점에서 회복 중</div>
+      <div style="height:220px;position:relative;"><canvas id="splitChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUARTERLY TABLE -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><span class="sec-title">분기별 실적 상세</span><div class="sec-line"></div><span class="sec-note">FY25 Q4 ~ FY26 Q2 + 가이던스</span></div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="q-tbl">
+      <thead><tr><th>분기</th><th>매출</th><th>데이터센터</th><th>비-GAAP 영업이익률</th><th>비-GAAP EPS</th><th>매출 YoY</th></tr></thead>
+      <tbody id="qTbl"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CUSTOM SILICON ECONOMICS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><span class="sec-title">커스텀 실리콘 경제학 — 칩 $100가 남기는 돈</span><div class="sec-line"></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">칩 매출 $100의 분해 (블렌디드 기준)</div>
+      <div class="card-d">팹리스 모델 — 생산은 TSMC, 마벨은 설계 IP로 마진을 남긴다 (비-GAAP 영업이익률 ~34%)</div>
+      <div class="bd" id="bdBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">수익성 추이 — 마진 확장</div>
+      <div class="card-d">매출 규모 확대 + 운영 레버리지로 영업이익률 회복</div>
+      <div style="height:210px;position:relative;"><canvas id="marginChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- DATA CENTER -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><span class="sec-title">데이터센터가 전부다 — AI가 끌어올린 폭증</span><div class="sec-line"></div><span class="sec-note">FY26 기준</span></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-t">엔드마켓별 매출 비중 & 성장률</div>
+      <div class="card-d">데이터센터는 폭증, 나머지는 사이클 저점에서 반등 시작</div>
+      <div class="geo" id="geoRows"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">데이터센터 분기 매출 추이</div>
+      <div class="card-d">FY25 Q1 $8.2억 → FY26 Q2 ~$14.9억, 커스텀 실리콘이 견인</div>
+      <div style="height:210px;position:relative;"><canvas id="dcChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAAP LOSS BOX -->
+<div class="rl-box">
+  <span class="rl-icon">📕</span>
+  <div>
+    <div class="rl-title">GAAP 적자의 비밀 — 인수 무형자산 상각</div>
+    <div class="rl-body">마벨은 비-GAAP 기준으론 분기마다 수억 달러 흑자지만, <strong>회계상(GAAP) 순손실</strong>을 내는 분기가 많다. 이유는 과거 대형 인수의 후폭풍 — <strong>Inphi($100억)·Cavium</strong> 등을 사들이며 생긴 막대한 <strong>무형자산 상각비</strong>와 <strong>주식보상비용(SBC)</strong>이 매 분기 수억 달러씩 비용으로 잡히기 때문이다. 이는 현금이 실제로 나가는 비용이 아니라, 과거 인수의 장부상 비용을 나눠 터는 것에 가깝다. 그래서 투자자들은 마벨의 실제 영업 체력을 볼 때 비-GAAP 지표를 함께 본다. 상각이 끝나가는 후반부로 갈수록 GAAP 흑자 전환 압력이 커진다.</div>
+  </div>
+</div>
+
+<!-- AI STRATEGY -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">07</span><span class="sec-title">AI가 마벨을 다시 쓰는 방식</span><div class="sec-line"></div></div>
+  <div class="ai-grid">
+    <div class="ai-card">
+      <div class="ai-card-icon">🧩</div>
+      <div class="ai-card-t">커스텀 XPU 슈퍼사이클</div>
+      <div class="ai-card-b">AWS(Trainium·Inferentia), 마이크로소프트(Maia), 구글과 멀티세대 커스텀 칩 계약. 한 번 설계되면 여러 세대에 걸쳐 재발주 → 장기 반복 매출. 브로드컴과 함께 커스텀 ASIC 시장을 양분.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-icon">💡</div>
+      <div class="ai-card-t">1.6T 광 인터커넥트</div>
+      <div class="ai-card-b">AI 클러스터가 커질수록 'GPU를 어떻게 연결하느냐'가 병목. 마벨의 PAM4·코히어런트 광 DSP가 800G→1.6T 전환을 주도. 옵틱스는 AI 데이터센터 확장의 필수 통행료.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-icon">📈</div>
+      <div class="ai-card-t">데이터센터 TAM $94B</div>
+      <div class="ai-card-b">마벨은 자사가 겨냥하는 데이터센터 반도체 시장(TAM)이 2028년 <strong>$940억</strong> 규모로 커질 것으로 제시. 커스텀+옵틱스+스위칭에서 점유율 20% 확보를 목표로 한다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATOR -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">08</span><span class="sec-title">마벨 수익 시뮬레이터</span><div class="sec-line"></div></div>
+  <div class="sim">
+    <div class="card-t" style="margin-bottom:3px;">데이터센터·비-데이터센터 매출과 마진이 달라지면?</div>
+    <div class="card-d" style="margin-bottom:12px;">분기 실적 추정 — 실제와 다를 수 있습니다</div>
+    <div class="sl-row"><label class="sl-lbl">데이터센터 분기 매출 ($B)</label><input type="range" min="1.0" max="2.8" value="1.49" step="0.01" id="sl-dc" oninput="calc()"><span class="sl-val" id="v-dc">$1.49B</span></div>
+    <div class="sl-row"><label class="sl-lbl">비-데이터센터 매출 ($B)</label><input type="range" min="0.3" max="0.9" value="0.52" step="0.01" id="sl-oth" oninput="calc()"><span class="sl-val" id="v-oth">$0.52B</span></div>
+    <div class="sl-row"><label class="sl-lbl">비-GAAP 매출총이익률 (%)</label><input type="range" min="50" max="66" value="60" step="0.5" id="sl-gm" oninput="calc()"><span class="sl-val" id="v-gm">60%</span></div>
+    <div class="sl-row"><label class="sl-lbl">비-GAAP 영업이익률 (%)</label><input type="range" min="25" max="45" value="34" step="1" id="sl-om" oninput="calc()"><span class="sl-val" id="v-om">34%</span></div>
+    <div class="sim-outs">
+      <div class="so"><div class="so-l">분기 총매출 ($B)</div><div class="so-v" id="s-rev" style="color:var(--sky);">—</div></div>
+      <div class="so"><div class="so-l">분기 매출총이익 ($B)</div><div class="so-v" id="s-gp">—</div></div>
+      <div class="so"><div class="so-l">분기 영업이익 ($B)</div><div class="so-v" id="s-op" style="color:var(--mint);">—</div></div>
+      <div class="so"><div class="so-l">연간 환산 매출 ($B)</div><div class="so-v" id="s-ann" style="color:var(--gold);">—</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RISK -->
+<div class="risk">
+  <div class="risk-title">⚠ 리스크 — 폭증 뒤의 취약점</div>
+  <div class="risk-grid">
+    <div class="risk-item"><span>🎯</span><span><strong>고객 집중도:</strong> 커스텀 실리콘 매출이 소수 하이퍼스케일러(특히 AWS)에 집중. 한 고객의 발주 변경·내재화가 실적을 흔들 수 있다.</span></div>
+    <div class="risk-item"><span>🇨🇳</span><span><strong>중국·수출통제:</strong> 선적 기준 중국 매출 비중이 ~40%대로 높음. 미·중 반도체 수출규제 강화 시 직접 타격.</span></div>
+    <div class="risk-item"><span>🅱️</span><span><strong>브로드컴 경쟁:</strong> 커스텀 AI ASIC 시장의 최강자 브로드컴과 정면 경쟁. 가격·기술 모두 압박.</span></div>
+    <div class="risk-item"><span>🔄</span><span><strong>사이클·재고:</strong> 엔터프라이즈·캐리어 등 비-AI 부문은 경기 민감. AI 외 수요 회복이 더딜 위험.</span></div>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="sec">
+  <div class="sec-head"><span class="sec-num">09</span><span class="sec-title">핵심 인사이트</span><div class="sec-line"></div></div>
+  <div class="ins-grid">
+    <div class="ins" style="border-top-color:var(--sky);">
+      <div class="ins-num" style="color:var(--sky);">$57.7억</div>
+      <div class="ins-t">FY2025 연간 매출</div>
+      <div class="ins-b">사이클 저점을 지나 YoY +5% 반등. 데이터센터가 전체를 끌어올렸다.</div>
+    </div>
+    <div class="ins" style="border-top-color:var(--mint);">
+      <div class="ins-num" style="color:var(--mint);">~74%</div>
+      <div class="ins-t">데이터센터 매출 비중</div>
+      <div class="ins-b">FY26 기준. 커스텀 실리콘과 옵틱스가 마벨을 'AI 인프라 회사'로 재정의.</div>
+    </div>
+    <div class="ins" style="border-top-color:var(--pur);">
+      <div class="ins-num" style="color:var(--pur);">3대</div>
+      <div class="ins-t">빅테크 커스텀 칩 고객</div>
+      <div class="ins-b">AWS·MS·구글. 멀티세대 계약으로 한 번 설계가 여러 세대 반복 매출이 된다.</div>
+    </div>
+    <div class="ins" style="border-top-color:var(--gold);">
+      <div class="ins-num" style="color:var(--gold);">$94B</div>
+      <div class="ins-t">2028 데이터센터 TAM</div>
+      <div class="ins-b">마벨이 제시한 목표 시장. 커스텀+옵틱스+스위칭에서 점유율 20% 겨냥.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  데이터: 마벨 테크놀러지 분기 실적 발표(FY2025~FY2026) 기반 · 회계연도는 매년 1~2월 종료 · 일부 세그먼트 수치는 추정<br>
+  교육용 시각화이며 투자 권유가 아닙니다.
+</div>
+
+</div>
+
+<script>
+const tc='#7385AE', gc='rgba(61,90,254,.07)';
+
+// TREND CHART (분기 매출 $B)
+new Chart(document.getElementById('trendChart'),{
+  type:'bar',
+  data:{
+    labels:['23Q1','23Q2','23Q3','23Q4','24Q1','24Q2','24Q3','24Q4','25Q1','25Q2','25Q3','25Q4','26Q1','26Q2','26Q3G'],
+    datasets:[{
+      label:'분기 매출 ($B)',
+      data:[1.45,1.52,1.54,1.42,1.32,1.34,1.42,1.43,1.16,1.27,1.52,1.82,1.90,2.01,2.06],
+      backgroundColor:(ctx)=>{
+        const i=ctx.dataIndex;
+        if(i===14)return'rgba(255,167,38,.7)';  // FY26 Q3 가이던스
+        if(i>=12)return'rgba(16,185,129,.78)';  // FY26
+        if(i>=8)return'rgba(61,90,254,.7)';     // FY25
+        if(i>=4)return'rgba(61,90,254,.32)';    // FY24 (저점)
+        return'rgba(61,90,254,.5)';             // FY23
+      },
+      borderRadius:4,borderSkipped:false,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.y}B${c.dataIndex===14?' (가이던스 중간값)':''}`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:9},maxRotation:45},grid:{display:false}},
+      y:{ticks:{color:tc,callback:v=>'$'+v+'B'},grid:{color:gc},min:0}
+    }
+  }
+});
+
+// SPLIT CHART (FY2025 엔드마켓)
+new Chart(document.getElementById('splitChart'),{
+  type:'doughnut',
+  data:{
+    labels:['데이터센터 72%','엔터프라이즈 네트워킹 11%','컨슈머 7%','캐리어 인프라 5%','자동차·산업 5%'],
+    datasets:[{
+      data:[72,11,7,5,5],
+      backgroundColor:['#3D5AFE','#00BCD4','#7C5CFC','#FFA726','#10B981'],
+      borderWidth:2,borderColor:'#EEF2FF',hoverOffset:6,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'58%',
+    plugins:{legend:{position:'right',labels:{color:tc,font:{size:10},boxWidth:10,padding:7}}}
+  }
+});
+
+// QUARTERLY TABLE
+const QT=[
+  {q:'FY25 Q4',rev:1.82,dc:1.37,om:33,eps:0.60,yoy:'+27%',cls:''},
+  {q:'FY26 Q1',rev:1.90,dc:1.44,om:33,eps:0.62,yoy:'+63%',cls:''},
+  {q:'FY26 Q2 ★',rev:2.01,dc:1.49,om:34,eps:0.67,yoy:'+58%',cls:'hl'},
+  {q:'FY26 Q3 가이던스',rev:2.06,dc:'—',om:'—',eps:'~0.74',yoy:'+30%대',cls:'q1'},
+];
+document.getElementById('qTbl').innerHTML=QT.map(r=>`
+  <tr class="${r.cls}">
+    <td style="font-weight:${r.cls?'600':'400'};color:${r.cls==='hl'?'var(--sky)':r.cls==='q1'?'var(--mint)':'var(--t1)'};">${r.q}</td>
+    <td>$${typeof r.rev==='number'?r.rev.toFixed(2):r.rev}B</td>
+    <td style="color:var(--t2);">${typeof r.dc==='number'?'$'+r.dc.toFixed(2)+'B':r.dc}</td>
+    <td style="color:${typeof r.om==='number'&&r.om>=34?'var(--mint)':'var(--t2)'};">${typeof r.om==='number'?r.om+'%':r.om}</td>
+    <td>${typeof r.eps==='number'?'$'+r.eps.toFixed(2):'$'+r.eps}</td>
+    <td>${r.yoy!=='—'?`<span class="badge b-up">${r.yoy}</span>`:r.yoy}</td>
+  </tr>`).join('');
+
+// BD BARS ($100 칩 매출 분해)
+const BD=[
+  {lbl:'칩 매출 (고객 결제)',v:100,col:'#3D5AFE',s:'+'},
+  {lbl:'파운드리 웨이퍼·패키징 (TSMC)',v:-40,col:'#9DB2EC',s:'-'},
+  {lbl:'연구개발 (설계·IP)',v:-19,col:'#9DB2EC',s:'-'},
+  {lbl:'판매·관리비 (SG&A)',v:-7,col:'#9DB2EC',s:'-'},
+  {lbl:'비-GAAP 영업이익 (~34%)',v:34,col:'#10B981',s:'='},
+];
+document.getElementById('bdBars').innerHTML=BD.map(i=>{
+  const pct=Math.round(Math.abs(i.v)/100*100);
+  const col=i.lbl.includes('영업이익')?'var(--mint)':i.v<0?'var(--t3)':'var(--sky)';
+  return`<div class="bd-row"><span class="bd-lbl">${i.lbl}</span><div class="bd-bg"><div class="bd-bar" style="width:${pct}%;background:${i.col};"></div></div><span class="bd-val" style="color:${col};">${i.s} $${Math.abs(i.v)}</span></div>`;
+}).join('');
+
+// MARGIN CHART (비-GAAP GM & OM 추이)
+new Chart(document.getElementById('marginChart'),{
+  type:'line',
+  data:{
+    labels:['FY25 Q1','FY25 Q2','FY25 Q3','FY25 Q4','FY26 Q1','FY26 Q2'],
+    datasets:[
+      {label:'비-GAAP 매출총이익률',data:[62.5,61.9,60.5,60.1,59.8,59.4],borderColor:'#3D5AFE',backgroundColor:'rgba(61,90,254,.08)',fill:true,tension:.4,pointRadius:3,yAxisID:'yA'},
+      {label:'비-GAAP 영업이익률',data:[26.2,29.7,32.7,33.7,33.4,34.0],borderColor:'#10B981',backgroundColor:'transparent',tension:.4,pointRadius:3,yAxisID:'yA'},
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tc,font:{size:10.5},boxWidth:10}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}%`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:9}},grid:{color:gc}},
+      yA:{ticks:{color:tc,callback:v=>v+'%'},grid:{color:gc},min:20,max:70}
+    }
+  }
+});
+
+// END-MARKET ROWS (FY26 추정)
+const GEO=[
+  {name:'데이터센터',pct:74,yoy:'+88%',col:'#3D5AFE',rev:'~$6.0B*'},
+  {name:'엔터프라이즈 네트워킹',pct:11,yoy:'+회복',col:'#00BCD4',rev:'~$0.9B'},
+  {name:'컨슈머',pct:6,yoy:'+회복',col:'#7C5CFC',rev:'~$0.5B'},
+  {name:'캐리어 인프라',pct:5,yoy:'+회복',col:'#FFA726',rev:'~$0.4B'},
+  {name:'자동차·산업',pct:4,yoy:'안정',col:'#10B981',rev:'~$0.3B'},
+];
+document.getElementById('geoRows').innerHTML=GEO.map(g=>`
+  <div class="geo-row">
+    <span class="geo-name">${g.name}</span>
+    <div class="geo-bg"><div class="geo-bar" style="width:${g.pct}%;background:${g.col};border-radius:2px;height:100%;"></div></div>
+    <span class="geo-val" style="color:${g.col};">${g.pct}%</span>
+  </div>`).join('')
+  + `<div style="font-size:10px;color:var(--t3);margin-top:4px;">* 연환산 추정치 · 비중은 FY26 분기 기준</div>`;
+
+// DATA CENTER QUARTERLY CHART
+new Chart(document.getElementById('dcChart'),{
+  type:'bar',
+  data:{
+    labels:['FY25 Q1','FY25 Q2','FY25 Q3','FY25 Q4','FY26 Q1','FY26 Q2'],
+    datasets:[{
+      label:'데이터센터 분기 매출 ($B)',
+      data:[0.82,0.88,1.10,1.37,1.44,1.49],
+      backgroundColor:['rgba(61,90,254,.3)','rgba(61,90,254,.45)','rgba(61,90,254,.6)','rgba(61,90,254,.75)','rgba(16,185,129,.7)','rgba(16,185,129,.85)'],
+      borderRadius:5,borderSkipped:false,
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${c.parsed.y}B`}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:9.5}},grid:{display:false}},
+      y:{ticks:{color:tc,callback:v=>'$'+v+'B'},grid:{color:gc},min:0}
+    }
+  }
+});
+
+function calc(){
+  const dc=parseFloat(document.getElementById('sl-dc').value);
+  const oth=parseFloat(document.getElementById('sl-oth').value);
+  const gm=parseFloat(document.getElementById('sl-gm').value);
+  const om=parseInt(document.getElementById('sl-om').value);
+  document.getElementById('v-dc').textContent='$'+dc.toFixed(2)+'B';
+  document.getElementById('v-oth').textContent='$'+oth.toFixed(2)+'B';
+  document.getElementById('v-gm').textContent=gm+'%';
+  document.getElementById('v-om').textContent=om+'%';
+  const rev=dc+oth;
+  const gp=rev*gm/100;
+  const op=rev*om/100;
+  const ann=rev*4;
+  document.getElementById('s-rev').textContent='$'+rev.toFixed(2)+'B';
+  document.getElementById('s-gp').textContent='$'+gp.toFixed(2)+'B';
+  document.getElementById('s-op').textContent='$'+op.toFixed(2)+'B';
+  document.getElementById('s-ann').textContent='$'+ann.toFixed(1)+'B';
+}
+calc();
+</script>
+</body>
+</html>

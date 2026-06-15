@@ -707,6 +707,7 @@ let NAV = [
     {id:'netflix',label:'넷플릭스'},
     {id:'youtube',label:'유튜브 광고'},
     {id:'meta',label:'메타'},
+    {id:'mrvl',label:'마벨'},
   ]},
   { cat:'자영업', items:[
     {id:'chicken',label:'치킨집'},
@@ -755,6 +756,7 @@ const PAGE_META = {
   'destcafe':          { icon:'🏞️', blurb:'한적한 대형 카페의 회전율 승부' },
   'rider':             { icon:'🛵', blurb:'배달 한 건의 실수령액을 끝까지 분해' },
   'meta':              { icon:'📘', blurb:'35억 명을 광고로 바꾸는 거대 머신' },
+  'mrvl':              { icon:'🧩', blurb:'하이퍼스케일러의 맞춤형 AI 칩을 설계하는 숨은 설계자' },
 };
 
 // #RRGGBB → rgba(...)
@@ -853,7 +855,8 @@ const PAGE_FILE_MAP = {
   "cafe": "pages/cafe.html",
   "destcafe": "pages/destcafe.html",
   "rider": "pages/rider.html",
-  "meta": "pages/meta.html"
+  "meta": "pages/meta.html",
+  "mrvl": "pages/mrvl.html"
 };
 const STANDALONE_EMBED_IDS = new Set([
   'sanil',
@@ -876,7 +879,8 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'nvidia',
   'spacex',
   'tron',
-  'meta'
+  'meta',
+  'mrvl'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
@@ -1451,7 +1455,7 @@ function showWelcome(){
 
   document.getElementById('content').innerHTML = `
   <div class="welcome">
-    <div class="wt">무엇이든,<br><em>어떻게 돈을 버나</em></div>
+    <div class="wt">OO은 어떻게<br><em>돈을 버나</em></div>
     <div class="ws">기업, 플랫폼, 자영업, 직업까지 — 수익 구조를 숫자와 차트로 시각화합니다</div>
     <div class="w-chips">
       ${allChips}
