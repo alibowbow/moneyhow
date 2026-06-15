@@ -356,6 +356,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;background:var(--
 .sb-nav::-webkit-scrollbar-thumb,.content::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:8px;}
 .sb-nav::-webkit-scrollbar-thumb:hover,.content::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.22);}
 .content{position:relative;scroll-behavior:smooth;}
+body,.sb,.topbar,.ib,.sb-search input,.hx-card,.hx-hero,.hx-final,.met,.card{transition:background-color .3s ease,border-color .3s ease,color .3s ease;}
 
 /* ─ SIDEBAR ─ */
 .sb{background:linear-gradient(180deg,#FCFBF8 0%,#F7F5EE 100%);}
@@ -765,6 +766,16 @@ function hexA(hex, a){
 }
 function cleanCatName(name){ return name.replace(/^[^\p{L}\p{N}]+/u,'').trim() || name; }
 
+// 최근 본 리포트 추적
+function getRecent(){ try{ return JSON.parse(localStorage.getItem('recent')||'[]'); }catch(e){ return []; } }
+function pushRecent(id){
+  if(!id) return;
+  let arr = getRecent().filter(x => x !== id);
+  arr.unshift(id);
+  arr = arr.slice(0, 8);
+  try{ localStorage.setItem('recent', JSON.stringify(arr)); }catch(e){}
+}
+
 let currentId = null;
 let bookmarks = JSON.parse(localStorage.getItem('bm')||'[]');
 
@@ -919,7 +930,9 @@ function resolveEmbeddedKind(frame, doc){
 
 function getEmbeddedLayoutFixCss(doc, kind){
   const parts = [
-    'html.embedded body{display:block;height:auto;overflow:auto;}'
+    'html.embedded body{display:block;height:auto;overflow:auto;}',
+    /* 테마 전환을 부드럽게 (레이아웃 영향 없는 속성만) */
+    'html.embedded body,html.embedded .card,html.embedded [class*="-card"],html.embedded .met,html.embedded [class*="-met"],html.embedded .ins-card,html.embedded [class*="-sur"]{transition:background-color .3s ease,border-color .3s ease,color .3s ease,box-shadow .2s ease;}'
   ];
 
   if(kind === 'shell' || kind === 'detail-shell') {
@@ -1051,6 +1064,7 @@ function navigate(id, _fromStatic = false){
   if(window.innerWidth <= 900) { closeSidebar(); }
   const targetFile = PAGE_FILE_MAP[id];
   currentId = id;
+  pushRecent(id);
   buildNav(document.getElementById('searchInput')?.value || '');
   const label = getPageLabel(id);
   document.title = `${label} | 머니하우`;
@@ -1447,6 +1461,21 @@ function showWelcome(){
     </section>`;
   }
 
+  // 최근 본 리포트 섹션
+  let recentHtml = '';
+  const recentIds = getRecent().filter(id => allItems.some(i => i.id === id)).slice(0, 6);
+  if(recentIds.length){
+    const rCards = recentIds.map(id => homeCard(id, '#5B7089')).join('');
+    recentHtml = `<section class="hx-cat">
+      <div class="hx-cat-head">
+        <div class="hx-cat-ico" style="background:${hexA('#5B7089',.16)};color:#5B7089;">🕘</div>
+        <div class="hx-cat-meta"><div class="hx-cat-name">최근 본 리포트<span class="hx-cat-pill">${recentIds.length}</span></div><div class="hx-cat-desc">이어서 살펴보기</div></div>
+        <div class="hx-cat-line"></div>
+      </div>
+      <div class="hx-grid">${rCards}</div>
+    </section>`;
+  }
+
   // 카테고리 섹션
   const catHtml = NAV.map(cat => {
     if(!cat.items.length) return '';
@@ -1486,6 +1515,7 @@ function showWelcome(){
       </div>
     </section>
     ${bmHtml}
+    ${recentHtml}
     ${catHtml}
     <div class="hx-final">
       <h3>찾는 주제가 <em>없나요?</em></h3>
