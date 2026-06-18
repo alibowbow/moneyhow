@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블랙컴뱃 수익 구조 — Revenue Prospectus (2026 업데이트)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#08080a; --bg2:#0e0e12;
+    --card:#131318; --card2:#1a1a21;
+    --line:#26262f; --line2:#35353f;
+    --ink:#f0f0f3; --ink-dim:#b9b9c4; --mute:#83838f; --mute2:#56565f;
+    --gold:#c9a44e; --gold-br:#e6c878; --gold-deep:#85692c; --gold-glow:rgba(201,164,78,.13);
+    --slate:#6f8aa6; --slate-deep:#3f5266;
+    --display:"Fraunces",Georgia,serif;
+    --body:"Pretendard",system-ui,-apple-system,sans-serif;
+    --mono:"DM Mono",ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--body);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1100px 560px at 82% -6%, var(--gold-glow), transparent 62%),
+      linear-gradient(180deg, rgba(255,255,255,.012), transparent 280px);
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px}
+  .mono{font-family:var(--mono); font-weight:400}
+  .ey{font-family:var(--display); font-style:italic; font-weight:500; font-variation-settings:"opsz" 20; letter-spacing:.02em; color:var(--gold); font-size:.92rem}
+
+  /* HERO */
+  header{padding:64px 0 40px; position:relative}
+  .masthead{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:30px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+  .brandmark{font-family:var(--display); font-style:italic; font-weight:900; font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0; font-size:1.15rem; letter-spacing:.01em; color:var(--ink)}
+  .brandmark b{color:var(--gold)}
+  .filecode{font-family:var(--mono); font-size:.72rem; color:var(--mute); letter-spacing:.13em; text-align:right}
+  .hero{padding:54px 0 8px}
+  .hero .ey{display:block; margin-bottom:20px}
+  h1{font-family:var(--body); font-weight:800; font-size:clamp(2.5rem,7vw,4.7rem); line-height:.98; letter-spacing:-.022em; color:var(--ink)}
+  h1 .accent{font-family:var(--display); font-style:italic; font-weight:900; font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0; color:var(--gold); letter-spacing:-.01em}
+  .dek{margin-top:26px; max-width:640px; font-size:1.12rem; color:var(--ink-dim); line-height:1.62; font-weight:300}
+  .dek b{color:var(--ink); font-weight:600}
+
+  /* METADATA */
+  .meta{margin-top:46px; border:1px solid var(--line); background:linear-gradient(180deg,var(--card),var(--bg2)); display:grid; grid-template-columns:repeat(5,1fr)}
+  .meta div{padding:18px 20px; border-right:1px solid var(--line)}
+  .meta div:last-child{border-right:none}
+  .meta dt{font-family:var(--mono); font-size:.64rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); margin-bottom:8px}
+  .meta dd{font-size:1.0rem; font-weight:600; color:var(--ink)}
+  .meta dd small{display:block; font-size:.7rem; color:var(--mute); font-weight:400; margin-top:3px; font-family:var(--mono)}
+
+  /* SECTIONS */
+  section{padding:64px 0; border-top:1px solid var(--line)}
+  .sec-head{margin-bottom:38px}
+  .sec-head .num{font-family:var(--display); font-style:italic; font-weight:900; font-variation-settings:"opsz" 144; font-size:1.3rem; color:var(--gold); margin-right:14px}
+  .sec-head h2{display:inline; font-family:var(--body); font-weight:700; font-size:clamp(1.5rem,3.4vw,2.05rem); letter-spacing:-.018em; color:var(--ink)}
+  .sec-head p{margin-top:14px; color:var(--ink-dim); max-width:660px; font-weight:300; font-size:1.02rem}
+
+  /* THESIS */
+  .thesis{position:relative; border:1px solid var(--line2); background:linear-gradient(135deg,var(--card2),var(--card)); padding:38px 40px; overflow:hidden}
+  .thesis::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--gold)}
+  .thesis .tag{display:inline-block; font-family:var(--mono); font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-deep); padding:5px 11px; margin-bottom:20px}
+  .thesis .big{font-family:var(--display); font-style:italic; font-weight:600; font-variation-settings:"opsz" 60; font-size:clamp(1.4rem,3.2vw,1.85rem); line-height:1.42; color:var(--ink); letter-spacing:.005em}
+  .thesis .big em{color:var(--gold-br); font-style:italic}
+  .thesis .note{margin-top:22px; color:var(--mute); font-size:.95rem; line-height:1.6; max-width:720px}
+
+  /* BY THE NUMBERS */
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); border-bottom:none}
+  .stat{padding:26px 24px; border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .stat:nth-child(3n){border-right:none}
+  .stat .v{font-family:var(--mono); font-weight:500; font-size:1.9rem; color:var(--ink); line-height:1; letter-spacing:-.01em}
+  .stat .v u{text-decoration:none; color:var(--gold)}
+  .stat .k{margin-top:11px; font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; color:var(--mute); line-height:1.45}
+  .stat .k b{color:var(--ink-dim); font-weight:500}
+
+  /* UNIT ECONOMICS */
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .panel{border:1px solid var(--line); background:var(--card); padding:24px 24px}
+  .ptitle{font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:16px}
+  .gline{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:11px 0; border-top:1px solid var(--line)}
+  .gline:first-of-type{border-top:none}
+  .gline span{font-size:.92rem; color:var(--ink-dim); font-weight:300}
+  .gline b{font-family:var(--mono); font-size:1.15rem; color:var(--ink); font-weight:500; white-space:nowrap}
+  .pnote{margin-top:16px; font-size:.78rem; color:var(--mute); line-height:1.55; font-family:var(--mono)}
+  .tier-row{display:grid; grid-template-columns:1fr auto; align-items:center; gap:14px; margin-bottom:9px}
+  .tbar{padding:9px 13px; font-size:.82rem; font-weight:600; color:#15140f; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .tbar i{font-style:normal; font-weight:400; opacity:.65; margin-left:6px; font-size:.74rem}
+  .t1{width:100%; background:var(--gold-br)}
+  .t2{width:74%; background:var(--gold)}
+  .t3{width:52%; background:var(--gold-deep); color:var(--ink)}
+  .tier-row b{font-family:var(--mono); font-size:.9rem; color:var(--ink); text-align:right; white-space:nowrap}
+
+  /* CHART */
+  .chart-card{border:1px solid var(--line); background:var(--card); padding:34px 32px 26px}
+  .chart-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:24px; flex-wrap:wrap; gap:8px}
+  .chart-head .t{font-family:var(--mono); font-size:.74rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-dim)}
+  .chart-head .est{font-family:var(--mono); font-size:.68rem; color:var(--gold); letter-spacing:.08em}
+  .chart-box{position:relative; height:380px}
+  .caption{margin-top:20px; font-size:.82rem; color:var(--mute); line-height:1.55; border-top:1px solid var(--line); padding-top:16px; font-family:var(--mono)}
+
+  /* FLYWHEEL */
+  .flow{display:grid; grid-template-columns:repeat(4,1fr); gap:0}
+  .step{position:relative; padding:26px 22px; border:1px solid var(--line); border-right:none}
+  .step:last-child{border-right:1px solid var(--line)}
+  .step .k{font-family:var(--display); font-style:italic; font-weight:900; font-variation-settings:"opsz" 144; color:var(--gold); font-size:1.1rem; margin-bottom:12px}
+  .step h4{font-size:1rem; font-weight:700; color:var(--ink); margin-bottom:7px}
+  .step p{font-size:.85rem; color:var(--ink-dim); font-weight:300; line-height:1.5}
+  .step::after{content:"→"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--gold); font-size:1.1rem; z-index:2; background:var(--bg); padding:2px 0}
+  .step:last-child::after{content:"↺"; right:22px; top:18px; transform:none; font-size:1.2rem; color:var(--gold-br)}
+  .flow-note{margin-top:22px; text-align:center; font-family:var(--mono); font-size:.8rem; color:var(--mute); letter-spacing:.04em}
+  .flow-note b{color:var(--gold-br)}
+
+  /* 2026 UPDATE */
+  .ucard{border:1px solid var(--line); background:var(--card); padding:26px 26px}
+  .ucard.big{border-color:var(--gold-deep); background:linear-gradient(135deg,var(--card2),var(--card))}
+  .utag{display:inline-block; font-family:var(--mono); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-deep); padding:4px 10px; margin-bottom:16px}
+  .ucard h3{font-size:1.3rem; font-weight:700; color:var(--ink); margin-bottom:11px; letter-spacing:-.01em}
+  .ucard h4{font-size:1.04rem; font-weight:700; color:var(--ink); margin-bottom:8px}
+  .ucard p{font-size:.93rem; color:var(--ink-dim); font-weight:300; line-height:1.58}
+  .ufoot{margin-top:18px; padding-top:16px; border-top:1px solid var(--line); font-family:var(--mono); font-size:.79rem; color:var(--mute); line-height:1.55}
+  .ugrid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
+
+  /* listing structure chips */
+  .chips{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:22px}
+  .chip{display:flex; flex-direction:column; border:1px solid var(--line2); background:var(--bg2); padding:10px 14px}
+  .chip b{font-weight:700; color:var(--ink); font-size:.9rem}
+  .chip i{font-style:normal; font-weight:400; color:var(--mute); font-size:.68rem; font-family:var(--mono); margin-top:3px}
+  .chip.gold{border-color:var(--gold-deep)}
+  .chip.gold b{color:var(--gold)}
+  .arrow{font-family:var(--mono); font-size:.7rem; color:var(--gold); white-space:nowrap}
+
+  /* RISK */
+  .risks{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
+  .risk{border:1px solid var(--line); background:var(--card); padding:26px 26px}
+  .risk .rk{font-family:var(--mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:13px; display:flex; align-items:center; gap:9px}
+  .risk .dot{width:7px; height:7px; border-radius:50%; display:inline-block}
+  .risk.moat .rk{color:var(--gold)} .risk.moat .dot{background:var(--gold)}
+  .risk.warn .rk{color:var(--slate)} .risk.warn .dot{background:var(--slate)}
+  .risk h4{font-size:1.06rem; font-weight:700; color:var(--ink); margin-bottom:9px; letter-spacing:-.01em}
+  .risk p{font-size:.91rem; color:var(--ink-dim); font-weight:300; line-height:1.56}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line); padding:42px 0 70px}
+  .disc{border:1px solid var(--line2); background:var(--bg2); padding:24px 26px; font-size:.82rem; color:var(--mute); line-height:1.65}
+  .disc b{color:var(--ink-dim); font-weight:600}
+  .src{margin-top:24px; display:flex; gap:8px 24px; flex-wrap:wrap; font-family:var(--mono); font-size:.73rem; color:var(--mute2)}
+  .src span{color:var(--mute)}
+  .sign{margin-top:26px; font-family:var(--display); font-style:italic; font-weight:500; font-variation-settings:"opsz" 30; color:var(--mute); font-size:.9rem}
+
+  /* REVEAL */
+  .rv{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease}
+  .rv.in{opacity:1; transform:none}
+
+  /* RESPONSIVE */
+  @media(max-width:780px){
+    .meta{grid-template-columns:repeat(2,1fr)}
+    .meta div:nth-child(2){border-right:none}
+    .meta div{border-bottom:1px solid var(--line)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(3n){border-right:1px solid var(--line)}
+    .stat:nth-child(2n){border-right:none}
+    .duo{grid-template-columns:1fr}
+    .ugrid{grid-template-columns:1fr}
+    .flow{grid-template-columns:1fr}
+    .step{border-right:1px solid var(--line); border-bottom:none}
+    .step:last-child{border-bottom:1px solid var(--line)}
+    .step::after{content:"↓"; right:50%; top:auto; bottom:-11px; transform:translateX(50%)}
+    .step:last-child::after{content:"↺"; right:22px; top:18px; bottom:auto; transform:none}
+    .risks{grid-template-columns:1fr}
+  }
+  @media(max-width:540px){
+    .wrap{padding:0 18px}
+    .stats{grid-template-columns:1fr}
+    .stat{border-right:none !important}
+    .thesis{padding:28px 24px}
+    .chart-card{padding:24px 18px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .rv{opacity:1; transform:none; transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header>
+    <div class="masthead">
+      <div class="brandmark">BLACK COMBAT <b>· PROSPECTUS</b></div>
+      <div class="filecode">REVENUE BRIEF · 法人 이데아파라곤<br>UPDATED 2026.06 · v2</div>
+    </div>
+    <div class="hero">
+      <span class="ey">수익 구조 해부 / How the only profitable Korean MMA promotion prints money</span>
+      <h1>블랙컴뱃은<br>어떻게 <span class="accent">돈을 버는가</span></h1>
+      <p class="dek">투자금 <b>0원</b>으로 4년 만에 국내 격투 단체 중 <b>유일하게 흑자 전환</b>. 비결은 격투기가 아니라 <b>스토리(IP)</b>를 팔고 그 팬덤을 <b>넷플릭스식 월 구독</b>으로 환전하는 콘텐츠 회사라는 점이다. 그리고 지금은 <b>캐나다 증시 우회상장</b>으로 'UFC 다음 상장 격투단체'를 노린다.</p>
+    </div>
+
+    <!-- METADATA -->
+    <dl class="meta rv">
+      <div><dt>대표</dt><dd>박평화·임종언<small>각자대표 (기획·재무)</small></dd></div>
+      <div><dt>운영사</dt><dd>이데아파라곤<small>지주사 GSL · 홍콩</small></dd></div>
+      <div><dt>2024 손익</dt><dd>흑자 전환<small>국내 단체 유일</small></dd></div>
+      <div><dt>세계 랭킹</dt><dd>28위<small>2024년 35위→상승</small></dd></div>
+      <div><dt>상장</dt><dd>TSXV 우회상장<small>진행 중·미완료</small></dd></div>
+    </dl>
+  </header>
+
+  <!-- THESIS -->
+  <section style="border-top:none; padding-top:30px">
+    <div class="thesis rv">
+      <span class="tag">핵심 발견 · The Engine</span>
+      <p class="big">"수익의 심장은 <em>유튜브 멤버십</em>이다." 매달 들어오는 구독료가 단체를 굴리는 가장 안정적인 동력이고, 여기에 직관 티켓과 스폰서십이 <em>얹히는</em> 구조다.</p>
+      <p class="note">즉 블랙컴뱃은 "격투기 단체"가 아니라 ① 유튜브 콘텐츠로 캐릭터·갈등 서사를 구축하고 ② 그 팬덤을 멤버십·티켓·굿즈로 <b>대행사 없이 직접</b> 환전하는 수직계열형 콘텐츠/IP 회사다. 외부 대행을 끼지 않아 마진을 직접 쥔 것이 국내 단체 중 유일한 흑자의 핵심이다.</p>
+    </div>
+  </section>
+
+  <!-- 2024 NUMBERS -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">01</span><h2>수치로 보는 2024</h2>
+      <p>야차클럽과 달리 블랙컴뱃은 운영 지표가 상당히 공개돼 있다. 아래는 보도로 확인된 실제 수치(추정 아님)다.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v">13<u>회</u></div><div class="k"><b>넘버링 대회</b> (2022~2024 누적)</div></div>
+      <div class="stat"><div class="v">1.2만<u>+</u></div><div class="k"><b>2024 연간 관중</b> 동원</div></div>
+      <div class="stat"><div class="v">₩7<u>만</u></div><div class="k"><b>객단가</b> · 관객 1인당 입장수입</div></div>
+      <div class="stat"><div class="v">4,000<u>+</u></div><div class="k"><b>단일 대회 최다 관객</b> · 블랙컴뱃13</div></div>
+      <div class="stat"><div class="v">평균 2,000<u>+</u></div><div class="k"><b>회당 유료 관객</b> 수</div></div>
+      <div class="stat"><div class="v">₩0<u>원</u></div><div class="k"><b>외부 투자금</b> · 자체수익만으로 성장</div></div>
+    </div>
+  </section>
+
+  <!-- UNIT ECONOMICS (NEW) -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">02</span><h2>단위경제: 게이트 한 장으론 흑자가 안 난다</h2>
+      <p>"객단가 7만원 × 2천명 = 1.4억인데, 선수 대전료 수천만원씩 주고 유지가 되나?"에 대한 답. 핵심은 ① 대부분 선수는 수천만원이 아니고 ② 대회 1회만 떼면 사실상 본전이며 ③ 흑자는 다른 데서 나온다는 것.</p>
+    </div>
+
+    <div class="duo">
+      <div class="panel">
+        <div class="ptitle">게이트 수입 (대회 1회)</div>
+        <div class="gline"><span>일반 대회 · 2,000명 × ₩7만</span><b>₩1.4억</b></div>
+        <div class="gline"><span>대형 대회 · 4,000명 × ₩7만</span><b>₩2.8억</b></div>
+        <p class="pnote">대행사 없이 자사 플랫폼 직접 판매라 수수료 0. 단 객단가가 저렴해 게이트 총액 자체는 크지 않다.</p>
+      </div>
+      <div class="panel">
+        <div class="ptitle">파이트머니 피라미드 (선수 1인)</div>
+        <div class="tier-row"><div class="tbar t1">헤드라이너 <i>소수</i></div><b>수천만원</b></div>
+        <div class="tier-row"><div class="tbar t2">중상위 랭커</div><b>수백만원</b></div>
+        <div class="tier-row"><div class="tbar t3">데뷔·하위</div><b>₩50만→100만대</b></div>
+        <p class="pnote">데뷔전이 타 단체 챔피언전보다 후하다는 게 셀링포인트지만 절대액은 낮다. 카드 전체(선수 20여 명) 합계는 약 6천만~1.2억으로 추정.</p>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-top:18px">
+      <div class="chart-head">
+        <div class="t">대회 1회 · 게이트 vs 비용</div>
+        <div class="est">● 추정·예시 · ILLUSTRATIVE</div>
+      </div>
+      <div class="chart-box" style="height:320px"><canvas id="unitChart"></canvas></div>
+      <p class="caption">일반 대회는 게이트가 비용(파이트머니+제작·대관)을 겨우 덮는 본전 구간. 대형 대회로 가야 게이트에서 흑자가 남는다. 즉 직관 수익은 흑자원이 아니라 '행사 직접비 커버용'에 가깝다.</p>
+    </div>
+
+    <div class="thesis" style="margin-top:18px">
+      <span class="tag">그래서</span>
+      <p class="big" style="font-size:clamp(1.2rem,2.6vw,1.55rem)">진짜 흑자는 매달 꽂히는 <em>유튜브 멤버십</em>과 <em>스폰서십·PPV</em> 같은 경상 레이어에서 나온다. 게이트는 그 위에 얹히는 변동 수익일 뿐이다.</p>
+      <p class="note">제작(무채색필름)·티켓 판매·선수 수급을 전부 인하우스로 돌려 원가를 눌렀고, 그럼에도 흑자 전환은 창립 4년 차인 2024년에야 "처음" 달성했다. 직관 게이트만으로는 빠듯하다는 의심이 정확했던 셈이다 — 이 바닥 마진이 그만큼 박하다.</p>
+    </div>
+  </section>
+
+  <!-- REVENUE LEDGER -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">03</span><h2>수익원 8갈래, 비중 순으로</h2>
+      <p>운영 지표는 공개됐지만 갈래별 매출 비중은 비공개이므로, 아래 %는 사업 구조·인터뷰·관중/객단가에 기반한 <strong>정성적 추정치</strong>다. 핵심은 야차클럽보다 수익원이 더 분산돼 있고 '반복 구독'의 비중이 크다는 점.</p>
+    </div>
+
+    <div class="ledger">
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">01</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">대회 티켓 / 직관 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">자사 플랫폼 직접판매</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">객단가 약 7만원 × 평균 2,000명+. 넘버링 대회뿐 아니라 전용 경기장 '블랙 아고라'에서 매달 열리는 라이즈·챔스급 대회도 매진을 이어가며 직관 수익을 상시화. 단, 단위경제상 흑자원이라기보다 행사 직접비 커버 역할.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">객단가 × 관객 × 직접판매</b> (대행 수수료 0)</p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">26<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--gold-deep);color:var(--gold)">높음</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">02</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">유튜브 멤버십 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">월 구독 · "수익의 심장"</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">"넷플릭스 구독하듯이" 매달 들어오는 구독료. 이벤트 유무와 무관하게 발생하는 가장 안정적인 경상수익이자, 단체를 굴리는 재무적 척추.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">팬덤 → 월 정기 구독</b> (경상·예측가능 매출)</p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">24<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--gold-deep);color:var(--gold)">높음</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">03</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">스폰서십 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">브랜드 파트너</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">국내 최고 네임밸류의 대회 브랜드를 활용한 기업 스폰서십. 흑자 구조에 직관·멤버십과 함께 더해지는 핵심 축의 하나.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">대회 브랜드 가치 → 스폰서 단가</b></p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">16<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--line2);color:var(--ink-dim)">중상</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">04</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">PPV / 중계권 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">유튜브 프리미엄 연계</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">유튜브 프리미엄 멤버십과 연계한 유료 중계 수익. 대형 넘버링 대회의 시청 수요를 유료 관전으로 전환.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">경기 화제성 → 유료 관전</b></p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">11<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--line2);color:var(--ink-dim)">중간</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">05</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">유튜브 광고 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">AdSense</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">스토리텔링·하이라이트·서바이벌 콘텐츠의 기본 광고 수익. 매출 자체보다 모든 수익원으로 팬을 끌어오는 '유입 깔때기' 역할이 더 크다.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">조회수 → 광고 + 팬 유입</b></p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">9<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--line2);color:var(--ink-dim)">중간</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">06</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">굿즈 / MD <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">포토카드 · 사인 경매</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">자체 굿즈에 더해 아이돌식 포토카드를 도입하고, 옥션 COLLEXX에서 선수 착용 글러브·파이트쇼츠 사인 물품을 경매(수익 일부는 선수 지원). 팬덤을 수집욕으로 환전.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">팬덤 → 수집·소장 소비</b></p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">7<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--line2);color:var(--mute)">낮음</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">07</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">블랙컴뱃 짐 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">오피셜 체육관</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">대표가 직접 PT까지 맡는 공식 체육관. 월 매출 1천만 원 이상 규모. 비중은 작아도 선수 풀과 콘텐츠 소재를 공급하는 백엔드 인프라.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">회원 매출 + 선수 양성</b></p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">4<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--line2);color:var(--mute)">낮음</div></div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:58px 1fr auto;gap:24px;align-items:start;padding:28px 4px;border-top:1px solid var(--line)">
+        <div style="font-family:var(--display);font-style:italic;font-weight:900;font-variation-settings:'opsz' 144;font-size:1.7rem;color:var(--mute2);line-height:1;padding-top:3px">08</div>
+        <div>
+          <h3 style="font-size:1.22rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">리그 IP / 피더 사업 <span style="font-family:var(--mono);font-size:.74rem;color:var(--mute);font-weight:400">블랙컵·챔스·제휴</span></h3>
+          <p style="margin-top:9px;color:var(--ink-dim);font-size:.97rem;font-weight:300;line-height:1.58;max-width:650px">아마추어→프로 챔피언스리그, 국가별 대항전 '블랙컵', ZEUS FC 등 국내 단체를 피더로 키우는 협업. 단발 이벤트를 넘어 지속가능한 리그 IP로 확장하는 장기 베팅이자 상장 스토리의 토대.</p>
+          <p style="margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--gold-deep);line-height:1.5">메커니즘 → <b style="color:var(--gold);font-weight:500">리그 시스템 → 반복 IP 가치</b></p>
+        </div>
+        <div style="text-align:right;min-width:96px;padding-top:4px"><div style="font-family:var(--mono);font-size:1.5rem;font-weight:500;color:var(--ink);line-height:1">3<s style="font-size:.8rem;color:var(--mute);text-decoration:none">%</s></div><div style="margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:inline-block;padding:3px 8px;border:1px solid var(--line2);color:var(--mute)">낮음</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART: MIX -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">04</span><h2>추정 매출 믹스</h2>
+      <p>8갈래를 한눈에. 다시 강조하지만 갈래별 비중은 감사 수치가 아니라 구조 기반 추정이며, 합산 100%로 정규화한 상대적 무게다.</p>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head">
+        <div class="t">Estimated Revenue Mix</div>
+        <div class="est">● 정성적 추정치 · NOT AUDITED</div>
+      </div>
+      <div class="chart-box"><canvas id="mixChart"></canvas></div>
+      <p class="caption">상위 2개(직관 티켓·유튜브 멤버십)가 약 50%. 야차클럽이 '현장 이벤트 집중형'이라면, 블랙컴뱃은 직관과 '월 구독'이 양대 축을 이루는 더 분산·경상화된 구조로 추정.</p>
+    </div>
+  </section>
+
+  <!-- FLYWHEEL -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">05</span><h2>돈이 도는 플라이휠</h2>
+      <p>블랙컴뱃의 성장 공식은 명확하다 — 콘텐츠로 팬을 모으고, 팬덤을 직접 환전하며, 그 자본으로 리그와 선수 IP를 키워 다시 새로운 콘텐츠를 만든다.</p>
+    </div>
+    <div class="flow">
+      <div class="step"><div class="k">A</div><h4>콘텐츠·서사</h4><p>유튜브에서 선수 캐릭터·갈등·배경 스토리를 설계해 몰입 팬덤 형성.</p></div>
+      <div class="step"><div class="k">B</div><h4>팬덤 전환</h4><p>단순 시청자가 아닌 "스토리를 따라가는" 고정·두터운 팬층으로 전환.</p></div>
+      <div class="step"><div class="k">C</div><h4>직접 환전</h4><p>멤버십·티켓·굿즈로 대행사 없이 자사 플랫폼에서 직접 현금화(마진↑).</p></div>
+      <div class="step"><div class="k">D</div><h4>리그·IP 확장</h4><p>수익을 리그·피더단체·글로벌·선수 IP에 재투자해 서사를 재생산.</p></div>
+    </div>
+    <p class="flow-note">→ 핵심은 <b>새 선수·새 갈등이 다시 A의 콘텐츠가 되는 순환</b>. 휠이 돌수록 경상수익(멤버십)이 두꺼워진다.</p>
+  </section>
+
+  <!-- 2026 UPDATE (NEW) -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">06</span><h2>2026 최신 업데이트</h2>
+      <p>지난 1년간 가장 큰 변화는 '상장 경로'다. 한국 IPO가 아니라 캐나다 증시 우회상장으로 방향을 잡았고, 일정이 한 차례 밀린 상태다.</p>
+    </div>
+
+    <div class="ucard big">
+      <div class="utag">상장 · IN PROGRESS</div>
+      <h3>한국 IPO가 아니라, 캐나다 증시 '우회상장'</h3>
+      <p>블랙컴뱃 운영사 이데아파라곤은 홍콩 지주사 GSL을 거쳐, 캐나다 벤처거래소(TSX-V)의 자본풀회사(CPC) '로쉬니캐피탈'과 역합병(RTO)하는 방식으로 우회상장을 추진 중이다. 성사되면 GSL이 상장사의 100% 자회사가 되고, 블랙컴뱃은 'UFC 다음으로 상장한 격투단체'가 된다.</p>
+      <div class="chips">
+        <span class="chip"><b>이데아파라곤</b><i>한국 운영사</i></span>
+        <span class="arrow">←100%←</span>
+        <span class="chip"><b>GSL</b><i>홍콩 지주사</i></span>
+        <span class="arrow">⇄ RTO ⇄</span>
+        <span class="chip gold"><b>로쉬니캐피탈</b><i>TSXV:ROSH.P · CPC</i></span>
+        <span class="arrow">→</span>
+        <span class="chip"><b>TSX-V</b><i>Tier 2 상장</i></span>
+      </div>
+      <p class="ufoot">2025.5 합병 의향서 체결 → 그해 말(12/31) 완료 목표 무산 → 현지 부채(약 40억)·TSX-V의 신규자금(55억) 요건·추가 회계감사로 지연 → 2026.6 완료 목표로 재조준. 현재 로쉬니 주식(ROSH.P)은 거래정지(halt) 상태이며 상장은 아직 완료되지 않았다. ('.P'는 합병 전 CPC 표식)</p>
+    </div>
+
+    <div class="ugrid">
+      <div class="ucard">
+        <div class="utag">랭킹 ↑</div>
+        <h4>세계 28위 · 국내 1위</h4>
+        <p>글로벌 격투단체 랭킹이 2024년 35위에서 2025년 28위로 상승. 아시아권 10위 안에 들며 국내 최고 단체 지위를 굳혔다.</p>
+      </div>
+      <div class="ucard">
+        <div class="utag">제도권 진입</div>
+        <h4>아시안게임 종목 + 연맹 수석부회장</h4>
+        <p>MMA가 2026 나고야 아시안게임 정식종목으로 채택(금메달 시 병역특례). 박평화 대표는 대한MMA연맹 수석부회장, 임종언 대표는 이사로 인준돼 아마추어·국가대표 영역으로 영향력 확장.</p>
+      </div>
+      <div class="ucard">
+        <div class="utag">리스크 실증</div>
+        <h4>유짓수, UFC行</h4>
+        <p>밴텀급 챔피언 유수영(유짓수)이 'Road to UFC' 우승으로 UFC에 진출하며 타이틀을 반납. '스타가 크면 UFC로 떠난다'는 구조적 천장이 현실로 나타난 사례.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RISK & MOAT -->
+  <section class="rv">
+    <div class="sec-head">
+      <span class="num">07</span><h2>해자와 리스크</h2>
+      <p>흑자·상장 추진을 떠받치는 강점과, 모델의 발목을 잡을 수 있는 구조적 약점.</p>
+    </div>
+    <div class="risks">
+      <div class="risk moat">
+        <div class="rk"><span class="dot"></span>해자 · MOAT</div>
+        <h4>퍼스트무버 + 독보적 스토리텔링</h4>
+        <p>"최초는 깨지지 않는다." 프로모션·서사·편집 퀄리티가 국내 격투 업계 독보적 평가. 경쟁이 모방하기 어려운 콘텐츠 역량 자체가 해자.</p>
+      </div>
+      <div class="risk moat">
+        <div class="rk"><span class="dot"></span>해자 · MOAT</div>
+        <h4>수직계열화 + 무차입 흑자</h4>
+        <p>콘텐츠·대회·짐·플랫폼을 직접 보유하고 대행 없이 판매해 마진을 쥔다. 투자금 0으로 흑자를 낸 재무 건전성이 상장 스토리의 근거.</p>
+      </div>
+      <div class="risk moat">
+        <div class="rk"><span class="dot"></span>해자 · MOAT</div>
+        <h4>제도권 편입 모멘텀</h4>
+        <p>아시안게임 정식종목 채택과 대한MMA연맹 요직 확보로, 아마추어 저변·국가대표 파이프라인까지 닿는 장기 성장 레버를 확보.</p>
+      </div>
+      <div class="risk warn">
+        <div class="rk"><span class="dot"></span>리스크 · RISK</div>
+        <h4>스타 유출 구조 (실증됨)</h4>
+        <p>선수가 스타가 되면 UFC로 떠난다 — "BTS를 키웠더니 다른 기획사로." 유짓수 사례로 이미 현실화된, 핵심 IP(선수)를 상위 포식자에 뺏기는 천장.</p>
+      </div>
+      <div class="risk warn">
+        <div class="rk"><span class="dot"></span>리스크 · RISK</div>
+        <h4>상장 실행 리스크</h4>
+        <p>우회상장이 당초 일정에서 6개월+ 밀렸고 로쉬니 주식은 거래정지 중. 현지 부채·신규자금 요건 충족과 군소 셸을 통한 RTO라는 점에서 완료·밸류에이션 불확실성이 크다.</p>
+      </div>
+      <div class="risk warn">
+        <div class="rk"><span class="dot"></span>리스크 · RISK</div>
+        <h4>키맨 · 플랫폼 의존</h4>
+        <p>임종언 각자대표 합류로 재무·상장 축은 분산됐으나, 핵심 기획은 여전히 검정 1인에 집중. 또 '수익의 심장'인 멤버십·광고가 유튜브 정책에 묶인 단일 플랫폼 리스크.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="disc">
+      <b>데이터 주의.</b> 운영 지표(관중 수·객단가·대회 횟수·흑자 전환·랭킹·무투자 성장)와 상장 관련 사실(우회상장 구조·일정 지연·거래정지)은 언론·공시로 확인된 내용입니다. 다만 <b>갈래별 매출 비중(%)·매출 믹스·단위경제 손익(게이트 vs 비용)은 비공개 정보를 구조적으로 추정·예시</b>한 값이며 실제 회계수치가 아닙니다. 파이트머니는 공개 증언 기반의 대략적 범위입니다. <b>상장은 2026년 6월 완료를 목표로 진행 중이나 아직 완료되지 않았고</b>, 일정·성사 여부는 변동될 수 있습니다. 수치·랭킹은 2024~2025년 기준입니다.
+    </div>
+    <div class="src">
+      <span>SOURCES</span> 파이낸셜리뷰 박평화 인터뷰 · 스포츠경향/네이트 매출 보도 · 딜사이트경제TV·데일리임팩트(상장) · Roshni Capital 공시(Newsfile) · 랭크파이브·MK스포츠(연맹·아시안게임) · 나무위키 블랙컴뱃 · 블랙컴뱃 유튜브/공식사이트
+    </div>
+    <div class="sign">Compiled as a structural revenue map · BLACK COMBAT PROSPECTUS v2 · 야차클럽 편의 자매 문서</div>
+  </footer>
+
+</div>
+
+<script>
+  // Reveal on scroll
+  (function(){
+    var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.rv');
+    if(rm){ els.forEach(function(e){e.classList.add('in')}); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }});
+    },{threshold:.12});
+    els.forEach(function(e){io.observe(e)});
+  })();
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Revenue mix chart
+  (function(){
+    var ctx = document.getElementById('mixChart');
+    if(!ctx) return;
+    var labels = ['직관 티켓','유튜브 멤버십','스폰서십','PPV·중계권','유튜브 광고','굿즈·MD','블랙컴뱃 짐','리그 IP·제휴'];
+    var data = [26,24,16,11,9,7,4,3];
+    var colors = ['#c9a44e','#c9a44e','#b89243','#8f7338','#8f7338','#6f6f7a','#56565f','#56565f'];
+    new Chart(ctx,{
+      type:'bar',
+      data:{ labels:labels, datasets:[{ data:data, backgroundColor:colors, borderWidth:0, borderRadius:2, barThickness:24 }]},
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false, layout:{padding:{right:24}},
+        plugins:{
+          legend:{display:false},
+          tooltip:{ backgroundColor:'#1a1a21', borderColor:'#35353f', borderWidth:1, titleColor:'#f0f0f3', bodyColor:'#c9a44e',
+            titleFont:{family:'DM Mono',size:12}, bodyFont:{family:'DM Mono',size:13}, padding:11, displayColors:false,
+            callbacks:{ label:function(c){ return '추정 비중 ' + c.parsed.x + '%'; } } }
+        },
+        scales:{
+          x:{ beginAtZero:true, max:30, grid:{color:'rgba(255,255,255,.05)'}, border:{display:false},
+              ticks:{ color:'#83838f', font:{family:'DM Mono',size:11}, callback:function(v){return v+'%'} } },
+          y:{ grid:{display:false}, border:{display:false}, ticks:{ color:'#f0f0f3', font:{family:'Pretendard',size:13,weight:'500'} } }
+        },
+        animation:{ duration: reduce ? 0 : 900 }
+      }
+    });
+  })();
+
+  // Unit economics chart (gate vs cost)
+  (function(){
+    var ctx = document.getElementById('unitChart');
+    if(!ctx) return;
+    new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels:['일반 대회 (2천명)','대형 대회 (4천명)'],
+        datasets:[
+          { label:'게이트 수입', data:[1.4,2.8], backgroundColor:'#c9a44e', stack:'in', categoryPercentage:0.7, barPercentage:0.9 },
+          { label:'파이트머니(추정)', data:[0.9,1.2], backgroundColor:'#5f7791', stack:'cost', categoryPercentage:0.7, barPercentage:0.9 },
+          { label:'제작·대관·운영(추정)', data:[0.45,0.6], backgroundColor:'#3f5266', stack:'cost', categoryPercentage:0.7, barPercentage:0.9 }
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{
+          legend:{ display:true, position:'bottom', labels:{ color:'#b9b9c4', font:{family:'DM Mono',size:11}, boxWidth:12, padding:14 } },
+          tooltip:{ backgroundColor:'#1a1a21', borderColor:'#35353f', borderWidth:1, titleColor:'#f0f0f3', bodyColor:'#e6c878',
+            titleFont:{family:'DM Mono',size:12}, bodyFont:{family:'DM Mono',size:12.5}, padding:11, displayColors:true, boxWidth:10,
+            callbacks:{ label:function(c){ return c.dataset.label + ': ₩' + c.parsed.y + '억'; } } }
+        },
+        scales:{
+          x:{ stacked:true, grid:{display:false}, border:{display:false}, ticks:{ color:'#f0f0f3', font:{family:'Pretendard',size:12.5,weight:'500'} } },
+          y:{ stacked:true, beginAtZero:true, grid:{color:'rgba(255,255,255,.05)'}, border:{display:false},
+              ticks:{ color:'#83838f', font:{family:'DM Mono',size:11}, callback:function(v){return '₩'+v+'억'} } }
+        },
+        animation:{ duration: reduce ? 0 : 900 }
+      }
+    });
+  })();
+</script>
+</body>
+</html>
