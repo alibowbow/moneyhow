@@ -1115,6 +1115,11 @@ function navigate(id, _fromStatic = false){
     content.innerHTML = `<div class="welcome" style="min-height:50vh;"><div class="wt">페이지를 찾지 못했습니다.</div><div class="ws">선택한 항목을 불러올 수 없습니다.</div></div>`;
   }
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  // 공유·딥링크용 URL 해시 동기화
+  if(!_suppressHash){
+    const target = '#' + encodeURIComponent(id);
+    if(location.hash !== target){ history.pushState({id}, '', target); }
+  }
 }
 
 function navigateHome(_fromStatic = false) {
@@ -1127,7 +1132,22 @@ function navigateHome(_fromStatic = false) {
   document.title = HOME_TITLE;
   buildNav(document.getElementById('searchInput')?.value || '');
   showWelcome();
+  if(!_suppressHash && location.hash){
+    history.pushState(null, '', location.pathname + location.search);
+  }
 }
+
+// 해시 라우팅 (공유 링크·뒤로/앞으로 가기)
+let _suppressHash = false;
+function routeFromHash(){
+  const raw = location.hash.slice(1);
+  const id = raw ? decodeURIComponent(raw) : '';
+  _suppressHash = true;
+  if(id && (PAGE_FILE_MAP[id] || PAGES[id])){ navigate(id); }
+  else { navigateHome(); }
+  _suppressHash = false;
+}
+window.addEventListener('popstate', routeFromHash);
 function toggleBookmark(){
   if(!currentId) return;
   if(bookmarks.includes(currentId)) bookmarks = bookmarks.filter(b=>b!==currentId);
@@ -1137,8 +1157,10 @@ function toggleBookmark(){
 }
 
 function copyLink(){
+  let url = location.origin + location.pathname + location.search;
+  if(currentId){ url += '#' + encodeURIComponent(currentId); }
   const textArea = document.createElement("textarea");
-  textArea.value = location.href;
+  textArea.value = url;
   textArea.style.position = "fixed";
   textArea.style.left = "-9999px";
   document.body.appendChild(textArea);
@@ -1804,7 +1826,15 @@ buildNav();
 if (STATIC_PAGE && PAGES[STATIC_PAGE]) {
   navigate(STATIC_PAGE, true);
 } else {
-  navigateHome(true);
+  const _initRaw = location.hash.slice(1);
+  const _initId = _initRaw ? decodeURIComponent(_initRaw) : '';
+  if(_initId && (PAGE_FILE_MAP[_initId] || PAGES[_initId])){
+    _suppressHash = true;
+    navigate(_initId);
+    _suppressHash = false;
+  } else {
+    navigateHome(true);
+  }
 }
 </script>
 </body>
