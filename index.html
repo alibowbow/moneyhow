@@ -720,6 +720,7 @@ let NAV = [
   ]},
   { cat:'스포츠·엔터', items:[
     {id:'blackcombat',label:'블랙컴뱃'},
+    {id:'girlgroup',label:'중소 걸그룹'},
   ]},
   { cat:'AI 생성 리포트', items:[] }
 ];
@@ -764,6 +765,7 @@ const PAGE_META = {
   'mrvl':              { icon:'🧩', blurb:'하이퍼스케일러의 맞춤형 AI 칩을 설계하는 숨은 설계자' },
   'amd':               { icon:'🔴', blurb:'NVIDIA·Intel 두 전선을 동시에 공략하는 팹리스 반도체' },
   'blackcombat':       { icon:'🥊', blurb:'국내 유일 흑자 격투 단체의 콘텐츠 IP 수익 해부' },
+  'girlgroup':         { icon:'🎤', blurb:'수십억 선투자 후 가챠 — 중소기획사 걸그룹 손익 구조' },
 };
 
 // #RRGGBB → rgba(...)
@@ -865,7 +867,8 @@ const PAGE_FILE_MAP = {
   "meta": "pages/meta.html",
   "mrvl": "pages/mrvl.html",
   "amd": "pages/amd.html",
-  "blackcombat": "pages/blackcombat.html"
+  "blackcombat": "pages/blackcombat.html",
+  "girlgroup": "pages/girlgroup.html"
 };
 const STANDALONE_EMBED_IDS = new Set([
   'sanil',
@@ -891,7 +894,8 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'meta',
   'mrvl',
   'amd',
-  'blackcombat'
+  'blackcombat',
+  'girlgroup'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;

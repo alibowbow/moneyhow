@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>중소기획사는 걸그룹으로 어떻게 돈을 버나 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F5F0E5;
+    --paper-2:#EFE7D6;
+    --paper-3:#E9DFCB;
+    --ink:#1E1914;
+    --ink-soft:#4B433A;
+    --muted:#8C8273;
+    --line:#DBD1BF;
+    --line-strong:#C7BCA6;
+    --rose:#CE2A5E;
+    --rose-deep:#A81E4B;
+    --green:#2E7355;
+    --rust:#B9472F;
+    --gold:#BC8A1F;
+    --stage:#15110B;
+    --stage-2:#211A12;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .mono{font-family:"DM Mono",ui-monospace,monospace}
+  .eyebrow{
+    font-family:"DM Mono",monospace;
+    font-size:.72rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    display:inline-block;
+  }
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:560;line-height:1.08;letter-spacing:-.01em}
+  .serif-it{font-family:"Fraunces",serif;font-style:italic;font-weight:480}
+  a{color:inherit}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(8px);
+  }
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
+  .topbar .brand{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .topbar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--rose);margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  .topbar nav a{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .2s}
+  .topbar nav a:hover{color:var(--rose-deep)}
+  @media(max-width:760px){.topbar nav{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 36px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);margin:18px 0 0}
+  .hero h1 em{color:var(--rose)}
+  .hero .lede{margin-top:22px;font-size:clamp(1.02rem,1.7vw,1.18rem);color:var(--ink-soft);max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:600}
+  .hero-figure{
+    border:1px solid var(--line-strong);
+    background:linear-gradient(180deg,var(--paper-2),var(--paper));
+    border-radius:3px;
+    padding:18px 18px 10px;
+    position:relative;
+  }
+  .hero-figure .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+  .jbox{height:300px;position:relative}
+  .legend-row{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .legend-row span{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+  .swatch{width:16px;height:3px;border-radius:2px;display:inline-block}
+
+  /* ---------- stat band ---------- */
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px;background:var(--paper-2)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 22px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+  .stat .num{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.02em}
+  .stat .num.r{color:var(--rust)} .stat .num.g{color:var(--green)} .stat .num.s{color:var(--rose)} .stat .num.o{color:var(--gold)}
+  .stat .lab{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:9px;line-height:1.5}
+  .stat .sub{font-size:.74rem;color:var(--muted);margin-top:3px}
+
+  /* ---------- section scaffolding ---------- */
+  section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+  .sec-no{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--rose);letter-spacing:.1em}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem)}
+  .sec-intro{max-width:42em;color:var(--ink-soft);margin:14px 0 34px;font-size:1.04rem}
+  .sec-intro b{color:var(--ink);font-weight:600}
+
+  /* generic two-col */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}}
+
+  .card{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px}
+  .card .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-h{height:300px;position:relative}
+  .chart-h.tall{height:340px}
+
+  .note{font-size:.82rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .note b{color:var(--ink-soft)}
+
+  /* revenue stream list */
+  .streams{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+  @media(max-width:760px){.streams{grid-template-columns:1fr}}
+  .stream{padding:22px 24px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--paper)}
+  .stream:nth-child(2n){border-right:none}
+  .stream .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .stream .si{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--rose);width:26px}
+  .stream .st{font-family:"Fraunces",serif;font-size:1.22rem;font-weight:560}
+  .stream p{font-size:.92rem;color:var(--ink-soft);margin:0}
+  .tag{display:inline-block;font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:2px 8px;border-radius:30px;border:1px solid var(--line-strong);color:var(--ink-soft);margin-top:10px}
+  .tag.hot{color:var(--rose-deep);border-color:var(--rose);background:color-mix(in srgb,var(--rose) 8%,transparent)}
+
+  /* ---------- stage (dark) block ---------- */
+  .stagewrap{background:var(--stage);color:var(--paper);border-bottom:1px solid var(--stage)}
+  .stagewrap .eyebrow{color:#F1A0BC}
+  .stagewrap h2{color:var(--paper)}
+  .stagewrap .sec-intro{color:#C9BFAE}
+  .stagewrap .sec-intro b{color:#fff}
+  .gacha{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:14px}
+  @media(max-width:760px){.gacha{grid-template-columns:1fr}}
+  .gcell{background:var(--stage);padding:30px 24px}
+  .gcell .gnum{font-family:"Fraunces",serif;font-size:clamp(2rem,4.4vw,3rem);font-weight:600;color:#fff;line-height:1}
+  .gcell .gnum .accent{color:var(--rose)}
+  .gcell .glab{font-family:"DM Mono",monospace;font-size:.74rem;color:#B7AD9C;margin-top:10px;line-height:1.55}
+  .stagewrap .spotlight{
+    position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(560px 280px at 78% 12%, rgba(206,42,94,.16), transparent 70%);
+  }
+
+  /* ---------- cost waterfall mini ---------- */
+  .costbar{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .crow{display:grid;grid-template-columns:140px 1fr 64px;align-items:center;gap:12px}
+  @media(max-width:560px){.crow{grid-template-columns:110px 1fr 52px}}
+  .crow .cl{font-size:.86rem;color:var(--ink-soft)}
+  .crow .ctrack{height:18px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+  .crow .cfill{height:100%;background:var(--rust);border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .crow .cv{font-family:"DM Mono",monospace;font-size:.82rem;text-align:right;color:var(--ink)}
+
+  /* ---------- case studies ---------- */
+  .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.cases{grid-template-columns:1fr}}
+  .case{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px;position:relative;overflow:hidden}
+  .case .ribbon{font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:30px;display:inline-block}
+  .case.win .ribbon{background:color-mix(in srgb,var(--green) 13%,transparent);color:var(--green)}
+  .case.mid .ribbon{background:color-mix(in srgb,var(--gold) 16%,transparent);color:var(--gold)}
+  .case.warn .ribbon{background:color-mix(in srgb,var(--rust) 13%,transparent);color:var(--rust)}
+  .case h3{font-size:1.5rem;margin:14px 0 2px}
+  .case .agency{font-family:"DM Mono",monospace;font-size:.74rem;color:var(--muted);margin-bottom:14px}
+  .case p{font-size:.9rem;color:var(--ink-soft);margin-bottom:10px}
+  .case .metric{display:flex;justify-content:space-between;border-top:1px dashed var(--line-strong);padding-top:8px;margin-top:4px;font-size:.82rem}
+  .case .metric span:first-child{color:var(--muted);font-family:"DM Mono",monospace;font-size:.72rem}
+  .case .metric span:last-child{font-family:"DM Mono",monospace;color:var(--ink);font-weight:500}
+  .case.hot .ribbon{background:color-mix(in srgb,var(--rose) 16%,transparent);color:var(--rose-deep)}
+  /* FIFTY FIFTY arc */
+  .ff-arc{margin-top:26px;border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);overflow:hidden}
+  .ff-head{padding:22px 24px 8px;border-bottom:1px solid var(--line)}
+  .ff-head .ribbon{font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:30px;display:inline-block;background:color-mix(in srgb,var(--rust) 13%,transparent);color:var(--rust)}
+  .ff-head h3{font-size:clamp(1.4rem,3vw,1.7rem);margin:12px 0 2px}
+  .ff-head .agency{font-family:"DM Mono",monospace;font-size:.74rem;color:var(--muted)}
+  .ff-cols{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  @media(max-width:760px){.ff-cols{grid-template-columns:1fr}}
+  .ff-phase{padding:22px 24px}
+  .ff-phase.p1{border-right:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,var(--rust) 6%,transparent),transparent)}
+  .ff-phase.p2{background:linear-gradient(180deg,color-mix(in srgb,var(--green) 7%,transparent),transparent)}
+  @media(max-width:760px){.ff-phase.p1{border-right:none;border-bottom:1px solid var(--line)}}
+  .ff-tag{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.06em;margin-bottom:8px}
+  .ff-phase.p1 .ff-tag{color:var(--rust)}
+  .ff-phase.p2 .ff-tag{color:var(--green)}
+  .ff-phase h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.22rem;margin-bottom:8px}
+  .ff-phase p{font-size:.9rem;color:var(--ink-soft);margin-bottom:12px}
+  .ff-phase .metric{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line-strong);padding-top:8px;margin-top:4px;font-size:.82rem}
+  .ff-phase .metric span:first-child{color:var(--muted);font-family:"DM Mono",monospace;font-size:.72rem;white-space:nowrap}
+  .ff-phase .metric span:last-child{font-family:"DM Mono",monospace;color:var(--ink);font-weight:500;text-align:right}
+  .ff-take{padding:16px 24px 22px;border-top:1px dashed var(--line-strong);font-size:.9rem;color:var(--ink-soft)}
+  .ff-take b{color:var(--ink)}
+
+  /* settlement flow */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  @media(max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+  .fstep{border:1px solid var(--line-strong);border-radius:3px;padding:18px;background:var(--paper);position:relative}
+  .fstep .fn{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--rose)}
+  .fstep h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.1rem;margin:8px 0 6px}
+  .fstep p{font-size:.84rem;color:var(--ink-soft);margin:0}
+  .fstep .fbar{height:4px;border-radius:3px;margin-top:12px}
+
+  /* takeaways */
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media(max-width:760px){.keys{grid-template-columns:1fr}}
+  .key{border-left:3px solid var(--rose);padding:6px 0 6px 18px}
+  .key h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.18rem;margin-bottom:6px}
+  .key p{font-size:.92rem;color:var(--ink-soft)}
+
+  .pull{font-family:"Fraunces",serif;font-style:italic;font-weight:420;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:var(--ink);max-width:24em;margin:0 auto;text-align:center}
+  .pull .mk{color:var(--rose);font-style:normal}
+
+  footer{padding:48px 0 64px;color:var(--muted)}
+  footer h4{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  footer .src{font-size:.78rem;line-height:1.85;columns:2;column-gap:36px}
+  @media(max-width:680px){footer .src{columns:1}}
+  footer .disc{font-size:.76rem;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);max-width:48em}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.cfill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>중소돌의 경제학 · 2026</div>
+    <nav>
+      <a href="#model">수익모델</a>
+      <a href="#cost">선투자</a>
+      <a href="#streams">수익원</a>
+      <a href="#market">2026 시장</a>
+      <a href="#cases">사례</a>
+      <a href="#settle">정산</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">K-POP 산업 리포트 · 걸그룹 유닛 이코노믹스</span>
+      <h1>중소기획사는 걸그룹으로<br>어떻게 <em>돈을 버나</em></h1>
+      <p class="lede">데뷔 한 팀에 <b>수십억을 먼저 태우고</b>, 뜰 확률은 업계 사람들 표현으로 "SSR 가챠". 그런데 한 번 터지면 계약 기간 동안 <b>수백억</b>이 돌아온다. 2026년 현재, 그 도박의 손익 곡선과 현금흐름 구조를 해부한다.</p>
+    </div>
+    <div class="hero-figure reveal">
+      <div class="cap"><span>누적 손익 시뮬레이션 · 억원</span><span>데뷔 한 팀 기준</span></div>
+      <div class="jbox"><canvas id="jcurve"></canvas></div>
+      <div class="legend-row">
+        <span><i class="swatch" style="background:#2E7355"></i>흥행 (Hit)</span>
+        <span><i class="swatch" style="background:#B9472F"></i>실패 (Miss)</span>
+        <span><i class="swatch" style="background:#8C8273;height:2px;border-top:1px dashed #8C8273;background:none"></i>손익분기점</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="num r">10–50<span style="font-size:.5em">억+</span></div>
+        <div class="lab">데뷔까지 선(先)투자</div>
+        <div class="sub">"50억이면 알뜰하게 쓴 것" — 업계 관계자</div>
+      </div>
+      <div class="stat">
+        <div class="num g">200–350<span style="font-size:.5em">억</span></div>
+        <div class="lab">흥행 시 계약기간 누적 매출</div>
+        <div class="sub">성공한 팀 연 매출 30–100억</div>
+      </div>
+      <div class="stat">
+        <div class="num s">$3.02<span style="font-size:.5em">억</span></div>
+        <div class="lab">2025 음반 수출액 · 역대 최고</div>
+        <div class="sub">10년 만에 12배 (2015년 $0.25억)</div>
+      </div>
+      <div class="stat">
+        <div class="num o">10<span style="font-size:.5em">조원</span></div>
+        <div class="lab">팬덤 비즈니스 시장 (5년 내 전망)</div>
+        <div class="sub">2024년 약 3조원 → 확장 중</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 MODEL -->
+<section class="block" id="model">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>한 팀 = 한 번의 고위험 베팅</h2></div>
+    <p class="sec-intro">중소기획사의 걸그룹 사업은 본질적으로 <b>벤처 투자에 가깝다.</b> 연습생 시절부터 데뷔 직후까지 모든 비용을 회사가 먼저 부담하고(선투자), 데뷔 후 벌어들인 수익에서 이를 회수한다. 위 곡선이 보여주듯, 데뷔 1년차까지 누적 적자는 보통 <b>20억 안팎</b>까지 깊어진다. 여기서 길이 갈린다 — 흥행하면 곡선은 가파르게 손익분기점을 넘어 수십억의 이익으로 치솟고, 실패하면 손실이 확정되며 팀은 해체된다.</p>
+    <div class="cols">
+      <div>
+        <p style="color:var(--ink-soft);font-size:1rem">대형 3사(하이브·SM·JYP)는 작곡·프로듀싱·안무·글로벌 마케팅을 <b style="color:var(--ink)">사내에서 모두 해결</b>하고, 콘서트·IP·플랫폼으로 매출을 분산한다. 반면 중소는 핵심 제작을 <b style="color:var(--ink)">외주에 의존</b>하고, 데뷔 직후엔 음반·행사·광고처럼 즉시 현금이 도는 수익원에 매달릴 수밖에 없다. 자금이 얇으니 한 번의 컴백 실패가 곧 회사의 생존 문제로 직결된다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">그럼에도 중소가 이 게임을 계속하는 이유는 단 하나 — <b style="color:var(--ink)">대박의 비대칭성</b>이다. 빅히트(현 하이브)가 BTS 하나로 중소에서 글로벌 기업이 된 것처럼, 걸그룹 하나가 터지면 회사의 체급 자체가 바뀐다.</p>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>제작 구조 비교</span><span>대형 vs 중소</span></div>
+        <div class="chart-h"><canvas id="mixchart"></canvas></div>
+        <p class="note"><b>개념적 구조도.</b> 감사받은 수치가 아니라 업계의 전형적 매출 구성 패턴을 나타냄. 핵심은 비중의 방향성 — 중소는 행사·광고 의존이 크고, 대형은 공연·IP·플랫폼 비중이 크다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 COST -->
+<section class="block" id="cost">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>데뷔 전에 새어 나가는 돈</h2></div>
+    <p class="sec-intro">매출이 1원도 들어오기 전, 회사는 이미 한 팀에 <b>최소 10억</b>을 쓴다. A급 트레이너 연봉, 강남 숙소, 대형 뮤직비디오, 글로벌 마케팅까지 공격적으로 붙이면 데뷔 비용은 <b>50억을 훌쩍</b> 넘긴다. 아래는 비교적 알뜰하게 운영한 5인조 걸그룹의 데뷔 직전 누적 지출 구성이다.</p>
+    <div class="cols">
+      <div class="card">
+        <div class="cap"><span>데뷔 직전 누적 지출 · 알뜰형 ≈ 10억</span><span>억원</span></div>
+        <div class="costbar" id="costbar">
+          <div class="crow"><span class="cl">트레이닝 (2년)</span><div class="ctrack"><div class="cfill" data-w="100"></div></div><span class="cv">2.5</span></div>
+          <div class="crow"><span class="cl">마케팅·홍보</span><div class="ctrack"><div class="cfill" data-w="80"></div></div><span class="cv">2.0</span></div>
+          <div class="crow"><span class="cl">숙소·식비·차량</span><div class="ctrack"><div class="cfill" data-w="60"></div></div><span class="cv">1.5</span></div>
+          <div class="crow"><span class="cl">안무·외주 제작</span><div class="ctrack"><div class="cfill" data-w="48"></div></div><span class="cv">1.2</span></div>
+          <div class="crow"><span class="cl">음반·음원 제작</span><div class="ctrack"><div class="cfill" data-w="40"></div></div><span class="cv">1.0</span></div>
+          <div class="crow"><span class="cl">뮤직비디오</span><div class="ctrack"><div class="cfill" data-w="40"></div></div><span class="cv">1.0</span></div>
+          <div class="crow"><span class="cl">의상·헤어·메이크업</span><div class="ctrack"><div class="cfill" data-w="32"></div></div><span class="cv">0.8</span></div>
+        </div>
+        <p class="note">트레이닝은 멤버 1인당 보컬·댄스·연기·외국어 기준 월 200만원 이상. 5명이 2년이면 그것만으로 2억대다. 데뷔 후에도 활동 홍보비가 <b>연 수억</b>씩 추가된다.</p>
+      </div>
+      <div>
+        <div class="pull" style="text-align:left;margin:8px 0 0">연습생이 쓰는 돈은 회계상 <span class="mk">'비용'</span>,<br>데뷔한 아이돌이 쓰는 돈은 <span class="mk">'자산'</span>이 된다.</div>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:20px">데뷔에 성공하면 그동안의 지출은 '선급금(자산)'으로 잡혀 미래 수익에서 회수된다. 데뷔하지 못하면 그대로 <b style="color:var(--ink)">비용으로 소각</b>된다. 그래서 회사는 연습생 평가에 가혹하고, 가능성이 없다고 판단되면 빠르게 정리한다 — 트레이닝 비용이 회사의 순수 지출이기 때문이다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">멤버 입장에서는 데뷔 후에도 <b style="color:var(--ink)">손익분기점을 넘기 전까지 정산금이 0원</b>이다. 연습생·데뷔·활동 비용을 모두 갚은 뒤에야 비로소 수익을 나눠 받기 시작한다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GACHA (dark stage) -->
+<section class="block stagewrap" style="position:relative">
+  <div class="spotlight"></div>
+  <div class="wrap" style="position:relative">
+    <div class="sec-head"><span class="sec-no" style="color:#F1A0BC">▶</span><h2>그래서, 뜰 확률은?</h2></div>
+    <p class="sec-intro">매년 수십 팀이 데뷔하지만 대중에게 각인되는 건 한 줌이다. 2024–25년 신인 걸그룹 중 <b>'중소돌의 기적'</b>을 쓴 팀은 손에 꼽는다. 베팅의 분포는 이렇게 생겼다.</p>
+    <div class="gacha">
+      <div class="gcell">
+        <div class="gnum"><span class="accent">1</span>팀</div>
+        <div class="glab">한 해 데뷔한 수십 팀 중<br>'대세'로 각인되는 걸그룹</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">30–100<span style="font-size:.5em">억</span></div>
+        <div class="glab">흥행한 팀의 연 매출 범위<br>투자금의 수 배~수십 배</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">7<span style="font-size:.5em">년</span></div>
+        <div class="glab">표준전속계약 상한<br>이 기간 안에 회수+이익을 내야 한다</div>
+      </div>
+    </div>
+    <p style="color:#C9BFAE;font-size:.92rem;margin-top:22px;max-width:46em">데뷔 6개월 만에 빌보드 '핫100' 17위에 오른 피프티피프티처럼, 중소도 단번에 세계 무대에 설 수 있다. 그러나 같은 사례가 보여주듯 — 한 번의 흥행이 곧 안정적 수익을 보장하지는 않는다. <span class="serif-it" style="color:#fff">아래에서 그 명암을 함께 본다.</span></p>
+  </div>
+</section>
+
+<!-- 03 STREAMS -->
+<section class="block" id="streams">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>돈이 들어오는 여섯 갈래</h2></div>
+    <p class="sec-intro">한번 데뷔하면 매출은 여러 갈래로 들어온다. 중소기획사에게 특히 중요한 건 <b>데뷔 직후부터 즉시 현금이 도는</b> 수익원 — 행사와 광고다. 아래 표시는 중소 걸그룹 입장에서의 상대적 중요도다.</p>
+    <div class="streams">
+      <div class="stream">
+        <div class="sh"><span class="si">01</span><span class="st">음반 · 음원</span></div>
+        <p>피지컬 앨범 판매와 스트리밍. 국내 물량은 줄지만 해외 수출 단가가 높다. 중소는 초동 수만~수십만 장 규모. 음반은 점점 '듣는 것'보다 '모으는 굿즈'에 가까워졌다.</p>
+        <span class="tag">국내↓ 수출↑</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">02</span><span class="st">콘서트 · 공연</span></div>
+        <p>2025년 K-pop 매출 성장을 견인한 핵심. 다만 스타디움 투어는 대형이 독식하고, 중소는 소규모 팬콘·쇼케이스 중심. 흥행 후반에야 본격적 수익원이 된다.</p>
+        <span class="tag">규모의 게임</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">03</span><span class="st">MD · 굿즈</span></div>
+        <p>포토카드·응원봉·시즌그리팅. 마진이 높고 팬당 반복 구매가 일어난다. 멤버별 포토카드 랜덤 봉입이 앨범 대량 구매를 유도하는 핵심 장치.</p>
+        <span class="tag">고마진</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">04</span><span class="st">광고 · CF · 행사</span></div>
+        <p>중소 걸그룹의 <b>생명줄.</b> 화제성만 생기면 즉시 모델료·행사비로 현금이 들어온다. QWER은 데뷔 2년 차에 패션 브랜드 전속 모델로 발탁됐다.</p>
+        <span class="tag hot">중소의 핵심 현금흐름</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">05</span><span class="st">팬덤 플랫폼 구독</span></div>
+        <p>버블·위버스의 유료 소통. 글로벌 코어팬이 매월 구독한다. 디어유 버블 구독자는 약 200만 명, 중국 비중이 35%에 달한다. 적은 인원이라도 안정적 반복 매출.</p>
+        <span class="tag">구독형 반복매출</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">06</span><span class="st">저작권 · 라이선스 · OEM</span></div>
+        <p>음원 저작권료, IP 라이선싱, 제작대행(OEM). 안정적이지만 중소는 핵심 곡 제작을 외주에 맡기는 경우가 많아 <b>저작권 귀속 분쟁</b>의 불씨가 되기도 한다.</p>
+        <span class="tag">양날의 검</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MARKET -->
+<section class="block" id="market">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>2026년의 역설: 판매량은 ↓, 매출은 ↑</h2></div>
+    <p class="sec-intro">2025–26년 K-pop의 가장 큰 구조 변화는 <b>'판매량'과 '매출'의 디커플링</b>이다. 국내 앨범 유통량은 2년 연속 1억 장을 밑돌았지만, 같은 기간 음반 수출액은 역대 최고를 찍었다. 중국 공동구매 규제, 플라스틱 CD에 대한 환경 반발, 다중 버전 축소가 거품 물량을 걷어냈고, 그 빈자리를 정가로 사는 해외 팬이 채웠다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>국내 앨범 유통량</span><span>백만 장</span></div>
+        <div class="chart-h"><canvas id="salesChart"></canvas></div>
+        <p class="note">2023년 정점(약 1.2억 장) 이후 2년 연속 하락. 2025년 약 9,350만 장. 밀리언셀러 수도, 300만 장 돌파 앨범 수도 함께 줄었다. <b>구조적 정상화</b>이지 붕괴는 아니라는 게 집계사들의 분석.</p>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>음반 수출액</span><span>백만 USD</span></div>
+        <div class="chart-h"><canvas id="exportChart"></canvas></div>
+        <p class="note">2026년 1분기 CD 수출액은 <b style="color:var(--green)">1.2억 달러(+159% YoY)</b>로 분기 최고. 수출 비중은 미국 28.8%, 일본 25.3%, EU 16.5%, 중국 14.4% 순. 적게 팔려도 <b>장당 단가</b>가 높아 매출은 오른다.</p>
+      </div>
+    </div>
+
+    <div class="cols" style="margin-top:34px">
+      <div class="card reveal">
+        <div class="cap"><span>2026 1분기 음반 수출 대상국</span><span>비중 %</span></div>
+        <div class="chart-h"><canvas id="countryChart"></canvas></div>
+        <p class="note">팬덤의 지리적 다변화. 아시아를 넘어 북미·유럽까지 코어 팬덤이 확장되며 고단가 시장 비중이 커졌다.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">이 역설이 중소에게 의미하는 것</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">매출이 <b style="color:var(--ink)">마진 높은 수출·투어·플랫폼</b>으로 이동하면서, 글로벌 코어 팬덤을 확보한 소수 IP만 살아남는 <b style="color:var(--ink)">양극화</b>가 심해지고 있다. 한국일보 등은 2025년을 "대형 중심, 중소 경영난, 걸그룹 해체"의 구조 변화기로 짚었다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">중소에게 길은 둘이다. 하나는 <b style="color:var(--ink)">처음부터 글로벌·코어 팬덤을 겨냥</b>해 적은 인원에게 높은 단가로 파는 것(수출 앨범·플랫폼 구독·박스셋). 다른 하나는 국내 화제성을 빠르게 <b style="color:var(--ink)">광고·행사 현금</b>으로 전환해 다음 컴백까지 버티는 것이다.</p>
+        <div class="card" style="margin-top:18px;background:var(--paper-2)">
+          <div class="cap"><span>팬덤 플랫폼 시장</span><span>구독형 반복매출</span></div>
+          <div class="chart-h" style="height:180px"><canvas id="platformChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CASES -->
+<section class="block" id="cases">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>'중소돌의 기적' — 빛과 그림자</h2></div>
+    <p class="sec-intro">중소가 화제성을 만드는 길은 하나가 아니다. <b>멤버 콘텐츠·밈의 바이럴</b>(리센느), <b>크리에이터 IP 기획</b>(QWER), <b>정통 실력</b>(키스오브라이프) — 큰돈 없이도 터질 수 있다. 하지만 같은 '기적'이라도 결말은 갈린다. 한 번의 흥행을 통제권 있는 사업으로 굳히지 못하면, 피프티피프티처럼 정점에서 무너졌다가 재건의 길을 걷게 된다.</p>
+    <div class="cases">
+      <div class="case hot reveal">
+        <span class="ribbon">올해의 역주행 · 2026</span>
+        <h3>리센느 RESCENE</h3>
+        <div class="agency">더뮤즈엔터테인먼트 · 5인조 다국적</div>
+        <p>멤버 원이의 개인 유튜브와 미나미의 <b>"거제, 야-호~!"</b> 갸루·사투리 콘텐츠가 SNS 밈으로 폭발하며 '리센느 붐'을 일으켰다. 그 화제성이 2024년 발매곡 'LOVE ATTACK'의 역주행으로 직결돼, 발매 약 2년 만에 멜론 TOP100 <b>최고 5위</b>까지 올랐다. 큰돈 들인 컴백이 아닌 멤버 콘텐츠가 불씨가 된 '저비용 고화제성'.</p>
+        <div class="metric"><span>멜론 TOP100</span><span>최고 5위 · 역주행</span></div>
+        <div class="metric"><span>싱글 2집 초동</span><span>약 8.8만 장</span></div>
+        <div class="metric"><span>무기</span><span>멤버 콘텐츠·밈</span></div>
+      </div>
+      <div class="case win reveal">
+        <span class="ribbon">성장형 4연타 흥행</span>
+        <h3>QWER</h3>
+        <div class="agency">타마고 프로덕션 · 쓰리와이코프레이션</div>
+        <p>크리에이터 김계란의 '최애의 아이들' 프로젝트로 데뷔한 4인조 걸밴드. 멤버 전원이 곡 작업에 참여하는 <b>성장형 밴드</b>로 초동이 꾸준히 우상향했다. '고민중독' 등 음원 역주행과 패션·악기 브랜드 광고로 IP를 수익화했다.</p>
+        <div class="metric"><span>미니 3집 초동</span><span>7.9만 장(첫날 5만+)</span></div>
+        <div class="metric"><span>초동 추이</span><span>2.7만→4.5만→7.9만</span></div>
+        <div class="metric"><span>무기</span><span>크리에이터 IP·음원</span></div>
+      </div>
+      <div class="case mid reveal">
+        <span class="ribbon">5세대 대표돌 도약</span>
+        <h3>키스오브라이프</h3>
+        <div class="agency">S2 엔터테인먼트</div>
+        <p>QWER과 함께 2024년 가요계를 이끈 '중소돌의 기적'으로 꼽힌다. 탄탄한 음악성과 퍼포먼스, 대중성을 무기로 존재감을 키우며 5세대 대표 걸그룹 후보로 자리매김했다.</p>
+        <div class="metric"><span>포지션</span><span>음악성 기반 성장</span></div>
+        <div class="metric"><span>과제</span><span>글로벌 팬덤 확장</span></div>
+        <div class="metric"><span>유형</span><span>실력형 롱런 도전</span></div>
+      </div>
+    </div>
+
+    <div class="ff-arc reveal">
+      <div class="ff-head">
+        <span class="ribbon">사례 4 · 붕괴, 그리고 재건</span>
+        <h3>피프티피프티 — 'Cupid' 신화의 그 후</h3>
+        <div class="agency">어트랙트(ATTRAKT)</div>
+      </div>
+      <div class="ff-cols">
+        <div class="ff-phase p1">
+          <div class="ff-tag">1기 · 2022–2023</div>
+          <h4>정점에서의 붕괴</h4>
+          <p>데뷔 6개월 만에 'Cupid'로 빌보드 핫100 17위(21주 차트인)·영국 오피셜 8위. 대형 없이 이룬 '중소돌의 기적'이었다. 그러나 핵심 곡 제작을 맡긴 외주사(더기버스)와의 저작권 분쟁, 정산 투명성 갈등이 터지며 멤버 3인이 이탈해 팀이 사실상 와해됐다. 법적 공방은 사안별로 엇갈리며 장기화됐다.</p>
+          <div class="metric"><span>빌보드 핫100</span><span>17위 · 21주</span></div>
+          <div class="metric"><span>결과</span><span>멤버 3인 이탈</span></div>
+          <div class="metric"><span>패인</span><span>IP·정산 통제권 상실</span></div>
+        </div>
+        <div class="ff-phase p2">
+          <div class="ff-tag">2기 · 2024.8 – 현재</div>
+          <h4>IP를 지킨 재출범</h4>
+          <p>어트랙트는 그룹명과 IP를 지킨 채 재건에 나섰다. 잔류 멤버 키나에 오디션 'R U Next?' 출신 문샤넬·예원 등 신규 4인을 더해 5인조로 재정비(2024.9 컴백). 2025년 'Skittlez'로 빌보드 '팝 에어플레이'에 진입하는 등 미국 라디오를 꾸준히 두드린다. 2026년 6월엔 멤버 하나의 건강상 활동 중단으로 4인 체제 새 앨범 컴백.</p>
+          <div class="metric"><span>재출범</span><span>2024.9 · 5인 재정비</span></div>
+          <div class="metric"><span>美 성과</span><span>'Skittlez' 팝 에어플레이</span></div>
+          <div class="metric"><span>2026.6</span><span>4인 체제 컴백</span></div>
+        </div>
+      </div>
+      <p class="ff-take"><b>시사점 —</b> 1기의 교훈은 결국 'IP와 정산의 통제권'이었다. 어트랙트는 그룹명이라는 IP만은 지켜내 재출범에 성공했지만, 'Cupid'급 폭발적 화제성을 재현하기는 쉽지 않다. <b>한 번의 대박보다 통제권과 지속가능성이 중요하다</b>는 것 — 중소 모델이 남긴 가장 비싼 교훈이다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SETTLEMENT -->
+<section class="block" id="settle">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">06</span><h2>정산: 돈은 결국 어떻게 나뉘나</h2></div>
+    <p class="sec-intro">매출이 회사와 멤버에게 흘러가는 과정은 단순한 분배가 아니라 <b>'선투자 회수 → 손익분기점 통과 → 비율 정산'</b>의 단계를 거친다. 이 구조가 K-pop에서 분쟁이 끊이지 않는 근본 이유다.</p>
+    <div class="flow">
+      <div class="fstep">
+        <div class="fn">STEP 1</div>
+        <h4>선투자</h4>
+        <p>연습생·데뷔·활동 비용 전액을 회사가 부담. 멤버는 사실상 '빚'을 진 상태로 출발한다.</p>
+        <div class="fbar" style="background:var(--rust)"></div>
+      </div>
+      <div class="fstep">
+        <div class="fn">STEP 2</div>
+        <h4>비용 회수</h4>
+        <p>데뷔 후 발생한 수익에서 선투자분을 먼저 차감. 이 구간 동안 멤버 정산금은 0원.</p>
+        <div class="fbar" style="background:var(--gold)"></div>
+      </div>
+      <div class="fstep">
+        <div class="fn">STEP 3</div>
+        <h4>손익분기점(BEP)</h4>
+        <p>누적 수익이 누적 비용을 넘는 순간. 여기서부터 비로소 멤버 몫이 발생한다.</p>
+        <div class="fbar" style="background:var(--green)"></div>
+      </div>
+      <div class="fstep">
+        <div class="fn">STEP 4</div>
+        <h4>비율 정산</h4>
+        <p>표준전속계약서에 따라 항목별 비율로 분배(음반·공연·광고 등 각기 다름). 통제권에 따라 7:3~5:5 등.</p>
+        <div class="fbar" style="background:var(--rose)"></div>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:34px">
+      <div>
+        <h3 style="font-size:1.35rem;margin-bottom:10px">분쟁이 잦은 이유</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">회사는 총 투자비와 손익분기점 도달 시점·금액을 <b style="color:var(--ink)">공개할 의무가 없다.</b> 그래서 매출이 쌓일수록 "언제 BEP를 넘었는지", "정산이 투명한지"를 두고 회사와 멤버 사이에 감정싸움이 벌어진다. 피프티피프티 사태의 핵심 쟁점 중 하나도 바로 <b style="color:var(--ink)">정산 투명성</b>이었다.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.35rem;margin-bottom:10px">2024 표준전속계약서 개정</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">문체부는 소속사 이전 후 <b style="color:var(--ink)">동일·유사 콘텐츠 재제작 금지 기간을 1년→3년</b>으로 늘려, 계약 만료 전 빼가기(템퍼링) 유인을 낮췄다. 업계에선 과거의 '불공정 시정'을 넘어 이제 <b style="color:var(--ink)">'균형과 책임'</b>, 계약 기간의 유연화가 화두다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section class="block" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">07</span><h2>정리 — 2026년, 중소가 돈을 버는 법</h2></div>
+    <div class="keys">
+      <div class="key"><h4>① 즉시 현금흐름을 잡아라</h4><p>화제성이 생기는 순간 광고·행사·모델료로 빠르게 전환해 다음 컴백까지의 런웨이를 확보한다. 중소에게 행사·광고는 사치가 아니라 생존이다.</p></div>
+      <div class="key"><h4>② 적은 팬에게 비싸게 팔아라</h4><p>국내 대량 물량이 줄어든 만큼, 고단가 수출 앨범·박스셋·LP와 팬덤 플랫폼 구독으로 코어 팬의 객단가를 끌어올린다.</p></div>
+      <div class="key"><h4>③ IP와 저작권을 손에 쥐어라</h4><p>제작 외주에 의존하더라도 저작권·마스터 권리의 통제권은 회사가 확보해야 한다. 흥행 후 무너진 사례 대부분이 여기서 갈렸다.</p></div>
+      <div class="key"><h4>④ 정산은 투명하게 설계하라</h4><p>BEP 시점과 분배 비율을 명확히 하면 흥행 이후의 분쟁 리스크가 줄고, 멤버 이탈·계약 분쟁이라는 최대 위험이 완화된다.</p></div>
+    </div>
+    <div style="margin-top:48px">
+      <div class="pull">중소의 게임은 <span class="mk">'얼마나 많이 파느냐'</span>에서<br><span class="mk">'코어 팬을 얼마나 단단히 묶느냐'</span>로 옮겨갔다.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>데이터 출처</h4>
+    <div class="src">
+      써클차트(Circle Chart) 앨범 차트·연간 집계 · 한국음악콘텐츠협회 · 관세청 음반 수출 통계(연합뉴스 인용) · 나마네 블로그 「보이그룹 앨범 판매량 2026 분석」(2026.06) · 한국일보 「해외에선 펄펄, 국내선 안 팔린다」(2025.11) 및 피프티피프티 분쟁 보도(2025.05) · 머니투데이 「중소돌의 성공이 부른 K팝 위기」 · 헤럴드·스타뉴스 피프티피프티 1심 판결(2026.01) · 일간스포츠 「4·5세대 공존 2025」 · 한국섬유신문(QWER 광고) · 나무위키(QWER·연예기획사·연습생·아이돌 7년 징크스 항목) · 한국경제·이투데이 걸그룹 제작비 분석 · 더벨·CEO스코어데일리·MTN(위버스·디어유 팬덤 플랫폼) · THE VC(디어유 기업정보) · 데몬데이(하이브 BM 분석) · PwC컨설팅 「데이터 기반 K팝 밸류」(2026.01) · 키움증권 「K-POP 산업 중장기 시나리오」(2026.05) · 삼성증권 산업 미디어 리포트(2025.07) · 골드만삭스 'Music in the Air' 2025 · 한국콘텐츠진흥원 · 데일리안 「표준계약서 도입 16년」(2025.12) · 스포츠경향·스타뉴스·톱스타뉴스·CBC뉴스·롤링스톤 코리아 「리센느 'LOVE ATTACK' 역주행」(2026.06) · 위키백과·나무위키 RESCENE(리센느) 항목 · 한터차트·일간스포츠·뉴시스 「QWER 미니 3집 초동 7만9,294장」(2025.06) · 씨네플레이·SPOTV뉴스 「피프티피프티 6월 4인 체제 컴백」(2026.05) · 나무위키 FIFTY FIFTY 및 전속계약 분쟁 항목
+    </div>
+    <p class="disc">방법론 노트 — 비용·손익 곡선과 '제작 구조 비교'는 공개된 업계 인터뷰·기사에 기반한 <b>대표값·개념도</b>로, 특정 회사의 감사 재무제표가 아닙니다. 시장 수치(앨범 판매량·수출액·플랫폼 매출)는 2026년 6월까지 공개된 자료 기준이며, 2026년 연간치는 아직 확정 전입니다. 본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(typeof Chart==='undefined') return;
+  const ink='#1E1914', soft='#4B433A', muted='#8C8273', line='#DBD1BF';
+  const rose='#CE2A5E', green='#2E7355', rust='#B9472F', gold='#BC8A1F';
+  Chart.defaults.font.family="'DM Mono', monospace";
+  Chart.defaults.font.size=11.5;
+  Chart.defaults.color=soft;
+  const won='\uc5b5'; // 억
+
+  /* ---------- J-CURVE (hero) ---------- */
+  const jLabels=['캐스팅','연습생1년','연습생2년','데뷔','+6개월','+1년','+1.5년','+2년','+2.5년','+3년'];
+  const hit=[0,-3,-7,-18,-24,-27,-12,18,62,128];
+  const miss=[0,-3,-7,-18,-24,-27,-29,-31,-31,null];
+  const bepLine={
+    id:'bepLine',
+    afterDraw(chart){
+      const {ctx,chartArea,scales}=chart;
+      const y=scales.y.getPixelForValue(0);
+      ctx.save();
+      ctx.strokeStyle=muted;ctx.setLineDash([5,4]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(chartArea.left,y);ctx.lineTo(chartArea.right,y);ctx.stroke();
+      // debut vertical marker (index 3)
+      const x=scales.x.getPixelForValue(3);
+      ctx.setLineDash([2,3]);ctx.strokeStyle='rgba(206,42,94,.5)';
+      ctx.beginPath();ctx.moveTo(x,chartArea.top);ctx.lineTo(x,chartArea.bottom);ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle=rose;ctx.font="600 10px 'DM Mono'";ctx.textAlign='center';
+      ctx.fillText('데뷔',x,chartArea.top+12);
+      ctx.restore();
+    }
+  };
+  new Chart(document.getElementById('jcurve'),{
+    type:'line',
+    data:{labels:jLabels,datasets:[
+      {label:'흥행',data:hit,borderColor:green,backgroundColor:'rgba(46,115,85,.08)',borderWidth:2.4,tension:.4,fill:true,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:green},
+      {label:'실패',data:miss,borderColor:rust,backgroundColor:'transparent',borderWidth:2.4,tension:.4,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:rust,spanGaps:false}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:{duration:1600},
+      plugins:{legend:{display:false},tooltip:{
+        backgroundColor:'#1E1914',titleColor:'#fff',bodyColor:'#EFE7D6',padding:10,cornerRadius:4,
+        callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y>=0?'+':''}${c.parsed.y}${won}`}
+      }},
+      scales:{
+        y:{grid:{color:line},ticks:{callback:v=>v+won},title:{display:true,text:'누적 손익',color:muted}},
+        x:{grid:{display:false},ticks:{maxRotation:0,autoSkip:true,font:{size:9.5}}}
+      }
+    },plugins:[bepLine]
+  });
+
+  /* ---------- MIX (대형 vs 중소) ---------- */
+  new Chart(document.getElementById('mixchart'),{
+    type:'bar',
+    data:{labels:['공연','음반·음원','MD·IP','광고·행사','플랫폼','기타'],datasets:[
+      {label:'대형 3사',data:[35,25,20,8,7,5],backgroundColor:'rgba(46,115,85,.78)',borderRadius:3,barPercentage:.7},
+      {label:'중소',data:[12,25,13,35,5,10],backgroundColor:'rgba(206,42,94,.78)',borderRadius:3,barPercentage:.7}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{boxWidth:12,boxHeight:12,usePointStyle:true,pointStyle:'rectRounded',padding:14}},
+        tooltip:{backgroundColor:'#1E1914',titleColor:'#fff',bodyColor:'#EFE7D6',callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}%`}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>v+'%'},max:40},x:{grid:{display:false}}}}
+  });
+
+  /* ---------- SALES (앨범 유통량) ---------- */
+  new Chart(document.getElementById('salesChart'),{
+    type:'bar',
+    data:{labels:['2022','2023','2024','2025'],datasets:[{
+      data:[81,120.2,98.4,93.5],
+      backgroundColor:['rgba(140,130,115,.55)','rgba(185,71,47,.85)','rgba(185,71,47,.6)','rgba(185,71,47,.45)'],
+      borderRadius:4,barPercentage:.62
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1E1914',titleColor:'#fff',bodyColor:'#EFE7D6',callbacks:{label:c=>` ${c.parsed.y} 백만 장`}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>v+'M'},title:{display:true,text:'백만 장',color:muted}},x:{grid:{display:false}}}}
+  });
+
+  /* ---------- EXPORT (수출액) ---------- */
+  new Chart(document.getElementById('exportChart'),{
+    type:'bar',
+    data:{labels:['2015','2024','2025','26.1Q'],datasets:[{
+      data:[25,292,301.7,120],
+      backgroundColor:['rgba(140,130,115,.5)','rgba(46,115,85,.6)','rgba(46,115,85,.88)','rgba(188,138,31,.9)'],
+      borderRadius:4,barPercentage:.62
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1E1914',titleColor:'#fff',bodyColor:'#EFE7D6',callbacks:{label:c=>` $${c.parsed.y}M`,afterLabel:c=>c.dataIndex===3?'전년동기 +159%':(c.dataIndex===2?'역대 최고 · +3.4%':'')}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>'$'+v+'M'},title:{display:true,text:'백만 USD',color:muted}},x:{grid:{display:false}}}}
+  });
+
+  /* ---------- COUNTRY (수출 대상국) ---------- */
+  new Chart(document.getElementById('countryChart'),{
+    type:'doughnut',
+    data:{labels:['미국 28.8%','일본 25.3%','EU 16.5%','중국 14.4%','대만 6.9%','기타 8.1%'],datasets:[{
+      data:[28.8,25.3,16.5,14.4,6.9,8.1],
+      backgroundColor:[rose,gold,green,rust,'#7C6F58','#C7BCA6'],
+      borderColor:'#F5F0E5',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',
+      plugins:{legend:{position:'right',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:9,font:{size:10.5}}},
+        tooltip:{backgroundColor:'#1E1914',titleColor:'#fff',bodyColor:'#EFE7D6',callbacks:{label:c=>` ${c.parsed}%`}}}}
+  });
+
+  /* ---------- PLATFORM (시장 규모) ---------- */
+  new Chart(document.getElementById('platformChart'),{
+    type:'bar',
+    data:{labels:['2024','5년 내(전망)'],datasets:[{
+      data:[3,10],backgroundColor:['rgba(188,138,31,.55)','rgba(188,138,31,.9)'],borderRadius:4,barPercentage:.5
+    }]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1E1914',titleColor:'#fff',bodyColor:'#EFE7D6',callbacks:{label:c=>` ${c.parsed.x}조 원`}}},
+      scales:{x:{grid:{color:line},ticks:{callback:v=>v+'조'},max:11},y:{grid:{display:false}}}}
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* ---------- cost bars fill ---------- */
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.cfill').forEach(f=>{f.style.transform='scaleX('+(f.dataset.w/100)+')';});cio.unobserve(e.target);}
+  })},{threshold:.3});
+  const cb=document.getElementById('costbar'); if(cb) cio.observe(cb);
+})();
+</script>
+</body>
+</html>
