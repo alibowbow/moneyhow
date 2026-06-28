@@ -1190,7 +1190,21 @@ function copyLink(){
   }
 }
 
-function openModal(){ document.getElementById('modal').classList.add('open'); document.getElementById('modalInput').focus(); }
+function showToast(msg){
+  let t = document.getElementById('mh-toast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'mh-toast';
+    t.style.cssText = 'position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--sur);padding:13px 22px;border-radius:100px;font-size:14px;font-weight:500;box-shadow:var(--sh3);z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:90vw;text-align:center;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
+  clearTimeout(t._h);
+  t._h = setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 2400);
+}
+// AI 분석 기능은 현재 준비 중 — 모달 대신 안내 토스트 노출
+function openModal(){ showToast('🛠️ AI 분석 기능은 현재 준비 중입니다'); }
 function closeModal(){ document.getElementById('modal').classList.remove('open'); }
 function closeModalOnOverlay(e){ if(e.target.id==='modal') closeModal(); }
 
