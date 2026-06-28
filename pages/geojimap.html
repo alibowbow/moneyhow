@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>거지맵은 어떻게 돈을 버나 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F4F1E8;
+    --paper-2:#ECE7D7;
+    --paper-3:#E4DDC8;
+    --ink:#161A14;
+    --ink-soft:#3F463A;
+    --muted:#857F6E;
+    --line:#D8D1BD;
+    --line-strong:#C3BAA1;
+    --green:#2C7A4B;
+    --green-deep:#1E5C37;
+    --lime:#6DA32F;
+    --rust:#B5482C;
+    --gold:#BB8A1C;
+    --ink-dark:#13160F;
+    --ink-dark-2:#1C2015;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .mono{font-family:"DM Mono",ui-monospace,monospace}
+  .eyebrow{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--green-deep);display:inline-block}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:560;line-height:1.08;letter-spacing:-.01em}
+  .serif-it{font-family:"Fraunces",serif;font-style:italic;font-weight:480}
+  a{color:inherit}
+
+  /* top bar */
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(8px)}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
+  .topbar .brand{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .topbar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  .topbar nav a{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .2s}
+  .topbar nav a:hover{color:var(--green-deep)}
+  @media(max-width:760px){.topbar nav{display:none}}
+
+  /* hero */
+  .hero{padding:72px 0 36px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);margin:18px 0 0}
+  .hero h1 em{color:var(--green);font-style:normal}
+  .hero .lede{margin-top:22px;font-size:clamp(1.02rem,1.7vw,1.18rem);color:var(--ink-soft);max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:600}
+  .hero-figure{border:1px solid var(--line-strong);background:linear-gradient(180deg,var(--paper-2),var(--paper));border-radius:3px;padding:18px 18px 10px;position:relative}
+  .hero-figure .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+  .jbox{height:300px;position:relative}
+  .legend-row{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .legend-row span{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+  .swatch{width:16px;height:3px;border-radius:2px;display:inline-block}
+
+  /* stat band */
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px;background:var(--paper-2)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 22px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+  .stat .num{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.02em}
+  .stat .num.r{color:var(--rust)} .stat .num.g{color:var(--green)} .stat .num.l{color:var(--lime)} .stat .num.o{color:var(--gold)}
+  .stat .lab{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:9px;line-height:1.5}
+  .stat .sub{font-size:.74rem;color:var(--muted);margin-top:3px}
+
+  /* section */
+  section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+  .sec-no{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--green);letter-spacing:.1em}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem)}
+  .sec-intro{max-width:42em;color:var(--ink-soft);margin:14px 0 34px;font-size:1.04rem}
+  .sec-intro b{color:var(--ink);font-weight:600}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}}
+
+  .card{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px}
+  .card .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-h{height:300px;position:relative}
+  .chart-h.tall{height:340px}
+  .note{font-size:.82rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .note b{color:var(--ink-soft)}
+
+  /* timeline */
+  .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  @media(max-width:760px){.tl{grid-template-columns:1fr 1fr}}
+  .tcell{border:1px solid var(--line-strong);border-radius:3px;padding:18px;background:var(--paper)}
+  .tcell .td{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--green)}
+  .tcell h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.08rem;margin:8px 0 6px}
+  .tcell p{font-size:.84rem;color:var(--ink-soft);margin:0}
+
+  /* revenue stream list */
+  .streams{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+  @media(max-width:760px){.streams{grid-template-columns:1fr}}
+  .stream{padding:22px 24px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--paper)}
+  .stream:nth-child(2n){border-right:none}
+  .stream .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .stream .si{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--green);width:26px}
+  .stream .st{font-family:"Fraunces",serif;font-size:1.22rem;font-weight:560}
+  .stream p{font-size:.92rem;color:var(--ink-soft);margin:0}
+  .tag{display:inline-block;font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:2px 8px;border-radius:30px;border:1px solid var(--line-strong);color:var(--ink-soft);margin-top:10px}
+  .tag.live{color:var(--green-deep);border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,transparent)}
+  .tag.soon{color:var(--gold);border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent)}
+
+  /* dark stage */
+  .stagewrap{background:var(--ink-dark);color:var(--paper);border-bottom:1px solid var(--ink-dark)}
+  .stagewrap .eyebrow{color:#9BD5A8}
+  .stagewrap h2{color:var(--paper)}
+  .stagewrap .sec-intro{color:#C7CCBC}
+  .stagewrap .sec-intro b{color:#fff}
+  .gacha{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:14px}
+  @media(max-width:760px){.gacha{grid-template-columns:1fr}}
+  .gcell{background:var(--ink-dark);padding:30px 24px}
+  .gcell .gnum{font-family:"Fraunces",serif;font-size:clamp(2rem,4.4vw,3rem);font-weight:600;color:#fff;line-height:1}
+  .gcell .gnum .accent{color:#6DD08C}
+  .gcell .glab{font-family:"DM Mono",monospace;font-size:.74rem;color:#A9AE9C;margin-top:10px;line-height:1.55}
+  .stagewrap .spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px 280px at 78% 12%, rgba(44,122,75,.22), transparent 70%)}
+
+  /* cost waterfall */
+  .costbar{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .crow{display:grid;grid-template-columns:150px 1fr 78px;align-items:center;gap:12px}
+  @media(max-width:560px){.crow{grid-template-columns:110px 1fr 64px}}
+  .crow .cl{font-size:.86rem;color:var(--ink-soft)}
+  .crow .ctrack{height:18px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+  .crow .cfill{height:100%;border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .crow .cv{font-family:"DM Mono",monospace;font-size:.82rem;text-align:right;color:var(--ink)}
+
+  /* keys */
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media(max-width:760px){.keys{grid-template-columns:1fr}}
+  .key{border-left:3px solid var(--green);padding:6px 0 6px 18px}
+  .key h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.18rem;margin-bottom:6px}
+  .key p{font-size:.92rem;color:var(--ink-soft)}
+
+  .pull{font-family:"Fraunces",serif;font-style:italic;font-weight:420;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:var(--ink);max-width:24em;margin:0 auto;text-align:center}
+  .pull .mk{color:var(--green);font-style:normal}
+
+  footer{padding:48px 0 64px;color:var(--muted)}
+  footer h4{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  footer .src{font-size:.78rem;line-height:1.85;columns:2;column-gap:36px}
+  @media(max-width:680px){footer .src{columns:1}}
+  footer .disc{font-size:.76rem;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);max-width:48em}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.cfill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>거지맵 이코노믹스 · 2026</div>
+    <nav>
+      <a href="#origin">탄생</a>
+      <a href="#growth">성장</a>
+      <a href="#paradox">수익역설</a>
+      <a href="#streams">수익원</a>
+      <a href="#vibe">바이브코딩</a>
+      <a href="#keys">정리</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">초니치 지도 서비스 · 유닛 이코노믹스</span>
+      <h1>거지맵은<br>어떻게 <em>돈을 버나</em></h1>
+      <p class="lede">실직한 개발자가 <b>하루 1만원으로 버티다</b> AI에게 시켜 며칠 만에 만든 지도. 한 달 만에 <b>130만 명</b>이 몰렸다. 그런데 정작 광고 매출은 <b>월 100만원</b> — 트래픽과 매출이 따로 노는 이 앱의 진짜 돈은 어디서 나오나.</p>
+    </div>
+    <div class="hero-figure reveal">
+      <div class="cap"><span>누적 방문자 vs 월 광고매출</span><span>출시 후 추이</span></div>
+      <div class="jbox"><canvas id="heroChart"></canvas></div>
+      <div class="legend-row">
+        <span><i class="swatch" style="background:#2C7A4B"></i>누적 방문자(만 명)</span>
+        <span><i class="swatch" style="background:#BB8A1C"></i>월 광고매출(백만원)</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="num g">130<span style="font-size:.5em">만명</span></div>
+        <div class="lab">누적 방문자 (출시 ~한 달여)</div>
+        <div class="sub">18일 만에 94만 · 하루 최대 25만+</div>
+      </div>
+      <div class="stat">
+        <div class="num o">100<span style="font-size:.5em">만원</span></div>
+        <div class="lab">현재 월 광고 매출</div>
+        <div class="sub">서버비 제외하면 사실상 본전</div>
+      </div>
+      <div class="stat">
+        <div class="num l">며칠</div>
+        <div class="lab">바이브코딩 제작 기간</div>
+        <div class="sub">OpenAI Codex + 지도 API</div>
+      </div>
+      <div class="stat">
+        <div class="num r">1,000<span style="font-size:.5em">곳+</span></div>
+        <div class="lab">등록된 1만원 이하 식당</div>
+        <div class="sub">개발자 초기 50곳 → 유저 참여</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 ORIGIN -->
+<section class="block" id="origin">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>실직, 1만원, 그리고 지도 하나</h2></div>
+    <p class="sec-intro">거지맵의 시작은 사업 계획서가 아니라 <b>생존</b>이었다. 개발자 최성수(34)씨는 구조조정으로 회사를 나온 뒤 위로금으로 버티며 하루 식비를 <b>1만~1만2000원</b>으로 묶었다. 계란 한 판으로 끼니를 굴리고 도시락을 싸던 그는 "싸고 괜찮은 식당을 지도에서 한눈에 보면 좋겠다"는 자기 불편을 그대로 제품으로 옮겼다.</p>
+    <div class="cols">
+      <div>
+        <p style="color:var(--ink-soft);font-size:1rem">핵심은 <b style="color:var(--ink)">만드는 방식</b>이었다. 외주를 주거나 팀을 꾸리는 대신, 그는 <b style="color:var(--ink)">OpenAI Codex로 바이브코딩</b>해 지도 API 기반 웹페이지를 며칠 만에 띄웠다. 과거라면 수천만원·수개월이 들었을 아이디어가 1인·며칠로 압축된 것이다. 2026년 '러브버그맵·야장맵' 등 초니치 지도가 쏟아진 배경과 정확히 같은 흐름이다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">2026년 3월 20일 공개. 마케팅비 0원. 무기는 <b style="color:var(--ink)">고물가 시대의 공감</b>과 '거지방' 오픈채팅에서 자라난 "자발적 절약" 밈 문화였다.</p>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>거지맵 제작 비용 구조</span><span>전통 외주 대비</span></div>
+        <div class="costbar" id="costbar">
+          <div class="crow"><span class="cl">전통 앱 외주</span><div class="ctrack"><div class="cfill" data-w="100" style="background:var(--rust)"></div></div><span class="cv">수천만원</span></div>
+          <div class="crow"><span class="cl">개발 인건비</span><div class="ctrack"><div class="cfill" data-w="62" style="background:var(--gold)"></div></div><span class="cv">수개월</span></div>
+          <div class="crow"><span class="cl">거지맵 (바이브코딩)</span><div class="ctrack"><div class="cfill" data-w="6" style="background:var(--green)"></div></div><span class="cv">≈ 0원·며칠</span></div>
+        </div>
+        <p class="note"><b>비대칭의 핵심.</b> 제작 원가가 0에 수렴하니, 실패해도 잃을 게 없고 성공하면 트래픽이 통째로 남는다. '거지맵'이라는 이름값 그대로, 돈 없이 시작해 사람을 모았다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 GROWTH -->
+<section class="block" id="growth">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>마케팅비 0원으로 130만 명</h2></div>
+    <p class="sec-intro">출시 <b>18일 만에 누적 94만 명</b>, 한 달여 만에 <b>130만 명</b>(4/23 기준)을 돌파했다. 하루 최대 방문자는 25만 명을 넘었다. 광고 한 푼 없이 커뮤니티와 언론을 타고 번진 전형적인 <b>제로 마케팅 바이럴</b>이다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>누적 방문자 성장</span><span>만 명</span></div>
+        <div class="chart-h"><canvas id="growthChart"></canvas></div>
+        <p class="note">초기 데이터는 개발자가 직접 찾은 <b>50여 곳</b>이 마중물. 이후 유저가 상호·카테고리·메뉴·가격을 직접 등록하며 전국 <b>1,000곳+</b>로 불어났다. 콘텐츠 원가도 유저가 부담하는 <b>UGC 구조</b>.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">왜 이렇게 빨리 퍼졌나</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">① <b style="color:var(--ink)">고물가라는 거대한 페인포인트</b> — 점심값 1만원 시대에 '1만원 이하'라는 단 하나의 필터가 강력했다. ② <b style="color:var(--ink)">밈이 된 이름</b> — '거지맵'·'자발적 거지'라는 자조적 유머가 공유를 부추겼다. ③ <b style="color:var(--ink)">즉시 효용</b> — 설치·가입 없이 웹에서 바로 가까운 싼 식당이 떴다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">트래픽은 폭발했지만, 이것이 곧 매출을 뜻하진 않았다. 다음 장의 역설이다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARADOX (dark) -->
+<section class="block stagewrap" id="paradox" style="position:relative">
+  <div class="spotlight"></div>
+  <div class="wrap" style="position:relative">
+    <div class="sec-head"><span class="sec-no" style="color:#9BD5A8">▶</span><h2>130만 명인데, 왜 월 100만원인가</h2></div>
+    <p class="sec-intro">거지맵의 가장 흥미로운 지점은 <b>거대한 트래픽과 미미한 매출의 괴리</b>다. 현재 수익은 하단 배너 광고로 <b>월 100만원 안팎</b>. 서버비를 빼면 손에 남는 게 거의 없다. 게다가 개발자는 "광고·유료화는 하지 않겠다"는 방침을 고수해 왔다.</p>
+    <div class="gacha">
+      <div class="gcell">
+        <div class="gnum"><span class="accent">130</span>만명</div>
+        <div class="glab">한 달여 누적 방문자<br>트래픽 자산은 막대하다</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">100<span style="font-size:.5em">만원</span></div>
+        <div class="glab">월 광고 매출<br>방문자 1명당 월 0.8원꼴</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">≈ 0</div>
+        <div class="glab">서버비 차감 후 순이익<br>"돈 벌려고 만든 게 아니다"</div>
+      </div>
+    </div>
+    <p style="color:#C7CCBC;font-size:.92rem;margin-top:22px;max-width:46em">이건 실패가 아니다. <b style="color:#fff">의도된 미(未)수익화</b>다. 신뢰를 먼저 쌓고 트래픽이라는 자산을 굳힌 뒤, 사용자 경험을 해치지 않는 선에서 천천히 수익화한다 — 플랫폼의 교과서적 전략이다. <span class="serif-it" style="color:#fff">진짜 수익 엔진은 이제부터 켜진다.</span></p>
+  </div>
+</section>
+
+<!-- 03 STREAMS -->
+<section class="block" id="streams">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>돈이 들어올 다섯 갈래</h2></div>
+    <p class="sec-intro">130만 트래픽은 그 자체로 환금 가능한 자산이다. 거지맵이 쥔(혹은 곧 켤) 수익 레버는 다섯 갈래다. 현재 가동 중인 것과 예고된 것을 함께 본다.</p>
+    <div class="streams">
+      <div class="stream">
+        <div class="sh"><span class="si">01</span><span class="st">하단 배너 광고</span></div>
+        <p>웹 하단 디스플레이 광고. 지금 유일하게 도는 현금이지만 월 100만원 수준. 트래픽 대비 단가가 낮아 '본전 방어' 역할에 가깝다.</p>
+        <span class="tag live">가동 중 · 월 100만</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">02</span><span class="st">앱 리워드 — '티끌'</span></div>
+        <p>앱 버전의 보상형 광고. 출석·걸음수·퀴즈·선택형 광고로 포인트 '티끌'과 랜덤박스 응모권을 모아 '티끌드로우'·모바일 쿠폰으로 교환. 광고 시청을 매출로 바꾸는 핵심 장치.</p>
+        <span class="tag live">가동 중 · 보상형 광고</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">03</span><span class="st">핫딜 · 커뮤니티</span></div>
+        <p>이용자 체류를 늘리기 위해 추가한 핫딜·커뮤니티 기능. 향후 제휴 상품·로컬 프로모션을 얹을 수 있는 커머스형 수익 기반이 된다.</p>
+        <span class="tag live">기능 탑재</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">04</span><span class="st">플랫폼 제휴</span></div>
+        <p>배달·금융 플랫폼 기업이 제휴·협업을 제안. 130만 '가성비 소비자' 풀은 타깃이 명확해, 제휴 송출·데이터 협업의 단가가 배너보다 훨씬 높다.</p>
+        <span class="tag soon">제안 접수 · 검토</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">05</span><span class="st">로컬 광고 · 점주 입점</span></div>
+        <p>잠재 레버. '1만원 이하' 필터에 부합하는 식당 점주에게 노출·상단 배치를 파는 로컬 광고. 네이버·배민이 걸어간 길의 거지맵 버전.</p>
+        <span class="tag soon">잠재 레버</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">06</span><span class="st">데이터 · IP</span></div>
+        <p>전국 가성비 식당 DB와 소비 패턴 자체가 자산. 단, 광고·유료화를 꺼리는 운영 철학이 '얼마나, 어떻게 팔 것인가'의 속도를 정한다.</p>
+        <span class="tag">양날의 검</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MONETIZATION POTENTIAL -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>잠재 매출: 트래픽을 돈으로 환산하면</h2></div>
+    <p class="sec-intro">현재 월 100만원은 트래픽의 잠재력을 거의 쓰지 않은 수치다. 같은 130만 MAU급 서비스가 일반적 광고·제휴 단가를 적용했을 때 도달 가능한 월 매출 범위를 <b>개념적으로</b> 추정해 본다. 실제 수치가 아닌 레버별 시나리오다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>레버별 잠재 월매출 (개념 추정)</span><span>백만원</span></div>
+        <div class="chart-h tall"><canvas id="potChart"></canvas></div>
+        <p class="note"><b>개념도.</b> 감사 수치가 아니라 동급 트래픽 서비스의 통상 단가를 적용한 시나리오. 핵심은 절대값이 아니라 <b>레버 간 격차</b> — 배너보다 제휴·로컬광고의 천장이 훨씬 높다.</p>
+      </div>
+      <div>
+        <div class="pull" style="text-align:left;margin:8px 0 0">트래픽은 이미 벌어뒀다.<br>남은 건 <span class="mk">'언제 수도꼭지를 트느냐'</span>다.</div>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:20px">거지맵의 자산은 매출이 아니라 <b style="color:var(--ink)">신뢰와 트래픽</b>이다. 광고를 도배하는 순간 '거지맵다움'이 깨지고 이탈이 시작된다. 그래서 개발자는 보상형 광고(티끌)처럼 <b style="color:var(--ink)">유저가 손해 보지 않는 형태</b>부터 켰다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">진짜 분기점은 <b style="color:var(--ink)">제휴</b>다. 배달·금융사의 제안을 받아들이면 매출 곡선은 배너와 차원이 다른 기울기로 꺾인다. 다만 그 순간 거지맵은 '독립 유틸리티'에서 '광고 미디어'로 정체성이 바뀐다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 VIBE CODING -->
+<section class="block" id="vibe">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>바이브코딩 이코노믹스 — 왜 지금인가</h2></div>
+    <p class="sec-intro">거지맵은 한 사람의 성공담이자, <b>2026년 제작 경제가 바뀐 증거</b>다. 생성형 AI로 며칠 만에 서비스를 띄우는 '바이브코딩'이 보편화되며, 누구나 자기 불편을 즉시 제품으로 만들 수 있게 됐다. 단, 그 이면엔 냉정한 분포가 있다.</p>
+    <div class="cols">
+      <div>
+        <p style="color:var(--ink-soft);font-size:1rem">제작 원가가 <b style="color:var(--ink)">0에 수렴</b>하면서 의사결정의 무게중심이 '만들 수 있는가'에서 '<b style="color:var(--ink)">사람을 모을 수 있는가</b>'로 옮겨갔다. 코드가 아니라 <b style="color:var(--ink)">통찰·타이밍·배포</b>가 해자가 된 것. 거지맵은 고물가라는 타이밍과 밈이라는 배포를 정확히 맞췄다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">그러나 한 바이브코딩 실험자의 고백처럼 <b style="color:var(--ink)">"70개 프로젝트 중 수익을 낸 건 4개, 성공률 약 5%"</b>다. 며칠 만에 만들 수 있다는 건 <b style="color:var(--ink)">누구나 만든다</b>는 뜻이고, 그래서 차별화는 코드 밖에서 갈린다. 거지맵은 그 5%에 든 사례다.</p>
+        <div class="tl" style="margin-top:22px">
+          <div class="tcell"><div class="td">진입장벽</div><h4>붕괴</h4><p>외주·팀 없이 1인·며칠. 누구나 출시 가능.</p></div>
+          <div class="tcell"><div class="td">경쟁</div><h4>폭증</h4><p>러브버그맵·야장맵 등 초니치 지도 범람.</p></div>
+          <div class="tcell"><div class="td">해자</div><h4>이동</h4><p>코드→통찰·타이밍·배포로.</p></div>
+          <div class="tcell"><div class="td">성공률</div><h4>≈ 5%</h4><p>대부분 실패. 트래픽 잡는 소수만 생존.</p></div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>바이브코딩 프로젝트 분포</span><span>한 실험자 기준</span></div>
+        <div class="chart-h"><canvas id="vibeChart"></canvas></div>
+        <p class="note">며칠 만에 만들 수 있다는 건 진입장벽이 사라졌다는 뜻. 거지맵의 진짜 성취는 '만든 것'이 아니라 <b>130만을 모은 것</b>이다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYS -->
+<section class="block" id="keys" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">06</span><h2>정리 — 거지맵이 돈을 버는(벌) 법</h2></div>
+    <div class="keys">
+      <div class="key"><h4>① 원가 0의 비대칭 베팅</h4><p>바이브코딩으로 제작비를 0에 수렴시켜, 실패해도 잃을 게 없고 성공하면 트래픽이 통째로 남는 구조를 만들었다.</p></div>
+      <div class="key"><h4>② 트래픽 먼저, 매출은 나중</h4><p>130만 유저를 마케팅비 0원으로 모았다. 광고를 서두르지 않아 신뢰를 지켰고, 그 신뢰가 곧 미래 매출의 담보다.</p></div>
+      <div class="key"><h4>③ 유저가 손해 안 보는 수익화</h4><p>보상형 광고 '티끌'처럼 사용자에게 이득을 주며 매출을 내는 형태부터 켰다. '거지맵다움'을 깨지 않는 게 1순위.</p></div>
+      <div class="key"><h4>④ 진짜 돈은 제휴에서</h4><p>배너 월 100만원이 아니라, 배달·금융사 제휴와 로컬 광고가 매출 곡선을 꺾을 변곡점. 단, 정체성 변화의 대가가 따른다.</p></div>
+    </div>
+    <div style="margin-top:48px">
+      <div class="pull">거지맵은 <span class="mk">'돈을 버는 앱'</span>이 아니라,<br>아직 <span class="mk">'돈으로 바꿀 자산을 모은 앱'</span>이다.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>데이터 출처</h4>
+    <div class="src">
+      국민일보 「값싼 식당 한눈에…30대 청년이 만든 '거지맵'」(2026.04) · 미주중앙일보 「회사 잘린 뒤 만원으로 버틴 하루, '거지맵' 시작이었다」(2026.04.23) · 모비인사이드 「맛집 앱 지우고 '거지맵' 본다 — 결핍의 마케팅」(2026.04.27) · ZDNet Korea 「맛집앱보다 낫네…100만 고지 눈앞 '거지맵'」(2026.04.07) · 한국경제 「하루면 뚝딱…러브버그·거지맵 등 지도 쏟아진 이유」(2026.06.26) · 뉴시스·다음 「하루 두 끼에 커피까지 1만1700원…'거지맵' 직접 써봤어요」(2026.04.02) · 한경매거진 「고물가 시대 생존 지도」(2026.03) · KMJ 「이머시브 브랜딩 — 지도가 콘텐츠가 된 시대」 · App Store / Google Play '거지맵' 앱 정보 · 거지맵 앱 리워드(티끌) 시스템 안내
+    </div>
+    <p class="disc">방법론 노트 — 방문자·매출·식당 수는 2026년 6월까지 공개된 언론 보도·인터뷰 기준이며, 일부는 특정 시점(예: 4/23 누적 130만)의 스냅숏입니다. '레버별 잠재 월매출'과 '제작 비용 구조'는 감사 재무제표가 아니라 동급 트래픽 서비스의 통상 단가에 기반한 <b>개념적 추정·대표값</b>입니다. 본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(typeof Chart==='undefined') return;
+  const ink='#161A14', soft='#3F463A', muted='#857F6E', line='#D8D1BD';
+  const green='#2C7A4B', lime='#6DA32F', rust='#B5482C', gold='#BB8A1C';
+  Chart.defaults.font.family="'DM Mono', monospace";
+  Chart.defaults.font.size=11.5;
+  Chart.defaults.color=soft;
+  const tip={backgroundColor:'#161A14',titleColor:'#fff',bodyColor:'#ECE7D7',padding:10,cornerRadius:4};
+
+  /* HERO — traffic vs revenue dual axis */
+  new Chart(document.getElementById('heroChart'),{
+    data:{labels:['출시','+1주','+18일','+1달'],datasets:[
+      {type:'line',label:'누적 방문자',data:[0,40,94,130],borderColor:green,backgroundColor:'rgba(44,122,75,.08)',borderWidth:2.6,tension:.4,fill:true,pointRadius:0,pointHoverRadius:5,yAxisID:'y'},
+      {type:'bar',label:'월 광고매출',data:[0.2,0.5,0.8,1.0],backgroundColor:'rgba(187,138,28,.8)',borderRadius:3,barPercentage:.5,yAxisID:'y1'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1500},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>c.dataset.yAxisID==='y'?` 방문자: ${c.parsed.y}만명`:` 광고매출: ${c.parsed.y}백만원`}}},
+      scales:{
+        y:{position:'left',grid:{color:line},ticks:{callback:v=>v+'만'},title:{display:true,text:'누적 방문자',color:muted}},
+        y1:{position:'right',grid:{display:false},ticks:{callback:v=>v+'M'},max:6,title:{display:true,text:'월매출',color:muted}},
+        x:{grid:{display:false}}
+      }}
+  });
+
+  /* GROWTH */
+  new Chart(document.getElementById('growthChart'),{
+    type:'line',
+    data:{labels:['출시','+1주','+18일','+1달여'],datasets:[{
+      label:'누적 방문자',data:[0,40,94,130],
+      borderColor:green,backgroundColor:'rgba(44,122,75,.1)',borderWidth:2.6,tension:.4,fill:true,
+      pointRadius:4,pointBackgroundColor:green,pointHoverRadius:6
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 누적 ${c.parsed.y}만 명`}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>v+'만'},title:{display:true,text:'만 명',color:muted}},x:{grid:{display:false}}}}
+  });
+
+  /* POTENTIAL — lever scenarios */
+  new Chart(document.getElementById('potChart'),{
+    type:'bar',
+    data:{labels:['현재 배너','보상형(티끌)','로컬 광고','플랫폼 제휴'],datasets:[{
+      data:[1,8,25,60],
+      backgroundColor:['rgba(133,127,110,.6)','rgba(109,163,47,.78)','rgba(187,138,28,.85)','rgba(44,122,75,.88)'],
+      borderRadius:4,barPercentage:.62
+    }]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:1400},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>c.dataIndex===0?` 실측 약 ${c.parsed.x}백만원/월`:` 잠재 ~${c.parsed.x}백만원/월(추정)`}}},
+      scales:{x:{grid:{color:line},ticks:{callback:v=>v+'M'},title:{display:true,text:'월매출(백만원) · 개념 추정',color:muted}},y:{grid:{display:false}}}}
+  });
+
+  /* VIBE — success distribution */
+  new Chart(document.getElementById('vibeChart'),{
+    type:'doughnut',
+    data:{labels:['수익 실패 (~95%)','수익 성공 (~5%)'],datasets:[{
+      data:[95,5],backgroundColor:['rgba(181,72,44,.78)',green],borderColor:'#F4F1E8',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:12,font:{size:10.5}}},
+        tooltip:{...tip,callbacks:{label:c=>` ${c.label.split(' ')[0]} ${c.parsed}%`}}}}
+  });
+
+  /* reveal on scroll */
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* cost bars fill */
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.cfill').forEach(f=>{f.style.transform='scaleX('+(f.dataset.w/100)+')';});cio.unobserve(e.target);}
+  })},{threshold:.3});
+  const cb=document.getElementById('costbar'); if(cb) cio.observe(cb);
+})();
+</script>
+</body>
+</html>
