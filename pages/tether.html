@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>테더(Tether)는 어떻게 돈을 버나 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F0F2EF;
+    --paper-2:#E6EAE5;
+    --paper-3:#D8E0D9;
+    --ink:#13211B;
+    --ink-soft:#2C3D34;
+    --muted:#6E7E74;
+    --line:#CFD9CF;
+    --line-strong:#B6C5B8;
+    --brew:#26A17B;
+    --brew-deep:#1A7A5C;
+    --green:#2E6B45;
+    --green-deep:#1F4E31;
+    --rust:#B0492B;
+    --gold:#B8862A;
+    --stage:#0B1712;
+    --stage-2:#10221A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .mono{font-family:"DM Mono",ui-monospace,monospace}
+  .eyebrow{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brew);display:inline-block}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:560;line-height:1.08;letter-spacing:-.01em}
+  .serif-it{font-family:"Fraunces",serif;font-style:italic;font-weight:480}
+  a{color:inherit}
+
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(8px)}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
+  .topbar .brand{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .topbar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brew);margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  .topbar nav a{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .2s}
+  .topbar nav a:hover{color:var(--brew)}
+  @media(max-width:760px){.topbar nav{display:none}}
+
+  .hero{padding:72px 0 36px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);margin:18px 0 0}
+  .hero h1 em{color:var(--brew);font-style:normal}
+  .hero .lede{margin-top:22px;font-size:clamp(1.02rem,1.7vw,1.18rem);color:var(--ink-soft);max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:600}
+  .hero-figure{border:1px solid var(--line-strong);background:linear-gradient(180deg,var(--paper-2),var(--paper));border-radius:3px;padding:18px 18px 10px;position:relative}
+  .hero-figure .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+  .jbox{height:300px;position:relative}
+  .legend-row{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .legend-row span{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+  .swatch{width:16px;height:3px;border-radius:2px;display:inline-block}
+
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px;background:var(--paper-2)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 22px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+  .stat .num{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.02em}
+  .stat .num.r{color:var(--rust)} .stat .num.g{color:var(--green)} .stat .num.b{color:var(--brew)} .stat .num.o{color:var(--gold)}
+  .stat .lab{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:9px;line-height:1.5}
+  .stat .sub{font-size:.74rem;color:var(--muted);margin-top:3px}
+
+  section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+  .sec-no{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--brew);letter-spacing:.1em}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem)}
+  .sec-intro{max-width:42em;color:var(--ink-soft);margin:14px 0 34px;font-size:1.04rem}
+  .sec-intro b{color:var(--ink);font-weight:600}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}}
+
+  .card{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px}
+  .card .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-h{height:300px;position:relative}
+  .chart-h.tall{height:340px}
+  .note{font-size:.82rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .note b{color:var(--ink-soft)}
+
+  /* compare table */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;margin-top:6px}
+  @media(max-width:680px){.cmp{grid-template-columns:1fr}}
+  .cmp-col{padding:22px 24px;background:var(--paper)}
+  .cmp-col.hl{background:linear-gradient(180deg,color-mix(in srgb,var(--brew) 8%,transparent),transparent);border-left:1px solid var(--line)}
+  @media(max-width:680px){.cmp-col.hl{border-left:none;border-top:1px solid var(--line)}}
+  .cmp-col h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.2rem;margin-bottom:4px}
+  .cmp-col .tagline{font-family:"DM Mono",monospace;font-size:.7rem;color:var(--muted);margin-bottom:14px}
+  .cmp-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line-strong);padding:8px 0;font-size:.88rem}
+  .cmp-row span:first-child{color:var(--muted);font-family:"DM Mono",monospace;font-size:.74rem}
+  .cmp-row span:last-child{font-family:"DM Mono",monospace;color:var(--ink);font-weight:500;text-align:right}
+  .cmp-row .g{color:var(--green)} .cmp-row .r{color:var(--rust)}
+
+  /* cost waterfall */
+  .costbar{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .crow{display:grid;grid-template-columns:140px 1fr 64px;align-items:center;gap:12px}
+  @media(max-width:560px){.crow{grid-template-columns:104px 1fr 50px}}
+  .crow .cl{font-size:.86rem;color:var(--ink-soft)}
+  .crow .ctrack{height:18px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+  .crow .cfill{height:100%;border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .crow .cv{font-family:"DM Mono",monospace;font-size:.82rem;text-align:right;color:var(--ink)}
+
+  /* streams */
+  .streams{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+  @media(max-width:760px){.streams{grid-template-columns:1fr}}
+  .stream{padding:22px 24px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--paper)}
+  .stream:nth-child(2n){border-right:none}
+  .stream .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .stream .si{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--brew);width:26px}
+  .stream .st{font-family:"Fraunces",serif;font-size:1.22rem;font-weight:560}
+  .stream p{font-size:.92rem;color:var(--ink-soft);margin:0}
+  .tag{display:inline-block;font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:2px 8px;border-radius:30px;border:1px solid var(--line-strong);color:var(--ink-soft);margin-top:10px}
+  .tag.hot{color:var(--rust);border-color:var(--rust);background:color-mix(in srgb,var(--rust) 8%,transparent)}
+  .tag.money{color:var(--green-deep);border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,transparent)}
+
+  /* dark stage */
+  .stagewrap{background:var(--stage);color:var(--paper);border-bottom:1px solid var(--stage)}
+  .stagewrap .eyebrow{color:#5FD6AC}
+  .stagewrap h2{color:var(--paper)}
+  .stagewrap .sec-intro{color:#BFD1C6}
+  .stagewrap .sec-intro b{color:#fff}
+  .gacha{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:14px}
+  @media(max-width:760px){.gacha{grid-template-columns:1fr}}
+  .gcell{background:var(--stage);padding:30px 24px}
+  .gcell .gnum{font-family:"Fraunces",serif;font-size:clamp(2rem,4.4vw,3rem);font-weight:600;color:#fff;line-height:1}
+  .gcell .gnum .accent{color:#5FD6AC}
+  .gcell .glab{font-family:"DM Mono",monospace;font-size:.74rem;color:#9DB1A4;margin-top:10px;line-height:1.55}
+  .stagewrap .spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px 280px at 78% 12%, rgba(38,161,123,.22), transparent 70%)}
+
+  /* flow steps */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+  @media(max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+  .fstep{border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:18px;background:var(--stage-2);position:relative}
+  .fstep .fn{font-family:"DM Mono",monospace;font-size:.72rem;color:#5FD6AC}
+  .fstep h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.05rem;margin:8px 0 6px;color:#fff}
+  .fstep p{font-size:.83rem;color:#AFC2B6;margin:0}
+
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media(max-width:760px){.keys{grid-template-columns:1fr}}
+  .key{border-left:3px solid var(--brew);padding:6px 0 6px 18px}
+  .key h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.18rem;margin-bottom:6px}
+  .key p{font-size:.92rem;color:var(--ink-soft)}
+
+  .pull{font-family:"Fraunces",serif;font-style:italic;font-weight:420;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:var(--ink);max-width:26em;margin:0 auto;text-align:center}
+  .pull .mk{color:var(--brew);font-style:normal}
+
+  footer{padding:48px 0 64px;color:var(--muted)}
+  footer h4{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  footer .src{font-size:.78rem;line-height:1.85;columns:2;column-gap:36px}
+  @media(max-width:680px){footer .src{columns:1}}
+  footer .disc{font-size:.76rem;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);max-width:48em}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.cfill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>테더 이코노믹스 · 2026</div>
+    <nav>
+      <a href="#dollar">디지털 달러</a>
+      <a href="#yield">수익의 원천</a>
+      <a href="#lean">초고효율</a>
+      <a href="#moat">해자와 규제</a>
+      <a href="#risk">리스크</a>
+      <a href="#keys">정리</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">스테이블코인 · 발행사 · 유닛 이코노믹스</span>
+      <h1>테더는<br>어떻게 <em>돈을 버나</em></h1>
+      <p class="lede">전 세계가 맡긴 <b>1,800억 달러</b>를 받아 미국 단기 국채에 넣는다. 예치한 사람에게 이자는 한 푼도 주지 않고, <b>그 이자를 통째로 회사가 가진다.</b> 직원 100명 안팎이 골드만삭스급 이익을 내는, 세계에서 가장 효율적인 회사의 구조를 해부한다.</p>
+    </div>
+    <div class="hero-figure reveal">
+      <div class="cap"><span>테더 연간 순이익</span><span>억 달러</span></div>
+      <div class="jbox"><canvas id="heroChart"></canvas></div>
+      <div class="legend-row">
+        <span><i class="swatch" style="background:#26A17B"></i>연간 순이익 (억 달러)</span>
+        <span><i class="swatch" style="background:#B8862A;height:8px;width:8px;border-radius:50%"></i>2024년 약 130억 달러</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="num b">약 130<span style="font-size:.5em">억$</span></div>
+        <div class="lab">2024년 순이익 (약 18조원)</div>
+        <div class="sub">국채 이자 ~70억$ + 금·비트코인 평가익</div>
+      </div>
+      <div class="stat">
+        <div class="num g">약 1,800<span style="font-size:.5em">억$</span></div>
+        <div class="lab">USDT 발행량 (2026 초)</div>
+        <div class="sub">세계 1위 스테이블코인 · 약 250조원</div>
+      </div>
+      <div class="stat">
+        <div class="num o">약 1,300<span style="font-size:.5em">억$</span></div>
+        <div class="lab">미국 국채 보유 (직·간접)</div>
+        <div class="sub">한국·UAE보다 많은 18위권 보유국</div>
+      </div>
+      <div class="stat">
+        <div class="num r">약 100<span style="font-size:.5em">명</span></div>
+        <div class="lab">전체 임직원 수</div>
+        <div class="sub">1인당 이익 약 8,500만 달러</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 USDT, the digital dollar -->
+<section class="block" id="dollar">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>USDT라는 디지털 달러</h2></div>
+    <p class="sec-intro">테더가 발행하는 <b>USDT</b>는 항상 <b>1개 = 1달러</b>로 고정된 토큰이다. 이용자가 1달러를 입금하면 테더가 USDT 1개를 새로 발행해 주고, 되팔면 1달러로 돌려주며 그 토큰은 소각한다. 사람들은 환전·송금·거래 대기 자금을 '달러 그대로' 블록체인 위에 두기 위해 이걸 산다. 핵심은 — <b>이용자가 맡긴 달러의 소유권은 테더가 굴리고, 이용자는 1달러짜리 영수증만 들고 있다는 것.</b></p>
+    <div class="cmp">
+      <div class="cmp-col">
+        <h4>은행 예금</h4>
+        <div class="tagline">예금자에게 이자 지급</div>
+        <div class="cmp-row"><span>맡긴 돈</span><span>1,000만원</span></div>
+        <div class="cmp-row"><span>예금자가 받는 이자</span><span class="g">연 2~3%</span></div>
+        <div class="cmp-row"><span>운용 수익</span><span>은행과 예금자가 나눔</span></div>
+        <div class="cmp-row"><span>규제</span><span>예금자보호·자본규제</span></div>
+        <div class="cmp-row"><span>인력</span><span class="r">수만 명</span></div>
+      </div>
+      <div class="cmp-col hl">
+        <h4>USDT 보유</h4>
+        <div class="tagline">보유자에게 이자 0</div>
+        <div class="cmp-row"><span>맡긴 돈</span><span>1,000만원</span></div>
+        <div class="cmp-row"><span>보유자가 받는 이자</span><span class="r">0원</span></div>
+        <div class="cmp-row"><span>운용 수익</span><span class="g">전액 테더 몫</span></div>
+        <div class="cmp-row"><span>규제</span><span>역외·attestation 중심</span></div>
+        <div class="cmp-row"><span>인력</span><span class="g">약 100명</span></div>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:34px">
+      <div class="card reveal">
+        <div class="cap"><span>USDT 발행량 추이</span><span>억 달러</span></div>
+        <div class="chart-h"><canvas id="supplyChart"></canvas></div>
+        <p class="note">발행량이 곧 <b>회사가 굴리는 운용자산</b>이다. 2021년 약 780억 달러에서 2026년 초 <b>약 1,800억 달러</b>로 늘었다 — 맡긴 돈이 늘수록 이자 수익도 비례해 커지는 구조.</p>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>스테이블코인 시장 점유율</span><span>2026 초 · %</span></div>
+        <div class="chart-h"><canvas id="shareChart"></canvas></div>
+        <p class="note">USDT는 전체 스테이블코인 시장의 <b>약 60%</b>를 점한다. 거래소·신흥국 송금에서 사실상 표준 달러로 쓰이며, 이 점유율 자체가 강력한 네트워크 효과다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 source of profit -->
+<section class="block" id="yield">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>수익의 원천 — 예치금은 무이자, 이자는 테더 몫</h2></div>
+    <p class="sec-intro">테더의 사업은 한 문장으로 끝난다. <b>이용자에게서 무이자로 달러를 받아, 미국 단기 국채(T-bill)에 넣고, 그 이자를 통째로 가진다.</b> 2024~2025년 단기 국채 금리가 연 4~5%였으니, 1,300억 달러어치 국채는 가만히 앉아 매년 <b>60~70억 달러</b>의 이자를 토해낸다. 여기에 보유 중인 금·비트코인의 평가차익이 얹혀 2024년 순이익은 <b>약 130억 달러</b>에 달했다.</p>
+    <div class="cols">
+      <div class="card">
+        <div class="cap"><span>2024년 순이익 약 130억$ 구성</span><span>억 달러</span></div>
+        <div class="costbar" id="costbar">
+          <div class="crow"><span class="cl">국채·역레포 이자</span><div class="ctrack"><div class="cfill" data-w="100" style="background:var(--brew)"></div></div><span class="cv">~70</span></div>
+          <div class="crow"><span class="cl">금 평가차익</span><div class="ctrack"><div class="cfill" data-w="50" style="background:var(--gold)"></div></div><span class="cv">~35</span></div>
+          <div class="crow"><span class="cl">비트코인 평가익</span><div class="ctrack"><div class="cfill" data-w="36" style="background:var(--green)"></div></div><span class="cv">~25</span></div>
+          <div class="crow"><span class="cl">운영비(인건비 등)</span><div class="ctrack"><div class="cfill" data-w="7" style="background:var(--muted)"></div></div><span class="cv">소액</span></div>
+        </div>
+        <p class="note">이익의 <b>절반 이상이 국채 이자</b>다. 예치금에 이자를 한 푼도 안 주기 때문에 이자 수익의 거의 전부가 그대로 이익으로 남는다. 운영비는 워낙 작아 막대 끝에 점처럼 보일 뿐이다.</p>
+      </div>
+      <div>
+        <div class="pull" style="text-align:left;margin:8px 0 0">맡긴 사람은 <span class="mk">이자 0</span>,<br>이자는 <span class="mk">전부 테더</span>.</div>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:20px">이것이 이른바 <b style="color:var(--ink)">'플로트(float) 비즈니스'</b>다. 보험사가 보험금 지급 전까지 보험료를 굴리듯, 테더는 이용자가 USDT를 되팔기 전까지 그 달러를 무이자로 굴린다. 차이는 테더의 플로트가 <b style="color:var(--ink)">1,800억 달러</b> 규모이고, 그 돈을 거의 무위험 자산(미 국채)에 넣는다는 점이다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">2025년 미국 <b style="color:var(--ink)">GENIUS Act</b>는 스테이블코인 발행사가 보유자에게 이자를 주는 것을 금지했다. 역설적으로 이 규제는 '이자는 전부 발행사 몫'이라는 테더 모델을 <b style="color:var(--ink)">법으로 못 박아준 셈</b>이다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 lean org -->
+<section class="block" id="lean">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>직원 100명이 내는 골드만삭스급 이익</h2></div>
+    <p class="sec-intro">이 모델의 진짜 충격은 <b>조직 규모</b>에 있다. 테더의 임직원은 <b>100명 안팎</b>에 불과하다. 그런데 130억 달러를 번다. 단순 계산하면 <b>1인당 순이익 약 8,500만 달러(약 1,200억원)</b> — 골드만삭스·엔비디아 같은 세계 최고 효율 기업을 수십~수백 배 앞지른다. 토큰 발행에 추가 인력이 거의 들지 않기 때문이다(한계비용이 0에 가깝다).</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>1인당 순이익 비교</span><span>만 달러 · 로그축</span></div>
+        <div class="chart-h tall"><canvas id="ppeChart"></canvas></div>
+        <p class="note">테더의 1인당 이익은 골드만삭스의 <b>수십~수백 배</b> 수준(추정 기준에 따라 폭이 크다). 발행량이 1,000억 달러를 넘어도 사람을 거의 더 뽑지 않으니, 자산이 커질수록 1인당 이익은 더 벌어진다.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">"자산은 은행, 인력은 스타트업"</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">테더가 굴리는 미 국채는 <b style="color:var(--ink)">한국·UAE의 보유액보다 많다</b>. 자산 규모로는 웬만한 국가급인데, 그걸 운용하는 인력은 작은 스타트업 수준이다. 국채 매입·환매는 칸터 피츠제럴드(Cantor Fitzgerald) 같은 외부 딜러가 대행하고, 결제는 블록체인이 자동으로 처리한다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">즉 테더는 <b style="color:var(--ink)">'사람'이 아니라 '구조'가 돈을 버는 회사</b>다. 그래서 비상장임에도 2025~2026년 기업가치 <b style="color:var(--ink)">약 5,000억 달러</b>로 거론되며, 세계에서 가장 비싼 비상장사 반열에 올랐다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MOAT (dark) -->
+<section class="block stagewrap" id="moat" style="position:relative">
+  <div class="spotlight"></div>
+  <div class="wrap" style="position:relative">
+    <div class="sec-head"><span class="sec-no" style="color:#5FD6AC">▶</span><h2>준비금이라는 해자, 그리고 규제라는 문</h2></div>
+    <p class="sec-intro">테더의 해자는 <b>준비금</b>이다. 발행량 1,800억 달러를 뒷받침하는 자산은 미 국채를 중심으로 역레포·현금·금·비트코인에 분산돼 있고, 회계법인 <b>BDO</b>가 분기마다 attestation(검토 보고서)을 낸다. 동시에 이 준비금은 약점이기도 하다 — 1인당 이익이 압도적인 만큼, <b>"진짜로 1:1로 받쳐주는가"</b>라는 신뢰 문제가 사업 전체를 떠받친다.</p>
+    <div class="gacha">
+      <div class="gcell">
+        <div class="gnum"><span class="accent">~80</span>%</div>
+        <div class="glab">준비금 중 미 국채 비중<br>현금·역레포 포함 시 대부분</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">분기 1<span style="font-size:.5em">회</span></div>
+        <div class="glab">attestation 공시<br>BDO 검토 · 전면 회계감사는 아님</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum"><span class="accent">USAT</span></div>
+        <div class="glab">미국 전용 신규 코인<br>Anchorage 통해 OCC 규제 하 발행</div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="fstep"><div class="fn">STEP 1</div><h4>달러 입금</h4><p>이용자가 1달러 입금 → USDT 1개 신규 발행. 무이자 예치금이 회사로 들어온다.</p></div>
+      <div class="fstep"><div class="fn">STEP 2</div><h4>국채 매입</h4><p>받은 달러를 미 단기 국채·역레포에 넣어 연 4~5% 이자 수취. 외부 딜러가 대행.</p></div>
+      <div class="fstep"><div class="fn">STEP 3</div><h4>이자 전액 보유</h4><p>보유자에겐 이자 0. 운용 이자는 전부 테더 이익. 일부는 금·비트코인으로.</p></div>
+      <div class="fstep"><div class="fn">STEP 4</div><h4>규제 대응</h4><p>GENIUS Act에 맞춰 미국 전용 USAT를 Anchorage·Cantor와 별도 발행.</p></div>
+    </div>
+    <p style="color:#BFD1C6;font-size:.92rem;margin-top:22px;max-width:48em">2025년 GENIUS Act 통과로 미국에서 스테이블코인은 <b style="color:#fff">1:1 준비금·월간 공시·연간 감사</b>가 의무화됐다. 역외 중심으로 커온 USDT엔 부담이지만, 테더는 <b style="color:#fff">미국 전용 'USAT'</b>를 별도로 띄워 규제 시장을 공략한다. <span class="serif-it" style="color:#fff">달러를 파는 게 아니라, 달러의 이자를 파는 사업.</span></p>
+  </div>
+</section>
+
+<!-- 05 RISK -->
+<section class="block" id="risk">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>리스크 — 금리·규제·신뢰</h2></div>
+    <p class="sec-intro">테더의 이익은 본질적으로 <b>금리에 올라탄 이익</b>이다. 지금은 고금리·고신뢰·느슨한 규제가 동시에 받쳐주지만, 이 셋 중 하나만 흔들려도 그림이 달라진다. 130억 달러라는 숫자는 강력한 만큼 취약하다.</p>
+    <div class="streams">
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">금리 하락</span></div>
+        <p>수익의 절반 이상이 국채 이자다. 미국이 금리를 내리면 같은 발행량으로도 이익이 비례해 줄어든다. 호황의 원천이 곧 변동성의 원천.</p>
+        <span class="tag hot">이익의 핵심 변수</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">규제 강화</span></div>
+        <p>GENIUS Act는 1:1 준비금·연간 감사·이자 지급 금지를 명문화했다. 역외 USDT의 미국 접근성이 좁아지면 핵심 시장 일부가 흔들린다.</p>
+        <span class="tag hot">감사·라이선스 압박</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">신뢰·뱅크런</span></div>
+        <p>"진짜 1:1로 받쳐주는가"라는 의심이 커지면 대량 환매(뱅크런)가 일어날 수 있다. attestation은 검토일 뿐 전면 감사가 아니라는 비판이 상존.</p>
+        <span class="tag hot">페그 이탈 위험</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">+</span><span class="st">자산 변동성</span></div>
+        <p>금·비트코인 평가익은 좋을 땐 이익을 부풀리지만, 가격이 빠지면 그대로 평가손이 된다. 국채 이자와 달리 안정적이지 않은 부분.</p>
+        <span class="tag money">양날의 검</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYS -->
+<section class="block" id="keys" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>정리 — 이자를 통째로 갖는 회사</h2></div>
+    <div class="keys">
+      <div class="key"><h4>① 무이자 달러를 굴린다</h4><p>이용자가 맡긴 1,800억 달러에 이자를 0원 주고, 미 국채에 넣어 그 이자를 전부 가진다. 보험사의 플로트와 같은 구조, 규모만 국가급.</p></div>
+      <div class="key"><h4>② 이익의 절반이 국채 이자</h4><p>2024년 순이익 약 130억 달러 중 ~70억 달러가 국채·역레포 이자. 나머지는 금·비트코인 평가익. 운영비는 무시할 만큼 작다.</p></div>
+      <div class="key"><h4>③ 세계 최고 효율</h4><p>직원 100명 안팎으로 1인당 이익 약 8,500만 달러. 골드만삭스·엔비디아를 수십~수백 배 앞서는, 사실상 '구조가 버는' 회사.</p></div>
+      <div class="key"><h4>④ 금리·규제에 올라탄 이익</h4><p>고금리·느슨한 규제·시장 신뢰가 동시에 받쳐줄 때의 숫자다. GENIUS Act 대응으로 미국 전용 USAT를 띄우며 다음 국면을 준비.</p></div>
+    </div>
+    <div style="margin-top:48px">
+      <div class="pull">테더가 파는 건 달러가 아니라,<br><span class="mk">'달러에 붙는 이자'</span>다.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>데이터 출처</h4>
+    <div class="src">
+      Tether.io 「Tether Hits $13 Billion Profits for 2024…Q4 2024 Attestation」 · Tether.io 「Q1-Q3 2025 Attestation: Profit Surpassing $10B」 · Cointelegraph 「Tether clocks $13B in 2024 profits, US bond holdings hit all-time highs」 · Yahoo Finance 「Tether Reports $13B Profit for 2024, With Rising Bitcoin, Gold Prices」 · news.bitcoin.com 「Tether Reports $13 Billion in 2024 Profits, Hits All-Time High in U.S. Treasuries」 · CoinGecko·CoinMarketCap USDT 시가총액/발행량(2025~2026) · StableRegistry·MacroMicro USDT 준비금 구성(2026) · PANews 「average profit of 85 million per employee, surpassing Goldman Sachs and Nvidia」 · CoinMarketCap Academy 「Tether Made $13 Billion in Net Profit」 · Transak 「How Do Stablecoin Issuers Make Money」 · Spark 「Inside Stablecoin Reserves: How $300 Billion in T-Bills Backs Digital Dollars」 · Wikipedia 「GENIUS Act」 · WEF 「How will the GENIUS Act work」 · Anchorage Digital 「Anchorage Digital and Tether Introduce USA₮」 · Bloomberg·CoinDesk 「Tether, Anchorage Digital Launch US-Focused Stablecoin USAT」(2026.01) · Yahoo Finance 「Tether Now Holds More US Treasuries Than South Korea and UAE」
+    </div>
+    <p class="disc">방법론 노트 — 테더는 <b>비상장사</b>이며, 본 자료의 재무 수치는 회사가 분기마다 공개하는 attestation(BDO 검토 보고서)과 언론 보도를 바탕으로 한 <b>추정·대표값</b>입니다. attestation은 전면 회계감사가 아니라 특정 시점의 자산 검토이므로, 1:1 준비금의 완전성은 외부에서 검증하기 어렵습니다. 2024년 순이익 약 130억 달러의 항목별 분해(국채 이자 ~70억$, 금·비트코인 평가익 등)와 1인당 이익(직원 약 100명 가정 시 약 8,500만$)은 출처별로 직원 수·계산 기준이 달라 폭이 큰 <b>개념적 비교값</b>입니다. 환율은 1달러≈1,380원 가정의 어림치입니다. 본 자료는 정보 제공 목적이며 투자 권유가 아닙니다.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(typeof Chart==='undefined') return;
+  const ink='#13211B', soft='#2C3D34', muted='#6E7E74', line='#CFD9CF';
+  const brew='#26A17B', green='#2E6B45', rust='#B0492B', gold='#B8862A';
+  Chart.defaults.font.family="'DM Mono', monospace";
+  Chart.defaults.font.size=11.5;
+  Chart.defaults.color=soft;
+  const tip={backgroundColor:'#13211B',titleColor:'#fff',bodyColor:'#E6EAE5',padding:10,cornerRadius:4};
+
+  /* HERO — annual net profit */
+  new Chart(document.getElementById('heroChart'),{
+    type:'line',
+    data:{labels:['2021','2022','2023','2024','2025E'],datasets:[{
+      label:'순이익',data:[26,7,62,130,140],
+      borderColor:brew,backgroundColor:'rgba(38,161,123,.12)',borderWidth:2.8,tension:.35,fill:true,
+      pointRadius:4,pointBackgroundColor:brew,pointHoverRadius:6
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1500},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 약 ${c.parsed.y}억 달러`}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>v+'억$'},title:{display:true,text:'연간 순이익(억 달러)',color:muted}},x:{grid:{display:false}}}}
+  });
+
+  /* SUPPLY — USDT circulation */
+  new Chart(document.getElementById('supplyChart'),{
+    type:'bar',
+    data:{labels:['2021','2022','2023','2024','2025','2026초'],datasets:[{
+      label:'USDT 발행량',data:[783,663,915,1390,1740,1800],
+      backgroundColor:['rgba(38,161,123,.4)','rgba(38,161,123,.4)','rgba(38,161,123,.5)','rgba(38,161,123,.6)','rgba(38,161,123,.75)','rgba(38,161,123,.9)'],
+      borderRadius:4
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 약 ${c.parsed.y}억 달러`}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>(v/10000).toFixed(2)+'조$'}},x:{grid:{display:false}}}}
+  });
+
+  /* SHARE — stablecoin market share doughnut */
+  new Chart(document.getElementById('shareChart'),{
+    type:'doughnut',
+    data:{labels:['USDT(테더) 60%','USDC 25%','기타 스테이블코인 15%'],datasets:[{
+      data:[60,25,15],backgroundColor:[brew,gold,muted],borderColor:'#F0F2EF',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:9,font:{size:10.5}}},
+        tooltip:{...tip,callbacks:{label:c=>` ${c.parsed}%`}}}}
+  });
+
+  /* PPE — profit per employee, log scale */
+  new Chart(document.getElementById('ppeChart'),{
+    type:'bar',
+    data:{labels:['테더','엔비디아','애플','JP모건','골드만삭스'],datasets:[{
+      label:'1인당 순이익',data:[8500,100,38,12,5],
+      backgroundColor:['rgba(38,161,123,.9)','rgba(184,134,42,.6)','rgba(184,134,42,.6)','rgba(110,126,116,.6)','rgba(176,73,43,.6)'],
+      borderRadius:4
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400},indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 약 ${c.parsed.x.toLocaleString()}만 달러/인`}}},
+      scales:{x:{type:'logarithmic',grid:{color:line},ticks:{callback:v=>v+'만$'}},y:{grid:{display:false}}}}
+  });
+
+  /* reveal */
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* cost bars */
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.cfill').forEach(f=>{f.style.transform='scaleX('+(f.dataset.w/100)+')';});cio.unobserve(e.target);}
+  })},{threshold:.3});
+  const cb=document.getElementById('costbar'); if(cb) cio.observe(cb);
+})();
+</script>
+</body>
+</html>

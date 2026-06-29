@@ -692,6 +692,7 @@ let NAV = [
   ]},
   { cat:'웹3 & 블록체인', items:[
     {id:'tron',label:'트론 (USDT)'},
+    {id:'tether',label:'테더 (USDT 발행사)'},
   ]},
   { cat:'국내 대기업', items:[
     {id:'skhynix',label:'SK하이닉스'},
@@ -719,6 +720,11 @@ let NAV = [
   { cat:'긱 이코노미', items:[
     {id:'rider',label:'배달 라이더'},
   ]},
+  { cat:'유통·소비', items:[
+    {id:'starbucks',label:'스타벅스'},
+    {id:'costco',label:'코스트코'},
+    {id:'daiso',label:'다이소'},
+  ]},
   { cat:'스포츠·엔터', items:[
     {id:'blackcombat',label:'블랙컴뱃'},
     {id:'girlgroup',label:'중소 걸그룹'},
@@ -737,6 +743,7 @@ const CAT_META = {
   '빅테크':          { icon:'⚡', color:'#5B6CE0', desc:'세계를 움직이는 기술 거인' },
   '자영업':          { icon:'🏪', color:'#D85A30', desc:'골목 상권의 진짜 손익' },
   '긱 이코노미':     { icon:'🛵', color:'#EF9F27', desc:'플랫폼 노동의 수익 구조' },
+  '유통·소비':       { icon:'🛒', color:'#E31837', desc:'매장과 가격이 만드는 숨은 수익' },
   '스포츠·엔터':    { icon:'🥊', color:'#C9A44E', desc:'스포츠·콘텐츠 IP의 수익 구조' },
   'AI 생성 리포트':  { icon:'✨', color:'#9B7BD8', desc:'AI가 즉석에서 분석한 리포트' },
 };
@@ -750,6 +757,10 @@ const PAGE_META = {
   'geojimap':          { icon:'🗺️', blurb:'바이브코딩으로 246만 명을 모은 가성비 식당 지도' },
   'spacex':            { icon:'🚀', blurb:'로켓 재사용과 스타링크 구독이 만든 현금흐름' },
   'tron':              { icon:'⛓️', blurb:'USDT 송금이 굴리는 수수료 플라이휠' },
+  'tether':            { icon:'💵', blurb:'직원 수십 명이 국채 이자로 연 수조 원을 버는 법' },
+  'starbucks':         { icon:'☕', blurb:'커피가 아니라 선불 충전금 — 사실상 은행인 카페' },
+  'costco':            { icon:'🏬', blurb:'상품 마진은 0, 영업이익의 대부분은 연회비' },
+  'daiso':             { icon:'🛍️', blurb:'1,000원에 어떻게 남기나 — 균일가 박리다매의 극한' },
   'skhynix':           { icon:'💾', blurb:'HBM이 다시 그린 메모리 반도체 수익 지도' },
   'samsung':           { icon:'📱', blurb:'반도체·스마트폰·가전을 합친 거대 포트폴리오' },
   'sanil':             { icon:'⚡', blurb:'전력망 슈퍼사이클을 탄 변압기 제조사' },
@@ -852,6 +863,10 @@ const PAGE_FILE_MAP = {
   "gamsgo": "pages/gamsgo.html",
   "coupang-partners": "pages/coupang-partners.html",
   "geojimap": "pages/geojimap.html",
+  "tether": "pages/tether.html",
+  "starbucks": "pages/starbucks.html",
+  "costco": "pages/costco.html",
+  "daiso": "pages/daiso.html",
   "spacex": "pages/spacex.html",
   "tron": "pages/tron.html",
   "skhynix": "pages/skhynix.html",
@@ -899,7 +914,11 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'amd',
   'blackcombat',
   'girlgroup',
-  'geojimap'
+  'geojimap',
+  'tether',
+  'starbucks',
+  'costco',
+  'daiso'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
