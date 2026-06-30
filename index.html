@@ -838,8 +838,7 @@ function buildNav(filter=''){
     </div>
     <div class="cat-items">
       ${filtered.map(i=>{
-        const m = PAGE_META[i.id] || {};
-        return `<div class="nav-item${currentId===i.id?' act':''}" data-id="${i.id}" onclick="navigate('${i.id}')"><span class="nav-ico">${m.icon||'📊'}</span><span class="nav-lbl">${i.label}</span>${bookmarks.includes(i.id)?'<span class="nav-star">★</span>':''}</div>`;
+        return `<div class="nav-item${currentId===i.id?' act':''}" data-id="${i.id}" onclick="navigate('${i.id}')"><span class="nav-lbl">${i.label}</span>${bookmarks.includes(i.id)?'<span class="nav-star">★</span>':''}</div>`;
       }).join('')}
     </div>`;
     nav.appendChild(div);
