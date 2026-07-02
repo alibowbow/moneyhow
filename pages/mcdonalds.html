@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>맥도날드는 어떻게 돈을 버나 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F6F1E7;
+    --paper-2:#EFE7D6;
+    --paper-3:#E6DAC2;
+    --ink:#221512;
+    --ink-soft:#4A342C;
+    --muted:#8D7A6B;
+    --line:#DFD2BC;
+    --line-strong:#CBB99E;
+    --brew:#DA291C;
+    --brew-deep:#A81E14;
+    --green:#2E6B45;
+    --green-deep:#1F4E31;
+    --rust:#B0492B;
+    --gold:#C79100;
+    --gold-bright:#FFC72C;
+    --stage:#1A0D0A;
+    --stage-2:#26120D;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .mono{font-family:"DM Mono",ui-monospace,monospace}
+  .eyebrow{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brew);display:inline-block}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:560;line-height:1.08;letter-spacing:-.01em}
+  .serif-it{font-family:"Fraunces",serif;font-style:italic;font-weight:480}
+  a{color:inherit}
+
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(8px)}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
+  .topbar .brand{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .topbar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brew);margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  .topbar nav a{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .2s}
+  .topbar nav a:hover{color:var(--brew)}
+  @media(max-width:760px){.topbar nav{display:none}}
+
+  .hero{padding:72px 0 36px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);margin:18px 0 0}
+  .hero h1 em{color:var(--brew);font-style:normal}
+  .hero .lede{margin-top:22px;font-size:clamp(1.02rem,1.7vw,1.18rem);color:var(--ink-soft);max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:600}
+  .hero-figure{border:1px solid var(--line-strong);background:linear-gradient(180deg,var(--paper-2),var(--paper));border-radius:3px;padding:18px 18px 10px;position:relative}
+  .hero-figure .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+  .jbox{height:300px;position:relative}
+  .legend-row{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .legend-row span{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+  .swatch{width:16px;height:3px;border-radius:2px;display:inline-block}
+
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px;background:var(--paper-2)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 22px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+  .stat .num{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.02em}
+  .stat .num.r{color:var(--rust)} .stat .num.g{color:var(--green)} .stat .num.b{color:var(--brew)} .stat .num.o{color:var(--gold)}
+  .stat .lab{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:9px;line-height:1.5}
+  .stat .sub{font-size:.74rem;color:var(--muted);margin-top:3px}
+
+  section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+  .sec-no{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--brew);letter-spacing:.1em}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem)}
+  .sec-intro{max-width:42em;color:var(--ink-soft);margin:14px 0 34px;font-size:1.04rem}
+  .sec-intro b{color:var(--ink);font-weight:600}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}}
+
+  .card{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px}
+  .card .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-h{height:300px;position:relative}
+  .chart-h.tall{height:340px}
+  .note{font-size:.82rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .note b{color:var(--ink-soft)}
+
+  /* compare table */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;margin-top:6px}
+  @media(max-width:680px){.cmp{grid-template-columns:1fr}}
+  .cmp-col{padding:22px 24px;background:var(--paper)}
+  .cmp-col.hl{background:linear-gradient(180deg,color-mix(in srgb,var(--brew) 8%,transparent),transparent);border-left:1px solid var(--line)}
+  @media(max-width:680px){.cmp-col.hl{border-left:none;border-top:1px solid var(--line)}}
+  .cmp-col h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.2rem;margin-bottom:4px}
+  .cmp-col .tagline{font-family:"DM Mono",monospace;font-size:.7rem;color:var(--muted);margin-bottom:14px}
+  .cmp-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line-strong);padding:8px 0;font-size:.88rem}
+  .cmp-row span:first-child{color:var(--muted);font-family:"DM Mono",monospace;font-size:.74rem}
+  .cmp-row span:last-child{font-family:"DM Mono",monospace;color:var(--ink);font-weight:500;text-align:right}
+  .cmp-row .g{color:var(--green)} .cmp-row .r{color:var(--rust)}
+
+  /* cost waterfall */
+  .costbar{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .crow{display:grid;grid-template-columns:140px 1fr 64px;align-items:center;gap:12px}
+  @media(max-width:560px){.crow{grid-template-columns:104px 1fr 50px}}
+  .crow .cl{font-size:.86rem;color:var(--ink-soft)}
+  .crow .ctrack{height:18px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+  .crow .cfill{height:100%;border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .crow .cv{font-family:"DM Mono",monospace;font-size:.82rem;text-align:right;color:var(--ink)}
+
+  /* streams */
+  .streams{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+  @media(max-width:760px){.streams{grid-template-columns:1fr}}
+  .stream{padding:22px 24px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--paper)}
+  .stream:nth-child(2n){border-right:none}
+  .stream .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .stream .si{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--brew);width:26px}
+  .stream .st{font-family:"Fraunces",serif;font-size:1.22rem;font-weight:560}
+  .stream p{font-size:.92rem;color:var(--ink-soft);margin:0}
+  .tag{display:inline-block;font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:2px 8px;border-radius:30px;border:1px solid var(--line-strong);color:var(--ink-soft);margin-top:10px}
+  .tag.hot{color:var(--rust);border-color:var(--rust);background:color-mix(in srgb,var(--rust) 8%,transparent)}
+  .tag.money{color:var(--green-deep);border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,transparent)}
+
+  /* dark stage */
+  .stagewrap{background:var(--stage);color:var(--paper);border-bottom:1px solid var(--stage)}
+  .stagewrap .eyebrow{color:var(--gold-bright)}
+  .stagewrap h2{color:var(--paper)}
+  .stagewrap .sec-intro{color:#D8C6B4}
+  .stagewrap .sec-intro b{color:#fff}
+  .gacha{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:14px}
+  @media(max-width:760px){.gacha{grid-template-columns:1fr}}
+  .gcell{background:var(--stage);padding:30px 24px}
+  .gcell .gnum{font-family:"Fraunces",serif;font-size:clamp(2rem,4.4vw,3rem);font-weight:600;color:#fff;line-height:1}
+  .gcell .gnum .accent{color:var(--gold-bright)}
+  .gcell .glab{font-family:"DM Mono",monospace;font-size:.74rem;color:#BCA58F;margin-top:10px;line-height:1.55}
+  .stagewrap .spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px 280px at 78% 12%, rgba(255,199,44,.14), transparent 70%)}
+
+  /* flow steps */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+  @media(max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+  .fstep{border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:18px;background:var(--stage-2);position:relative}
+  .fstep .fn{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--gold-bright)}
+  .fstep h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.05rem;margin:8px 0 6px;color:#fff}
+  .fstep p{font-size:.83rem;color:#C8B29B;margin:0}
+
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media(max-width:760px){.keys{grid-template-columns:1fr}}
+  .key{border-left:3px solid var(--brew);padding:6px 0 6px 18px}
+  .key h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.18rem;margin-bottom:6px}
+  .key p{font-size:.92rem;color:var(--ink-soft)}
+
+  .pull{font-family:"Fraunces",serif;font-style:italic;font-weight:420;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:var(--ink);max-width:26em;margin:0 auto;text-align:center}
+  .pull .mk{color:var(--brew);font-style:normal}
+
+  footer{padding:48px 0 64px;color:var(--muted)}
+  footer h4{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  footer .src{font-size:.78rem;line-height:1.85;columns:2;column-gap:36px}
+  @media(max-width:680px){footer .src{columns:1}}
+  footer .disc{font-size:.76rem;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);max-width:48em}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.cfill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>맥도날드 이코노믹스 · 2026</div>
+    <nav>
+      <a href="#surface">표면</a>
+      <a href="#margin">마진격차</a>
+      <a href="#estate">부동산</a>
+      <a href="#machine">캐시머신</a>
+      <a href="#risk">리스크</a>
+      <a href="#keys">정리</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">프랜차이즈 · 부동산 · 로열티 이코노믹스</span>
+      <h1>맥도날드는 어떻게<br><em>돈을 버나</em></h1>
+      <p class="lede">전 세계 <b>4만 5천여 개</b> 매장에서 하루 수천만 명이 버거를 먹는다. 그런데 정작 본사의 이익 대부분은 버거가 아니라 <b>가맹점주에게 걷는 임대료와 로열티</b>에서 나온다. 창업 초기 CFO의 말대로 — <b>"우리는 햄버거 회사가 아니라 부동산 회사다."</b> 그 구조를 숫자로 해부한다.</p>
+    </div>
+    <div class="hero-figure reveal">
+      <div class="cap"><span>매출 vs 영업이익률 · 2021–2025</span><span>억 달러 · %</span></div>
+      <div class="jbox"><canvas id="heroChart"></canvas></div>
+      <div class="legend-row">
+        <span><i class="swatch" style="background:#DA291C;height:8px"></i>연 매출 (억 달러)</span>
+        <span><i class="swatch" style="background:#C79100"></i>영업이익률 (%)</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="num b">4.5<span style="font-size:.5em">만 개</span></div>
+        <div class="lab">전 세계 매장 수 (2025년 말 45,356개)</div>
+        <div class="sub">그중 약 95%가 가맹점</div>
+      </div>
+      <div class="stat">
+        <div class="num o">46.1<span style="font-size:.5em">%</span></div>
+        <div class="lab">영업이익률 (2025년)</div>
+        <div class="sub">100원 벌면 46원이 남는 장사</div>
+      </div>
+      <div class="stat">
+        <div class="num g">100<span style="font-size:.5em">억 달러</span></div>
+        <div class="lab">가맹점 임대료 수입 (2024년)</div>
+        <div class="sub">가맹 수입의 약 64%가 '집세'</div>
+      </div>
+      <div class="stat">
+        <div class="num r">1,394<span style="font-size:.5em">억 달러</span></div>
+        <div class="lab">시스템와이드 세일즈 (2025년)</div>
+        <div class="sub">본사 장부 매출은 269억 달러뿐</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 SURFACE -->
+<section class="block" id="surface">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>표면의 장사 — 버거 1,394억 달러의 착시</h2></div>
+    <p class="sec-intro">2025년 전 세계 맥도날드 매장에서 팔린 금액, 즉 <b>시스템와이드 세일즈는 1,394억 달러</b>(전년 대비 +7%)다. 그런데 본사 손익계산서의 매출은 <b>269억 달러</b>(+4%)에 불과하다. 나머지는 가맹점주의 매출이기 때문이다. 본사는 그 가맹점 매출에서 <b>로열티(매출의 약 4~5%)와 임대료(매출의 약 8~15%)</b>만 떼어 온다 — 적게 가져가는 대신, 떼어 오는 돈은 거의 전부 이익이 된다.</p>
+    <div class="cmp">
+      <div class="cmp-col">
+        <h4>겉으로 보이는 맥도날드</h4>
+        <div class="tagline">버거 장사 · 시스템와이드</div>
+        <div class="cmp-row"><span>전 세계 매장 판매액 (2025)</span><span>1,394억 달러</span></div>
+        <div class="cmp-row"><span>매장 수 (2025 말)</span><span>45,356개</span></div>
+        <div class="cmp-row"><span>2025년 신규 오픈</span><span>2,276개</span></div>
+        <div class="cmp-row"><span>주력 상품</span><span>빅맥 · 감자튀김</span></div>
+        <div class="cmp-row"><span>이익의 원천처럼 보이는 것</span><span class="r">버거 판매</span></div>
+      </div>
+      <div class="cmp-col hl">
+        <h4>장부 속의 맥도날드</h4>
+        <div class="tagline">본사 손익계산서 · 2025</div>
+        <div class="cmp-row"><span>본사 매출 (2025)</span><span>269억 달러</span></div>
+        <div class="cmp-row"><span>가맹 수입 (임대료+로열티)</span><span class="g">165억 달러 · 62%</span></div>
+        <div class="cmp-row"><span>직영 매출 (약 5% 매장)</span><span>97억 달러 · 36%</span></div>
+        <div class="cmp-row"><span>영업이익 (2025)</span><span class="g">약 124억 달러</span></div>
+        <div class="cmp-row"><span>이익의 실제 원천</span><span class="g">임대료 + 로열티</span></div>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:34px">
+      <div class="card reveal">
+        <div class="cap"><span>본사 매출 259억 달러의 구성 · 2024</span><span>10-K 기준</span></div>
+        <div class="chart-h"><canvas id="mixChart"></canvas></div>
+        <p class="note">2024년 기준 가맹점에서 받은 <b>임대료 100.2억 달러 + 로열티 56.1억 달러</b>가 매출의 60%를 차지한다. 직영 매출(97.8억 달러)은 덩치는 크지만, 원가·인건비를 빼면 이익 기여는 훨씬 작다.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">"버거는 가맹점주가 판다"</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">맥도날드 매장의 약 <b style="color:var(--ink)">95%는 가맹점</b>이다. 식자재를 사고, 직원을 고용하고, 새벽에 튀김기를 켜는 사람은 가맹점주다. 본사는 매달 그 매출의 일부를 <b style="color:var(--ink)">로열티</b>로, 그리고 훨씬 더 큰 몫을 <b style="color:var(--ink)">임대료</b>로 받는다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">왜 임대료를 본사에 낼까? 매장이 깔고 앉은 <b style="color:var(--ink)">땅과 건물의 상당수를 본사가 직접 소유</b>하고 있기 때문이다. 가맹점주는 브랜드와 함께 '부동산'을 통째로 빌리는 셈이다. 이 구조가 다음 장의 마진 격차를 만든다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 MARGIN GAP -->
+<section class="block" id="margin">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>직영 vs 가맹 — 같은 버거, 다른 마진</h2></div>
+    <p class="sec-intro">직영점은 매출 100원을 벌기 위해 식자재·인건비·임차료를 다 부담한다. 남는 건 <b>100원 중 15원 안팎</b>. 반면 가맹점에서 받는 임대료·로열티는 원가가 거의 없어 <b>100원 중 80원 이상</b>이 남는다. 2025년 기준 가맹 수입(165억 달러)이 직영 매출(97억 달러)보다 크고, 마진까지 5배 이상 높으니 — 이익의 무게중심은 압도적으로 가맹 쪽이다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>직영 vs 가맹 · 매출과 부문이익 (2025)</span><span>억 달러 · 추정</span></div>
+        <div class="chart-h tall"><canvas id="marginChart"></canvas></div>
+        <p class="note">가맹 부문 마진율 약 82%, 직영 부문 약 15%는 10-K 부문 실적 기반 <b>대표값·추정치</b>. 직영점은 매출은 커 보여도 남는 돈이 적고, 가맹 수입은 들어오는 족족 이익이 된다.</p>
+      </div>
+      <div>
+        <div class="pull" style="text-align:left;margin:8px 0 0">직영은 <span class="mk">100원 벌어 15원</span>,<br>가맹 수입은 <span class="mk">100원 받아 82원</span>.</div>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:20px">그래서 맥도날드는 2010년대 중반부터 직영점을 가맹점주와 마스터 프랜차이지에게 대거 넘기는 <b style="color:var(--ink)">'리프랜차이징'</b>을 밀어붙였다. 매출 총액은 줄어도 이익률이 뛰기 때문이다. 실제 영업이익률은 2021년 44.6% → 2025년 46.1%(2022년은 러시아 철수 비용으로 40.4%)로 꾸준히 45% 안팎을 지킨다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">남겨둔 직영점(약 5%)은 돈을 벌기 위해서라기보다 <b style="color:var(--ink)">신메뉴·운영 실험실이자 가맹점주 훈련장</b>에 가깝다. 참고로 직영 비중이 높은 한국맥도날드는 2025년 매출 1조 4,310억 원(+14.5%), 영업이익 732억 원 — 본사와 비교하면 마진 구조가 전혀 다른 '버거 장사'다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 REAL ESTATE -->
+<section class="block" id="estate">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>부동산 제국 — 가맹점 매출 100원은 어디로</h2></div>
+    <p class="sec-intro">맥도날드는 매장 부지의 <b>땅 약 56%, 건물 약 80%를 직접 소유</b>한다. 장부가 기준 토지·건물만 <b>400억 달러 이상</b>(감가상각 전) — 총자산의 대부분이 부동산이다. 좋은 목을 본사가 먼저 사들이고, 그 위에 가맹점주를 앉힌 뒤 <b>매출 연동 임대료</b>를 받는다. 2024년 한 해 임대료 수입만 <b>100.2억 달러</b>로, 로열티(56.1억 달러)의 거의 2배다.</p>
+    <div class="cols">
+      <div class="card">
+        <div class="cap"><span>가맹점 매출 100원 분해 · 대표값</span><span>원</span></div>
+        <div class="costbar" id="costbar">
+          <div class="crow"><span class="cl">식자재·포장</span><div class="ctrack"><div class="cfill" data-w="100" style="background:var(--rust)"></div></div><span class="cv">30</span></div>
+          <div class="crow"><span class="cl">인건비</span><div class="ctrack"><div class="cfill" data-w="83" style="background:var(--gold)"></div></div><span class="cv">25</span></div>
+          <div class="crow"><span class="cl">본사 임대료</span><div class="ctrack"><div class="cfill" data-w="33" style="background:var(--brew)"></div></div><span class="cv">10</span></div>
+          <div class="crow"><span class="cl">본사 로열티</span><div class="ctrack"><div class="cfill" data-w="13" style="background:var(--brew-deep)"></div></div><span class="cv">4</span></div>
+          <div class="crow"><span class="cl">기타 운영비</span><div class="ctrack"><div class="cfill" data-w="50" style="background:var(--muted)"></div></div><span class="cv">15</span></div>
+          <div class="crow"><span class="cl">점주 영업이익</span><div class="ctrack"><div class="cfill" data-w="53" style="background:var(--green)"></div></div><span class="cv">16</span></div>
+        </div>
+        <p class="note">임대료는 매출의 약 8~15%, 로열티는 약 4~5%(미국 신규 계약 기준 5%)로 알려져 있다. 위 분해는 업계 통설 기반 <b>대표값·개념도</b>이며 매장·국가별로 다르다. 핵심: 점주 매출 100원 중 <b>약 14원이 본사로</b> 흘러간다.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">"매출이 늘든 줄든, 임대료는 들어온다"</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">이 모델의 설계자는 창업 초기 재무를 맡은 <b style="color:var(--ink)">해리 소너본</b>(1955~1967 사장)이다. 그는 "우리의 사업은 햄버거가 아니라 부동산"이라며, 본사가 부지를 사서 가맹점주에게 재임대하는 구조를 만들었다. 최저 보장 임대료 조항 덕에 <b style="color:var(--ink)">장사가 안돼도 임대료는 바닥이 깔려 있고</b>, 잘되면 매출 연동으로 같이 커진다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">부동산은 통제 수단이기도 하다. 본사 기준을 못 맞추는 점주에게는 <b style="color:var(--ink)">임대 계약 해지</b>라는 지렛대가 있다. 땅 주인이 본사인 이상, 4만 개 매장의 품질 통제와 현금흐름이 한 계약서로 묶인다. 언론과 애널리스트들이 맥도날드를 <b style="color:var(--ink)">"세계 최대급 상업 부동산 회사"</b>로 부르는 이유다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK — CASH MACHINE -->
+<section class="block stagewrap" id="machine" style="position:relative">
+  <div class="spotlight"></div>
+  <div class="wrap" style="position:relative">
+    <div class="sec-head"><span class="sec-no" style="color:var(--gold-bright)">▶</span><h2>영업이익률 46%의 비밀 — 프랜차이즈 캐시머신</h2></div>
+    <p class="sec-intro">외식업 평균 영업이익률은 한 자릿수다. 그런데 맥도날드 본사는 <b>2024년 45%, 2025년 46.1%</b>(조정 기준 46.9%)를 찍었다. 비결은 간단하다 — 원가가 드는 버거 장사는 가맹점주에게 맡기고, 본사는 <b>원가가 거의 없는 임대료·로열티만 걷기 때문</b>이다. 인플레이션으로 버거 값이 오르면? 매출 연동인 임대료·로열티도 자동으로 오른다.</p>
+    <div class="gacha">
+      <div class="gcell">
+        <div class="gnum"><span class="accent">46.1</span>%</div>
+        <div class="glab">2025년 영업이익률<br>영업이익 약 124억 달러 · 순이익 85.6억 달러</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">165<span style="font-size:.5em">억 달러</span></div>
+        <div class="glab">2025년 가맹 수입 (임대료+로열티)<br>본사 매출의 62% · 마진 약 82%</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum"><span class="accent">400</span>억 달러+</div>
+        <div class="glab">보유 토지·건물 장부가 (감가상각 전)<br>땅 56% · 건물 80% 직접 소유</div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="fstep"><div class="fn">STEP 1</div><h4>좋은 목의 땅을 산다</h4><p>본사가 입지를 선정해 토지·건물을 확보. 부동산이 자산의 중심.</p></div>
+      <div class="fstep"><div class="fn">STEP 2</div><h4>가맹점주를 앉힌다</h4><p>점주가 창업비를 대부분 부담하고 매장을 운영. 리스크는 점주 몫.</p></div>
+      <div class="fstep"><div class="fn">STEP 3</div><h4>임대료+로열티를 걷는다</h4><p>매출의 약 8~15%는 임대료, 약 4~5%는 로열티로. 최저 임대료 보장.</p></div>
+      <div class="fstep"><div class="fn">STEP 4</div><h4>신규 매장에 재투자</h4><p>2025년에만 2,276개 신규 오픈. 매장이 늘수록 임대료 기반도 커진다.</p></div>
+    </div>
+    <p style="color:#D8C6B4;font-size:.92rem;margin-top:22px;max-width:48em">즉 맥도날드 본사의 손익은 버거 몇 개를 팔았느냐가 아니라, <b style="color:#fff">'임대료·로열티가 걸린 매장이 몇 개냐'</b>로 결정된다. 버거는 가맹점주를 불러 모으는 미끼이자 임대료의 담보다. <span class="serif-it" style="color:#fff">햄버거를 파는 부동산 회사.</span></p>
+  </div>
+</section>
+
+<!-- 04 RISK -->
+<section class="block" id="risk">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>2025~2026, 캐시머신의 균열</h2></div>
+    <p class="sec-intro">이 기계에도 약점은 있다. 임대료·로열티는 결국 <b>가맹점 매출의 함수</b>다. 팬데믹 이후 누적된 가격 인상으로 미국 <b>저소득층 방문이 두 자릿수 감소</b>했고, 맥도날드는 2024년 <b>5달러 밀</b>, 2025년 1월 <b>맥밸류(McValue)</b>, 2025년 9월 할인 세트 확대, 그리고 <b>2026년 4월 '맥밸류 2.0'</b>(3달러 단품·4달러 아침 세트)까지 연쇄 가격 방어에 나섰다. 2026년 1분기 글로벌 동일점 매출은 +3.8%로 선방했지만, 4월은 전년 기저효과로 미국·주요국 모두 소폭 마이너스였다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>MyMcDonald's 리워드 · 90일 활성 이용자</span><span>백만 명</span></div>
+        <div class="chart-h"><canvas id="loyaltyChart"></canvas></div>
+        <p class="note">약점을 메우는 카드가 <b>디지털</b>이다. 90일 활성 리워드 이용자는 2025년 말 약 2억 1천만 명(+19%), 리워드 회원 매출은 2025년 <b>약 370억 달러(+20%)</b>. 회사 목표는 2027년까지 2억 5천만 명.</p>
+      </div>
+      <div class="streams" style="align-self:stretch">
+        <div class="stream">
+          <div class="sh"><span class="si">!</span><span class="st">가격 저항</span></div>
+          <p>수년간의 가격 인상으로 '싸고 빠른 한 끼'라는 정체성이 흔들렸다. 저소득층 트래픽 두 자릿수 감소(2025)는 <b>객수가 아니라 객단가로 버티는 성장</b>이라는 신호.</p>
+          <span class="tag hot">저소득층 이탈</span>
+        </div>
+        <div class="stream">
+          <div class="sh"><span class="si">!</span><span class="st">가치 전쟁의 비용</span></div>
+          <p>5달러 밀·맥밸류·맥밸류 2.0은 트래픽을 지키지만 <b>가맹점주의 마진을 깎는다</b>. 할인 부담을 점주가 지는 구조라 본사-점주 갈등의 불씨.</p>
+          <span class="tag hot">점주 마진 압박</span>
+        </div>
+        <div class="stream">
+          <div class="sh"><span class="si">!</span><span class="st">둔화되는 모멘텀</span></div>
+          <p>2026년 1분기 동일점 +3.8% 뒤, 4월은 미국·주요 해외시장 모두 소폭 마이너스. 2분기 성장 둔화를 회사 스스로 예고했다.</p>
+          <span class="tag hot">2026 2분기 경계</span>
+        </div>
+        <div class="stream">
+          <div class="sh"><span class="si">+</span><span class="st">그래도 기계는 돈다</span></div>
+          <p>동일점 매출이 정체해도 신규 2,276개(2025)의 임대료·로열티가 더해지고, 인플레이션만큼 임대료도 오른다. <b>구조 자체가 방어막.</b></p>
+          <span class="tag money">구조적 방어력</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYS -->
+<section class="block" id="keys" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>정리 — 두 개의 맥도날드</h2></div>
+    <div class="keys">
+      <div class="key"><h4>① 지상의 맥도날드: 버거 장사</h4><p>2025년 전 세계 매장 판매액 1,394억 달러. 하지만 이 중 본사 장부에 잡히는 건 269억 달러뿐 — 버거는 대부분 가맹점주가 판다.</p></div>
+      <div class="key"><h4>② 지하의 맥도날드: 부동산·로열티</h4><p>땅 56%·건물 80%를 본사가 소유하고, 가맹점 매출의 약 8~15%를 임대료로, 약 4~5%를 로열티로 걷는다. 2024년 임대료만 100.2억 달러.</p></div>
+      <div class="key"><h4>③ 46% 이익률의 정체</h4><p>원가 없는 임대료·로열티(마진 약 82%)가 이익의 대부분을 만든다. 직영(마진 약 15%)은 실험실. 그래서 외식업인데 영업이익률 46.1%(2025).</p></div>
+      <div class="key"><h4>④ 균열과 방어</h4><p>가격 인상으로 저소득층이 떠나자 5달러 밀→맥밸류→맥밸류 2.0(2026.4)으로 응수. 리워드 2.1억 명(2025)과 신규 매장 2,276개가 임대료 기반을 계속 넓힌다.</p></div>
+    </div>
+    <div style="margin-top:48px">
+      <div class="pull">맥도날드가 파는 건 버거가 아니라,<br><span class="mk">'버거를 팔 자리'</span>다.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>데이터 출처</h4>
+    <div class="src">
+      McDonald's Corporation 「Fourth Quarter and Full Year 2025 Results」(2026.02, PR Newswire·corporate.mcdonalds.com — 2025 매출 268.85억 달러·순이익 85.63억 달러·시스템와이드 1,394억 달러·조정 영업이익률 46.9%·리워드 회원 매출 약 370억 달러) · McDonald's 「Fourth Quarter and Full Year 2024 Results」(2025.02 — 2024 매출 259억 달러·영업이익 117억 달러·영업이익률 45%·시스템와이드 1,307억 달러) · McDonald's 10-K FY2024·FY2025(SEC EDGAR — 가맹 수입 중 임대료 100.17억·로열티 56.06억 달러(2024), 가맹 165.48억·직영 96.90억 달러(2025), 매장 45,356개·신규 2,276개) · CNBC 「McDonald's (MCD) Q1 2026 earnings」(2026.05) · The Motley Fool 「McDonald's Q1 2026 Earnings Transcript」(2026.05 — 글로벌 동일점 +3.8%, 4월 역기저) · The Motley Fool 「McDonald's $120B Real Estate Portfolio…」(2026.02) · Wall Street Survivor·Economy Insights 「McDonald's Real Estate Strategy」(토지 56%·건물 80% 소유, 임대료 매출의 8~15%·로열티 4~5%) · Restaurant Dive·Nation's Restaurant News 「저소득층 소비자 이탈과 밸류 전략」(2025) · CNBC 「McDonald's to expand value menu」(2025.09) · Fox Business 「McDonald's rolls out 'McValue 2.0'」(2026.03) · QSR Magazine 「McDonald's in 2025: A Race to Reestablish Value」(2025.12) · 한국맥도날드 보도자료·스마트투데이·전자신문 「한국맥도날드 2024년 8년 만의 흑자 전환·2025년 매출 1조 4,310억 원(+14.5%), 영업이익 732억 원」(2025.04·2026.04)
+    </div>
+    <p class="disc">방법론 노트 — 매출·영업이익·시스템와이드 세일즈·매장 수·리워드 지표는 맥도날드 실적 발표와 10-K(2024·2025 회계연도), 2026년 1분기 실적 발표 기준입니다. 환율 병기 없이 달러(억 달러) 그대로 표기했습니다. 연도별 영업이익률 중 2021~2023년 수치는 공시 영업이익을 매출로 나눈 계산값이며, 2022년의 하락은 러시아 사업 철수 관련 일회성 비용의 영향입니다. 직영 부문 마진 약 15%, 가맹 부문 마진 약 82%, 가맹점 매출 100원 분해(임대료 10원·로열티 4원 등), 토지·건물 장부가 400억 달러+와 소유 비율(땅 56%·건물 80%)은 공시·언론 보도에 기반한 <b>대표값·추정치</b>로 매장·국가·계약마다 다릅니다. 리워드 90일 활성 이용자 추이(2023년 약 1.5억 → 2025년 말 약 2.1억 명)와 2027년 2.5억 명은 회사 발표 기준이며, 2026년 4월 동일점 매출 코멘트는 경영진 설명(확정 공시 아님)입니다. 본 자료는 정보 제공 목적이며 특정 종목의 투자 권유가 아닙니다.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(typeof Chart==='undefined') return;
+  const ink='#221512', soft='#4A342C', muted='#8D7A6B', line='#DFD2BC';
+  const brew='#DA291C', brewDeep='#A81E14', green='#2E6B45', rust='#B0492B', gold='#C79100', goldBright='#FFC72C';
+  Chart.defaults.font.family="'DM Mono', monospace";
+  Chart.defaults.font.size=11.5;
+  Chart.defaults.color=soft;
+  const tip={backgroundColor:'#221512',titleColor:'#fff',bodyColor:'#EFE7D6',padding:10,cornerRadius:4};
+
+  /* HERO — revenue bars + operating margin line */
+  new Chart(document.getElementById('heroChart'),{
+    data:{labels:['2021','2022','2023','2024','2025'],datasets:[
+      {type:'bar',label:'연 매출',data:[232,232,255,259,269],backgroundColor:'rgba(218,41,28,.72)',borderRadius:4,yAxisID:'yA'},
+      {type:'line',label:'영업이익률',data:[44.6,40.4,45.7,45.2,46.1],borderColor:gold,backgroundColor:'transparent',borderWidth:2.6,tension:.35,pointRadius:4,pointBackgroundColor:gold,yAxisID:'yB'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1500},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>c.dataset.yAxisID==='yA'?` 매출 ${c.parsed.y}억 달러`:` 영업이익률 ${c.parsed.y}%`}}},
+      scales:{
+        yA:{position:'left',grid:{color:line},ticks:{callback:v=>v+'억$'},title:{display:true,text:'연 매출(억 달러)',color:muted}},
+        yB:{position:'right',grid:{display:false},min:30,max:50,ticks:{callback:v=>v+'%'}},
+        x:{grid:{display:false}}
+      }}
+  });
+
+  /* MIX — 2024 revenue composition doughnut */
+  new Chart(document.getElementById('mixChart'),{
+    type:'doughnut',
+    data:{labels:['가맹 임대료 100.2억$ (39%)','가맹 로열티 56.1억$ (22%)','직영 매출 97.8억$ (38%)','기타·개점수수료 5.1억$ (2%)'],datasets:[{
+      data:[100.2,56.1,97.8,5.1],backgroundColor:[brew,goldBright,'#C4A576',muted],borderColor:'#F6F1E7',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:9,font:{size:10.5}}},
+        tooltip:{...tip,callbacks:{label:c=>` ${c.parsed}억 달러 (2024)`}}}}
+  });
+
+  /* MARGIN — company-operated vs franchised, revenue vs segment profit */
+  new Chart(document.getElementById('marginChart'),{
+    type:'bar',
+    data:{labels:['직영 (마진 약 15%)','가맹 (마진 약 82%)'],datasets:[
+      {label:'2025 매출',data:[97,165],backgroundColor:'rgba(218,41,28,.30)',borderRadius:4},
+      {label:'부문이익(추정)',data:[15,136],backgroundColor:brew,borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1300},
+      plugins:{legend:{position:'top',labels:{boxWidth:12,boxHeight:12,usePointStyle:true,pointStyle:'rectRounded',padding:12}},
+        tooltip:{...tip,callbacks:{label:c=>` ${c.dataset.label} ${c.parsed.y}억 달러`}}},
+      scales:{
+        y:{grid:{color:line},ticks:{callback:v=>v+'억$'},title:{display:true,text:'억 달러 (2025)',color:muted}},
+        x:{grid:{display:false}}
+      }}
+  });
+
+  /* LOYALTY — 90-day active users */
+  new Chart(document.getElementById('loyaltyChart'),{
+    type:'line',
+    data:{labels:['2023','2024','2025','2027 목표'],datasets:[
+      {label:'90일 활성 이용자',data:[150,175,210,null],borderColor:brew,backgroundColor:'rgba(218,41,28,.08)',borderWidth:2.8,tension:.3,fill:true,pointRadius:4,pointBackgroundColor:brew},
+      {label:'회사 목표',data:[null,null,210,250],borderColor:gold,borderDash:[6,5],backgroundColor:'transparent',borderWidth:2,tension:0,pointRadius:[0,0,0,5],pointBackgroundColor:goldBright}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400},
+      plugins:{legend:{position:'top',labels:{boxWidth:12,boxHeight:12,usePointStyle:true,pointStyle:'rectRounded',padding:12}},
+        tooltip:{...tip,callbacks:{label:c=>` ${c.parsed.y!==null?c.parsed.y+'00만 명':''}`}}},
+      scales:{
+        y:{grid:{color:line},min:100,max:270,ticks:{callback:v=>v+'00만'},title:{display:true,text:'90일 활성 이용자(백만 명)',color:muted}},
+        x:{grid:{display:false}}
+      }}
+  });
+
+  /* reveal */
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* cost bars */
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.cfill').forEach(f=>{f.style.transform='scaleX('+(f.dataset.w/100)+')';});cio.unobserve(e.target);}
+  })},{threshold:.3});
+  const cb=document.getElementById('costbar'); if(cb) cio.observe(cb);
+})();
+</script>
+</body>
+</html>
