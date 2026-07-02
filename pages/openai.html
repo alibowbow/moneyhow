@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>오픈AI는 어떻게 돈을 버나 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F2F3F0;
+    --paper-2:#E9EBE6;
+    --paper-3:#DEE1DA;
+    --ink:#101512;
+    --ink-soft:#333D37;
+    --muted:#78827B;
+    --line:#D7DBD3;
+    --line-strong:#BFC6BC;
+    --brew:#0D9373;
+    --brew-deep:#0A6E57;
+    --green:#3568C9;
+    --green-deep:#274F9C;
+    --rust:#B0492B;
+    --gold:#96700F;
+    --stage:#0B0F0D;
+    --stage-2:#121814;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .mono{font-family:"DM Mono",ui-monospace,monospace}
+  .eyebrow{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brew);display:inline-block}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:560;line-height:1.08;letter-spacing:-.01em}
+  .serif-it{font-family:"Fraunces",serif;font-style:italic;font-weight:480}
+  a{color:inherit}
+
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(8px)}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
+  .topbar .brand{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .topbar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brew);margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  .topbar nav a{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .2s}
+  .topbar nav a:hover{color:var(--brew)}
+  @media(max-width:760px){.topbar nav{display:none}}
+
+  .hero{padding:72px 0 36px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);margin:18px 0 0}
+  .hero h1 em{color:var(--brew);font-style:normal}
+  .hero .lede{margin-top:22px;font-size:clamp(1.02rem,1.7vw,1.18rem);color:var(--ink-soft);max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:600}
+  .hero-figure{border:1px solid var(--line-strong);background:linear-gradient(180deg,var(--paper-2),var(--paper));border-radius:3px;padding:18px 18px 10px;position:relative}
+  .hero-figure .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+  .jbox{height:300px;position:relative}
+  .legend-row{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .legend-row span{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+  .swatch{width:16px;height:3px;border-radius:2px;display:inline-block}
+
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px;background:var(--paper-2)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 22px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+  .stat .num{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.02em}
+  .stat .num.r{color:var(--rust)} .stat .num.g{color:var(--green)} .stat .num.b{color:var(--brew)} .stat .num.o{color:var(--gold)}
+  .stat .lab{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:9px;line-height:1.5}
+  .stat .sub{font-size:.74rem;color:var(--muted);margin-top:3px}
+
+  section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+  .sec-no{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--brew);letter-spacing:.1em}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem)}
+  .sec-intro{max-width:42em;color:var(--ink-soft);margin:14px 0 34px;font-size:1.04rem}
+  .sec-intro b{color:var(--ink);font-weight:600}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}}
+
+  .card{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px}
+  .card .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-h{height:300px;position:relative}
+  .chart-h.tall{height:340px}
+  .note{font-size:.82rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .note b{color:var(--ink-soft)}
+
+  /* compare table */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;margin-top:6px}
+  @media(max-width:680px){.cmp{grid-template-columns:1fr}}
+  .cmp-col{padding:22px 24px;background:var(--paper)}
+  .cmp-col.hl{background:linear-gradient(180deg,color-mix(in srgb,var(--brew) 8%,transparent),transparent);border-left:1px solid var(--line)}
+  @media(max-width:680px){.cmp-col.hl{border-left:none;border-top:1px solid var(--line)}}
+  .cmp-col h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.2rem;margin-bottom:4px}
+  .cmp-col .tagline{font-family:"DM Mono",monospace;font-size:.7rem;color:var(--muted);margin-bottom:14px}
+  .cmp-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line-strong);padding:8px 0;font-size:.88rem}
+  .cmp-row span:first-child{color:var(--muted);font-family:"DM Mono",monospace;font-size:.74rem}
+  .cmp-row span:last-child{font-family:"DM Mono",monospace;color:var(--ink);font-weight:500;text-align:right}
+  .cmp-row .g{color:var(--brew-deep)} .cmp-row .r{color:var(--rust)}
+
+  /* cost waterfall */
+  .costbar{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .crow{display:grid;grid-template-columns:140px 1fr 64px;align-items:center;gap:12px}
+  @media(max-width:560px){.crow{grid-template-columns:104px 1fr 50px}}
+  .crow .cl{font-size:.86rem;color:var(--ink-soft)}
+  .crow .ctrack{height:18px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+  .crow .cfill{height:100%;border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .crow .cv{font-family:"DM Mono",monospace;font-size:.82rem;text-align:right;color:var(--ink)}
+
+  /* streams */
+  .streams{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+  @media(max-width:760px){.streams{grid-template-columns:1fr}}
+  .stream{padding:22px 24px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--paper)}
+  .stream:nth-child(2n){border-right:none}
+  .stream .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .stream .si{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--brew);width:26px}
+  .stream .st{font-family:"Fraunces",serif;font-size:1.22rem;font-weight:560}
+  .stream p{font-size:.92rem;color:var(--ink-soft);margin:0}
+  .tag{display:inline-block;font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:2px 8px;border-radius:30px;border:1px solid var(--line-strong);color:var(--ink-soft);margin-top:10px}
+  .tag.hot{color:var(--rust);border-color:var(--rust);background:color-mix(in srgb,var(--rust) 8%,transparent)}
+  .tag.money{color:var(--brew-deep);border-color:var(--brew);background:color-mix(in srgb,var(--brew) 9%,transparent)}
+
+  /* dark stage */
+  .stagewrap{background:var(--stage);color:var(--paper);border-bottom:1px solid var(--stage)}
+  .stagewrap .eyebrow{color:#2FC79B}
+  .stagewrap h2{color:var(--paper)}
+  .stagewrap .sec-intro{color:#AEBBB3}
+  .stagewrap .sec-intro b{color:#fff}
+  .gacha{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:14px}
+  @media(max-width:760px){.gacha{grid-template-columns:1fr}}
+  .gcell{background:var(--stage);padding:30px 24px}
+  .gcell .gnum{font-family:"Fraunces",serif;font-size:clamp(2rem,4.4vw,3rem);font-weight:600;color:#fff;line-height:1}
+  .gcell .gnum .accent{color:#2FC79B}
+  .gcell .glab{font-family:"DM Mono",monospace;font-size:.74rem;color:#8DA097;margin-top:10px;line-height:1.55}
+  .stagewrap .spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px 280px at 78% 12%, rgba(20,166,127,.16), transparent 70%)}
+
+  /* flow steps */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+  @media(max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+  .fstep{border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:18px;background:var(--stage-2);position:relative}
+  .fstep .fn{font-family:"DM Mono",monospace;font-size:.72rem;color:#2FC79B}
+  .fstep h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.05rem;margin:8px 0 6px;color:#fff}
+  .fstep p{font-size:.83rem;color:#9FAFA6;margin:0}
+
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media(max-width:760px){.keys{grid-template-columns:1fr}}
+  .key{border-left:3px solid var(--brew);padding:6px 0 6px 18px}
+  .key h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.18rem;margin-bottom:6px}
+  .key p{font-size:.92rem;color:var(--ink-soft)}
+
+  .pull{font-family:"Fraunces",serif;font-style:italic;font-weight:420;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:var(--ink);max-width:26em;margin:0 auto;text-align:center}
+  .pull .mk{color:var(--brew);font-style:normal}
+
+  footer{padding:48px 0 64px;color:var(--muted)}
+  footer h4{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  footer .src{font-size:.78rem;line-height:1.85;columns:2;column-gap:36px}
+  @media(max-width:680px){footer .src{columns:1}}
+  footer .disc{font-size:.76rem;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);max-width:48em}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.cfill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>오픈AI 이코노믹스 · 2026</div>
+    <nav>
+      <a href="#streams">수익원</a>
+      <a href="#cost">원가</a>
+      <a href="#paradox">역설</a>
+      <a href="#bet">베팅</a>
+      <a href="#risk">리스크</a>
+      <a href="#keys">정리</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">AI · 토큰 이코노믹스 · 유닛 이코노믹스</span>
+      <h1>오픈AI는<br>어떻게 <em>돈을 버나</em></h1>
+      <p class="lede">매주 <b>8억 명 이상</b>이 ChatGPT에 질문을 던진다(2025년 10월 발표). 매출은 2024년 37억달러에서 2025년 약 130억달러로 <b>1년 새 3.5배</b> — 역사상 가장 빨리 크는 회사다. 그런데 질문 하나가 들어올 때마다 <b>GPU 비용이 나간다</b>. 쓸수록 적자가 커지는 회사, 그 토큰 경제의 역설을 해부한다.</p>
+    </div>
+    <div class="hero-figure reveal">
+      <div class="cap"><span>오픈AI 연 매출 추이 · 억달러</span><span>2026은 자체 전망(보도)</span></div>
+      <div class="jbox"><canvas id="heroChart"></canvas></div>
+      <div class="legend-row">
+        <span><i class="swatch" style="background:#0D9373"></i>연 매출 (억달러 · 2026E 점선)</span>
+        <span><i class="swatch" style="background:#B0492B;height:8px;width:8px;border-radius:50%"></i>2년 새 약 19배</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="num b">130<span style="font-size:.5em">억달러</span></div>
+        <div class="lab">2025년 연 매출 (약 18조원)</div>
+        <div class="sub">2024년 37억달러의 3.5배 · 보도 기준</div>
+      </div>
+      <div class="stat">
+        <div class="num g">8억+<span style="font-size:.5em">명</span></div>
+        <div class="lab">ChatGPT 주간 활성 사용자 (2025.10)</div>
+        <div class="sub">2026년엔 9억 명 돌파 보도</div>
+      </div>
+      <div class="stat">
+        <div class="num r">135<span style="font-size:.5em">억달러</span></div>
+        <div class="lab">2025년 상반기 순손실 (보도 기준)</div>
+        <div class="sub">2026년 손실 전망 140억~270억달러</div>
+      </div>
+      <div class="stat">
+        <div class="num o">5,000<span style="font-size:.5em">억달러</span></div>
+        <div class="lab">기업가치 (2025.10 주식매각 기준)</div>
+        <div class="sub">약 700조원 · 2025년 3월 3,000억달러</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 REVENUE STREAMS -->
+<section class="block" id="streams">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>수익의 축 — 구독, API, 기업, 그리고 광고</h2></div>
+    <p class="sec-intro">오픈AI의 돈은 크게 네 갈래로 들어온다. 매출의 중심은 여전히 <b>ChatGPT 개인 구독</b>(Plus 월 20달러 · Pro 월 200달러)이고, 그 위에 <b>API 토큰 과금</b>과 <b>기업 계약</b>(Team·Enterprise), 그리고 2026년 2월부터는 <b>광고</b>가 얹혔다. 2026년 4월 보도 기준 유료 구독자는 전 티어 합산 <b>약 5,000만 명</b> — 주간 활성 사용자의 5~6% 남짓만 돈을 낸다. 나머지 90%+ 무료 사용자도 질문할 때마다 GPU를 태운다.</p>
+    <div class="streams">
+      <div class="stream">
+        <div class="sh"><span class="si">A</span><span class="st">ChatGPT 구독</span></div>
+        <p>Plus 월 20달러, Pro 월 200달러, Team 인당 월 25달러. 2025년 매출의 <b>약 70%가 소비자 구독</b>이라는 보도. 2025년 모바일 인앱 결제만 13.5억달러(전년比 약 7배).</p>
+        <span class="tag money">매출의 최대 축</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">B</span><span class="st">API 토큰 과금</span></div>
+        <p>개발자·기업이 토큰(글자 조각) 단위로 사용량을 지불. 2026년 보도 기준 오픈AI API는 <b>분당 150억 토큰 이상</b>을 처리한다. 쓰는 만큼 버는 대신, 쓰는 만큼 원가도 나간다.</p>
+        <span class="tag money">종량제</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">C</span><span class="st">기업 계약 (Enterprise)</span></div>
+        <p>좌석당 맞춤 과금 + 보안·관리 기능. 정부·대기업 계약과 커머스 수수료(쇼핑 결제 연동)까지 확장 중. 경쟁사 앤트로픽이 기업 시장에 집중하는 것과 정면 승부.</p>
+        <span class="tag">확장 중</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">D</span><span class="st">광고 (2026 신설)</span></div>
+        <p>2026년 2월 ChatGPT 답변 하단에 광고 도입. <b>출시 6주 만에 연환산 약 1억달러</b>, 2026년 약 25억달러 → 2030년 1,000억달러 목표 보도. 무료 사용자를 수익원으로 바꾸는 카드.</p>
+        <span class="tag hot">2026.2 출시</span>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:34px">
+      <div class="card reveal">
+        <div class="cap"><span>수익원 비중 · 2025~2026 보도 기준 추정</span><span>%</span></div>
+        <div class="chart-h"><canvas id="mixChart"></canvas></div>
+        <p class="note">개인 구독이 <b>약 3분의 2</b>를 차지하는 소비자 중심 구조. API·기업 비중을 키우고 광고를 얹는 게 2026년의 과제다. 비상장사라 정확한 비중은 비공개 — 보도 기반 추정치.</p>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>ChatGPT 주간 활성 사용자 · 억 명</span><span>발표·보도 기준</span></div>
+        <div class="chart-h"><canvas id="userChart"></canvas></div>
+        <p class="note">2022년 11월 출시 후 3년 만에 <b>주간 8억 명(2025.10)</b>, 2026년 들어 9억 명 보도. 인류의 10분의 1이 매주 쓰는 서비스 — 문제는 이 트래픽의 대부분이 <b>무료</b>라는 것.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 COST -->
+<section class="block" id="cost">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>질문 1개의 원가 — 토큰 경제학</h2></div>
+    <p class="sec-intro">소프트웨어의 상식은 '한 번 만들면 복사는 공짜'다. AI는 다르다. 답변 한 번마다 <b>인퍼런스(추론) 연산</b>이 돌아가고, 그만큼 GPU 사용료·전기요금이 실시간으로 나간다. 질문 1개당 원가는 <b>1센트 미만~수 센트</b> 수준으로 추정되지만, 하루 <b>25억 개의 프롬프트</b>가 들어오면 얘기가 달라진다. 보도 기준 2025년 오픈AI의 인퍼런스 비용은 1년 새 <b>약 4배</b>로 뛰었고, 조정 매출총이익률은 2024년 40%에서 2025년 33%로 오히려 <b>후퇴</b>했다.</p>
+    <div class="cols">
+      <div class="card">
+        <div class="cap"><span>매출 100 대비 지출 구조 · 2025 보도 기반 개념도</span><span>지수</span></div>
+        <div class="costbar" id="costbar">
+          <div class="crow"><span class="cl">매출</span><div class="ctrack"><div class="cfill" data-w="100" style="background:var(--brew)"></div></div><span class="cv">100</span></div>
+          <div class="crow"><span class="cl">인퍼런스 컴퓨트</span><div class="ctrack"><div class="cfill" data-w="50" style="background:var(--rust)"></div></div><span class="cv">~50</span></div>
+          <div class="crow"><span class="cl">학습·연구(R&amp;D)</span><div class="ctrack"><div class="cfill" data-w="55" style="background:var(--gold)"></div></div><span class="cv">~55</span></div>
+          <div class="crow"><span class="cl">인건비·판관비 등</span><div class="ctrack"><div class="cfill" data-w="40" style="background:var(--green)"></div></div><span class="cv">~40</span></div>
+          <div class="crow"><span class="cl">영업손실</span><div class="ctrack"><div class="cfill" data-w="45" style="background:var(--muted)"></div></div><span class="cv">-45</span></div>
+        </div>
+        <p class="note">보도 종합 기준 오픈AI는 <b>매출 1달러당 1.2~2달러 이상</b>을 지출한다(2025). 매출이 늘수록 컴퓨트 청구서가 같이 — 종종 더 빨리 — 는다. 항목별 수치는 재무 비공개로 인한 <b>개념도</b>.</p>
+      </div>
+      <div>
+        <div class="pull" style="text-align:left;margin:8px 0 0">복사가 공짜였던 소프트웨어와 달리,<br>AI는 <span class="mk">답변 한 번마다</span> 원가가 나간다.</div>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:20px">이게 토큰 경제의 핵심 역설이다. 사용자가 늘고 질문이 길어지고 추론 모델이 더 오래 '생각'할수록, 매출과 무관하게 <b style="color:var(--ink)">GPU 시간</b>이 소모된다. 특히 주간 8억 명 중 절대다수인 무료 사용자는 매출 없이 원가만 발생시킨다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">그래서 오픈AI의 손익은 구독료 인상이 아니라 <b style="color:var(--ink)">인퍼런스 원가 절감</b>과 <b style="color:var(--ink)">무료 트래픽의 수익화(광고)</b>에 달려 있다. 모델 효율화로 토큰당 원가는 빠르게 떨어지고 있지만 — 판매 단가도 같이 떨어진다는 게 함정이다(04장).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 PARADOX -->
+<section class="block" id="paradox">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>매출은 폭발, 적자도 폭발</h2></div>
+    <p class="sec-intro">매출 곡선만 보면 역사상 최고 속도다: 2023년 약 16억달러 → 2024년 37억달러 → 2025년 약 130억달러(연말 연환산으론 200억달러), 2026년엔 연환산 <b>200억~250억달러 이상</b>이라는 보도가 이어진다. 문제는 손실 곡선이 <b>같은 기울기로</b> 붙어 온다는 것. 2025년 상반기에만 순손실 <b>135억달러</b>(보도 기준), 자체 전망으로도 2026년 손실 약 140억달러 — 외부 추정은 270억달러까지 벌어진다. 오픈AI 스스로 <b>2028년까지 대규모 적자</b>를 예고했고, 현금흐름 흑자는 <b>2029~2030년</b>에나 가능하다는 계산이다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>매출 vs 순손실 · 억달러</span><span>보도 기준 · 2026E 전망</span></div>
+        <div class="chart-h tall"><canvas id="plChart"></canvas></div>
+        <p class="note">2025년 손실 막대는 <b>상반기 순손실(135억달러) 보도</b> 기준 — 연간으론 그 이상으로 추정된다. 2026년은 자체 전망(약 140억달러)과 외부 추정(최대 270억달러)의 <b>범위 중간값(약 200억달러)</b>을 표시.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">"성장할수록 커지는 청구서"</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">보통의 스타트업은 규모가 커지면 고정비가 희석돼 흑자로 넘어간다. 오픈AI는 반대다. 사용자·토큰이 늘수록 인퍼런스 비용이 비례해서 늘고, 다음 세대 모델을 위한 <b style="color:var(--ink)">학습(트레이닝) 지출</b>은 그보다 더 가파르다 — 보도 기준 2026년 학습비만 약 320억달러, 2027년 650억달러 계획.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">그런데도 오픈AI는 지출을 줄이는 대신 <b style="color:var(--ink)">수천억달러의 인프라 약정</b>을 쌓았다. 2030년까지 누적 현금소진이 6,000억달러대에 이를 것이라는 보도까지 나온다. 왜 이런 베팅이 가능한가 — 다음 장이 이 리포트의 핵심이다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 BET (dark) -->
+<section class="block stagewrap" id="bet" style="position:relative">
+  <div class="spotlight"></div>
+  <div class="wrap" style="position:relative">
+    <div class="sec-head"><span class="sec-no" style="color:#2FC79B">▶</span><h2>수천억달러의 컴퓨트 베팅</h2></div>
+    <p class="sec-intro">2025년 1월 발표된 <b>스타게이트(Stargate)</b>는 오픈AI·소프트뱅크·오라클이 2029년까지 <b>5,000억달러(약 700조원)</b>를 들여 10기가와트급 AI 데이터센터를 짓는 계획이다. 2025년 9월 텍사스 1호 사이트 가동, 2025년 말 기준 <b>약 7GW·4,000억달러 이상</b>이 확정됐다는 발표. 연 매출 130억달러(2025)인 회사가 자기 몸값의 몇 배를 약정한 셈 — 이 간극을 메우는 것이 이른바 <b>'순환 딜'</b> 구조다.</p>
+    <div class="gacha">
+      <div class="gcell">
+        <div class="gnum"><span class="accent">5,000</span>억달러</div>
+        <div class="glab">스타게이트 총 투자 계획<br>2029년까지 · 10GW 데이터센터</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">3,000<span style="font-size:.5em">억달러</span></div>
+        <div class="glab">오라클 클라우드 계약(보도)<br>2027~2031 · 연 600억달러 규모</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">최대 <span class="accent">1,000</span>억달러</div>
+        <div class="glab">엔비디아의 오픈AI 투자 계획<br>오픈AI는 그 돈으로 엔비디아 칩 구매</div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="fstep"><div class="fn">STEP 1</div><h4>칩 회사가 투자</h4><p>엔비디아 최대 1,000억달러 투자 계획, AMD는 지분 약 10% 워런트 제공(2025 발표).</p></div>
+      <div class="fstep"><div class="fn">STEP 2</div><h4>그 돈으로 칩 구매</h4><p>오픈AI는 투자받은 자금으로 다시 엔비디아 GPU·AMD 칩 수십조원어치를 약정.</p></div>
+      <div class="fstep"><div class="fn">STEP 3</div><h4>클라우드에 지불</h4><p>오라클 연 600억달러 등 클라우드 약정 — 오라클은 그 돈으로 또 엔비디아 칩을 산다.</p></div>
+      <div class="fstep"><div class="fn">STEP 4</div><h4>주가로 되돌아온다</h4><p>약정 발표마다 칩·클라우드 주가가 급등. 돈이 한 바퀴 돌며 서로의 매출·시총을 밀어올린다.</p></div>
+    </div>
+    <p style="color:#AEBBB3;font-size:.92rem;margin-top:22px;max-width:48em">한편 지배구조도 베팅에 맞춰 재편됐다. 2025년 10월 오픈AI는 <b style="color:#fff">영리 PBC(공익법인) 전환</b>을 완료했고, 마이크로소프트는 지분 <b style="color:#fff">약 27%(약 1,350억달러)</b>를 확정하며 2019년부터 이어진 독점적 구속을 풀었다. 비영리 재단이 26%로 통제권을 유지하되, 자본 조달의 족쇄는 사라졌다. <span class="serif-it" style="color:#fff">적자가 아니라 '얼마나 크게 베팅할 수 있느냐'가 게임의 규칙이 된 것.</span></p>
+  </div>
+</section>
+
+<!-- 05 RISK -->
+<section class="block" id="risk">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>리스크 — 경쟁, 단가 하락, 거품론</h2></div>
+    <p class="sec-intro">이 베팅이 성립하려면 매출이 전망대로 계속 2배씩 커져야 한다. 그런데 2026년의 전장은 만만치 않다. <b>앤트로픽</b>은 기업 시장에서 바짝 추격 중이고(2026년 1분기 매출 48억달러 보도 — 오픈AI 57억달러), <b>구글 제미나이</b>는 자체 TPU로 원가 우위를 갖는다. 무엇보다 팔던 물건의 단가 자체가 무너지고 있다 — GPT-4 출시(2023) 대비 토큰 단가는 <b>약 10분의 1 이하</b>로 떨어졌다.</p>
+    <div class="cols" style="margin-bottom:34px">
+      <div class="card reveal">
+        <div class="cap"><span>기업가치 추이 · 억달러</span><span>투자 라운드·주식매각 보도 기준</span></div>
+        <div class="chart-h"><canvas id="valChart"></canvas></div>
+        <p class="note">2023년 약 290억달러 → 2025년 3월 3,000억달러(소프트뱅크 라운드) → 2025년 10월 <b>5,000억달러</b>(주식매각). 2026년 6월엔 IPO 신청 보도와 함께 <b>8,000억달러대 몸값</b> 관측(옅은 막대)까지 — 적자 기업의 몸값으로는 전례가 없다.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem;margin-bottom:12px">"버블이냐, 인프라냐"</h3>
+        <p style="color:var(--ink-soft);font-size:1rem">낙관론의 근거는 명확하다: 주간 9억 명의 사용자 기반, 2029년 매출 1,000억달러·이익 전환이라는 자체 전망, 그리고 광고라는 미개봉 카드. 오픈AI 스스로는 <b style="color:var(--ink)">2029년 흑자(약 140억달러 이익)</b>를 제시한다(보도 기준).</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">회의론의 근거도 명확하다: 수익보다 훨씬 큰 인프라 약정, 서로가 서로의 매출인 순환 딜, 그리고 단가가 계속 떨어지는 시장. <b style="color:var(--ink)">전망이 한 번만 어긋나도</b> 수천억달러 약정이 부메랑이 된다.</p>
+      </div>
+    </div>
+    <div class="streams">
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">경쟁 — 2강+α</span></div>
+        <p>앤트로픽은 기업·코딩 시장에서 이익률 중심 성장(2026년 현금소진율을 매출의 한 자릿수%로 낮추는 계획 보도), 구글은 검색 유통망+자체 칩. 오픈AI만 <b>소비자 대규모 무료 트래픽</b>의 원가를 진다.</p>
+        <span class="tag hot">이익의 질 경쟁</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">토큰 단가 하락</span></div>
+        <p>주요 모델의 100만 토큰당 평균 단가는 1년 새 약 4분의 1로, GPT-4(2023) 대비로는 10분의 1 이하로 하락. 효율화로 원가도 떨어지지만, <b>파는 값이 같이 떨어지면</b> 마진 개선이 늦어진다.</p>
+        <span class="tag hot">디플레 시장</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">거품론 — 약정의 무게</span></div>
+        <p>2030년까지 누적 현금소진 6,000억달러대 보도, 손익분기는 2029~2030년 전망. 그 사이 자금은 계속 외부 조달 — <b>금리·증시가 식으면</b> 베팅의 전제가 흔들린다.</p>
+        <span class="tag hot">2030 시험대</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">+</span><span class="st">광고 — 미개봉 카드</span></div>
+        <p>2026년 2월 도입된 광고는 6주 만에 연환산 1억달러. 8억+ 무료 사용자를 수익원으로 바꾸면 판이 달라진다 — 다만 '답변에 광고가 붙는 AI'에 대한 <b>신뢰 리스크</b>는 남는다.</p>
+        <span class="tag money">업사이드</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYS -->
+<section class="block" id="keys" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>정리 — 토큰 경제의 역설</h2></div>
+    <div class="keys">
+      <div class="key"><h4>① 역사상 최고 속도의 매출</h4><p>2024년 37억달러 → 2025년 약 130억달러(보도 기준), 2026년 연환산 200억달러 이상. 개인 구독이 중심, API·기업·광고가 그 위에 쌓인다.</p></div>
+      <div class="key"><h4>② 쓸수록 커지는 적자</h4><p>답변 한 번마다 GPU 원가가 나가는 구조. 매출 1달러당 1.2~2달러를 지출하며, 2025년 상반기에만 순손실 135억달러(보도), 2026년 손실 전망은 140억~270억달러.</p></div>
+      <div class="key"><h4>③ 수천억달러의 베팅</h4><p>스타게이트 5,000억달러, 오라클 3,000억달러, 엔비디아 최대 1,000억달러 투자 — 서로가 서로의 매출이 되는 순환 딜로 굴러간다. 손익분기는 2029~2030년 전망.</p></div>
+      <div class="key"><h4>④ 남은 질문</h4><p>토큰 단가 하락과 앤트로픽·구글의 협공 속에서, 광고와 원가 효율화가 적자 곡선을 꺾을 수 있는가. 2025년 5,000억달러 몸값과 2026년 IPO 관측은 그 답을 선불로 받은 것이다.</p></div>
+    </div>
+    <div style="margin-top:48px">
+      <div class="pull">오픈AI가 파는 건 지능이지만,<br>지불하는 건 <span class="mk">전기와 GPU</span>다.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>데이터 출처</h4>
+    <div class="src">
+      로이터·CNBC 「오픈AI 2025년 매출 약 130억달러 달성, 2024년 37억달러 대비 급증」(2025) · The Information 「오픈AI 내부 재무 문서 — 2025년 상반기 순손실 135억달러, 인퍼런스 비용 4배 증가·조정 매출총이익률 40%→33%」(2025) · Fortune 「오픈AI, 2028년까지 대규모 손실 후 2030년 흑자 전환 계획」(2025.11) · Yahoo Finance/보도 종합 「오픈AI 자체 전망 — 2026년 손실 약 140억달러, 2029년 매출 1,000억달러·이익 전환」(2025~2026) · NBC뉴스·Axios·Forbes 「마이크로소프트-오픈AI 신계약 — PBC 전환 완료, MS 지분 27%·기업가치 5,000억달러」(2025.10.28) · CNBC 「스타게이트 1호 텍사스 데이터센터 가동 — 5,000억달러·10GW 계획」(2025.9) · OpenAI 공식 블로그 「Stargate 신규 5개 사이트 — 7GW·4,000억달러 확정」(2025.9) · 블룸버그 「AI 순환 딜 — 마이크로소프트·오픈AI·엔비디아는 어떻게 서로에게 돈을 지불하나」(2026) · 로이터·보도 종합 「엔비디아, 오픈AI에 최대 1,000억달러 투자 계획」(2025.9) · 「AMD-오픈AI 6GW 칩 공급 + 지분 약 10% 워런트」(2025.10) · 「오라클-오픈AI 5년 3,000억달러 클라우드 계약」(2025.9) · OpenAI 「광고 도입 방침 발표」(2026.1)·The Tech Portal 「오픈AI 광고 매출 2026년 25억달러→2030년 1,000억달러 목표 보도」(2026.4) · demandsage·Backlinko 등 「ChatGPT 주간 활성 사용자 8억(2025.10)→9억 명(2026) 집계」 · Investing.com 「토큰 단가 하락과 오픈AI-앤트로픽 매출 경쟁 — 2026년 1분기 오픈AI 57억달러 vs 앤트로픽 48억달러」(2026) · Epoch AI 「오픈AI의 전례 없는 매출 성장 전망 분석」(2025)
+    </div>
+    <p class="disc">방법론 노트 — 오픈AI는 비상장사로 감사 재무제표를 공개하지 않습니다. 본문·차트의 매출(2023년 약 16억달러, 2024년 37억달러, 2025년 약 130억달러, 2026년 약 300억달러 전망), 손실(2025년 상반기 순손실 135억달러, 2026년 전망 140억~270억달러), 기업가치(2025년 3월 3,000억달러 → 2025년 10월 5,000억달러, 2026년 IPO 관련 8,000억달러대 관측), 사용자 수(주간 8억+명, 2025.10 발표)는 모두 <b>회사 발표와 언론 보도 기준의 추정·전망치</b>이며 매체·시점에 따라 수치가 다릅니다(본문은 범위로 표기). '매출 100 대비 지출 구조'와 수익원 비중 도넛은 보도를 종합한 <b>개념도·대표값</b>으로 실제 회계 항목과 다를 수 있습니다. 스타게이트·오라클·엔비디아·AMD 약정은 발표 기준 계획으로 집행 규모·일정이 바뀔 수 있습니다. 환산은 1달러=약 1,400원 기준의 어림값입니다. 본 자료는 정보 제공 목적이며 특정 기업에 대한 투자 권유가 아닙니다.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(typeof Chart==='undefined') return;
+  const ink='#101512', soft='#333D37', muted='#78827B', line='#D7DBD3';
+  const teal='#0D9373', rust='#B0492B', blue='#3568C9', gold='#96700F';
+  Chart.defaults.font.family="'DM Mono', monospace";
+  Chart.defaults.font.size=11.5;
+  Chart.defaults.color=soft;
+  const tip={backgroundColor:'#101512',titleColor:'#fff',bodyColor:'#E9EBE6',padding:10,cornerRadius:4};
+
+  /* HERO — annual revenue growth (last point = forecast, dashed) */
+  new Chart(document.getElementById('heroChart'),{
+    type:'line',
+    data:{labels:['2023','2024','2025','2026E'],datasets:[{
+      label:'연 매출',data:[16,37,130,300],
+      borderColor:teal,backgroundColor:'rgba(13,147,115,.1)',borderWidth:2.8,tension:.35,fill:true,
+      pointRadius:4,pointBackgroundColor:teal,pointHoverRadius:6,
+      segment:{borderDash:c=>c.p1DataIndex===3?[6,5]:undefined}
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1500},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 매출 약 ${c.parsed.y}억달러${c.dataIndex===3?' (자체 전망·보도)':''}`}}},
+      scales:{y:{grid:{color:line},ticks:{callback:v=>v+'억$'},title:{display:true,text:'연 매출(억달러) · 보도 기준',color:muted}},x:{grid:{display:false}}}}
+  });
+
+  /* MIX — revenue mix doughnut */
+  new Chart(document.getElementById('mixChart'),{
+    type:'doughnut',
+    data:{labels:['개인 구독 65%','API 15%','기업·팀 15%','광고·기타 5%'],datasets:[{
+      data:[65,15,15,5],backgroundColor:[teal,rust,blue,gold],borderColor:'#F2F3F0',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:9,font:{size:10.5}}},
+        tooltip:{...tip,callbacks:{label:c=>` ${c.parsed}% (보도 기반 추정)`}}}}
+  });
+
+  /* USERS — weekly active users */
+  new Chart(document.getElementById('userChart'),{
+    type:'bar',
+    data:{labels:['23.11','24.08','25.02','25.08','25.10','2026'],datasets:[{
+      label:'주간 활성 사용자',data:[1,2,4,7,8,9],
+      backgroundColor:['rgba(13,147,115,.35)','rgba(13,147,115,.45)','rgba(13,147,115,.55)','rgba(13,147,115,.7)','rgba(13,147,115,.85)','rgba(13,147,115,.45)'],
+      borderRadius:4
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1300},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 주간 약 ${c.parsed.y}억 명${c.dataIndex===5?' (2026 보도)':''}`}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:line},ticks:{callback:v=>v+'억 명'}}}}
+  });
+
+  /* P&L — revenue vs net loss, same unit, single axis */
+  new Chart(document.getElementById('plChart'),{
+    type:'bar',
+    data:{labels:['2024','2025','2026E'],datasets:[
+      {label:'매출 (억달러)',data:[37,130,300],backgroundColor:'rgba(13,147,115,.8)',borderRadius:4},
+      {label:'순손실 (억달러·보도 범위)',data:[50,135,200],backgroundColor:'rgba(176,73,43,.75)',borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400},
+      plugins:{legend:{position:'top',labels:{boxWidth:12,boxHeight:12,usePointStyle:true,pointStyle:'rectRounded',padding:12}},
+        tooltip:{...tip,callbacks:{label:c=>c.datasetIndex===0?` 매출 약 ${c.parsed.y}억달러`:` 손실 약 ${c.parsed.y}억달러 (2025는 상반기 기준, 2026은 범위 중간값)`}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:line},ticks:{callback:v=>v+'억$'},title:{display:true,text:'억달러 · 보도 기준',color:muted}}}}
+  });
+
+  /* VALUATION — bar, last one is reported IPO speculation (lighter) */
+  new Chart(document.getElementById('valChart'),{
+    type:'bar',
+    data:{labels:['23.04','24.10','25.03','25.10','26 IPO 보도'],datasets:[{
+      label:'기업가치',data:[290,1570,3000,5000,8500],
+      backgroundColor:['rgba(13,147,115,.45)','rgba(13,147,115,.6)','rgba(13,147,115,.75)','rgba(13,147,115,.9)','rgba(13,147,115,.3)'],
+      borderColor:[teal,teal,teal,teal,teal],borderWidth:[0,0,0,0,1.5],borderRadius:4
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1400},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>` 약 ${c.parsed.y.toLocaleString()}억달러${c.dataIndex===4?' (2026.6 IPO 신청 보도·관측치)':''}`}}},
+      scales:{x:{grid:{display:false}},y:{grid:{color:line},ticks:{callback:v=>v.toLocaleString()+'억$'},title:{display:true,text:'기업가치(억달러) · 라운드/보도 기준',color:muted}}}}
+  });
+
+  /* reveal */
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* cost bars */
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.cfill').forEach(f=>{f.style.transform='scaleX('+(f.dataset.w/100)+')';});cio.unobserve(e.target);}
+  })},{threshold:.3});
+  const cb=document.getElementById('costbar'); if(cb) cio.observe(cb);
+})();
+</script>
+</body>
+</html>

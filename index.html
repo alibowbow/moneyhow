@@ -711,6 +711,7 @@ let NAV = [
     {id:'meta',label:'메타'},
     {id:'mrvl',label:'마벨'},
     {id:'amd',label:'AMD'},
+    {id:'openai',label:'오픈AI'},
   ]},
   { cat:'자영업', items:[
     {id:'chicken',label:'치킨집'},
@@ -724,6 +725,7 @@ let NAV = [
     {id:'starbucks',label:'스타벅스'},
     {id:'costco',label:'코스트코'},
     {id:'daiso',label:'다이소'},
+    {id:'mcdonalds',label:'맥도날드'},
   ]},
   { cat:'스포츠·엔터', items:[
     {id:'blackcombat',label:'블랙컴뱃'},
@@ -761,6 +763,8 @@ const PAGE_META = {
   'starbucks':         { icon:'☕', blurb:'커피가 아니라 선불 충전금 — 사실상 은행인 카페' },
   'costco':            { icon:'🏬', blurb:'상품 마진은 0, 영업이익의 대부분은 연회비' },
   'daiso':             { icon:'🛍️', blurb:'1,000원에 어떻게 남기나 — 균일가 박리다매의 극한' },
+  'mcdonalds':         { icon:'🍔', blurb:'햄버거는 미끼 — 가맹점 임대료로 버는 부동산 제국' },
+  'openai':            { icon:'🤖', blurb:'쓸수록 적자인데 몸값은 폭등 — 토큰 경제의 역설' },
   'skhynix':           { icon:'💾', blurb:'HBM이 다시 그린 메모리 반도체 수익 지도' },
   'samsung':           { icon:'📱', blurb:'반도체·스마트폰·가전을 합친 거대 포트폴리오' },
   'sanil':             { icon:'⚡', blurb:'전력망 슈퍼사이클을 탄 변압기 제조사' },
@@ -866,6 +870,8 @@ const PAGE_FILE_MAP = {
   "starbucks": "pages/starbucks.html",
   "costco": "pages/costco.html",
   "daiso": "pages/daiso.html",
+  "mcdonalds": "pages/mcdonalds.html",
+  "openai": "pages/openai.html",
   "spacex": "pages/spacex.html",
   "tron": "pages/tron.html",
   "skhynix": "pages/skhynix.html",
@@ -917,7 +923,9 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'tether',
   'starbucks',
   'costco',
-  'daiso'
+  'daiso',
+  'mcdonalds',
+  'openai'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
