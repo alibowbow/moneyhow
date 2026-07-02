@@ -718,9 +718,11 @@ let NAV = [
     {id:'chicken',label:'치킨집'},
     {id:'cafe',label:'카페 (도심)'},
     {id:'destcafe',label:'한적한 대형 카페'},
+    {id:'gym',label:'헬스장'},
   ]},
   { cat:'긱 이코노미', items:[
     {id:'rider',label:'배달 라이더'},
+    {id:'baemin',label:'배달의민족'},
   ]},
   { cat:'유통·소비', items:[
     {id:'starbucks',label:'스타벅스'},
@@ -780,6 +782,8 @@ const PAGE_META = {
   'cafe':              { icon:'☕', blurb:'도심 카페의 잔당 단가와 손익분기 경제학' },
   'destcafe':          { icon:'🏞️', blurb:'커피가 아니라 땅을 판다 — 대형 카페와 상속세의 비밀' },
   'rider':             { icon:'🛵', blurb:'배달 한 건의 실수령액을 끝까지 분해' },
+  'baemin':            { icon:'🛴', blurb:'무료로 보이지만 진짜 돈은 업주에게서 나온다' },
+  'gym':               { icon:'💪', blurb:'다 나오면 망한다 — 오버부킹으로 돌아가는 헬스장' },
   'meta':              { icon:'📘', blurb:'35억 명을 광고로 바꾸는 거대 머신' },
   'mrvl':              { icon:'🧩', blurb:'하이퍼스케일러의 맞춤형 AI 칩을 설계하는 숨은 설계자' },
   'amd':               { icon:'🔴', blurb:'NVIDIA·Intel 두 전선을 동시에 공략하는 팹리스 반도체' },
@@ -869,6 +873,8 @@ const PAGE_FILE_MAP = {
   "coupang-partners": "pages/coupang-partners.html",
   "geojimap": "pages/geojimap.html",
   "toss": "pages/toss.html",
+  "baemin": "pages/baemin.html",
+  "gym": "pages/gym.html",
   "tether": "pages/tether.html",
   "starbucks": "pages/starbucks.html",
   "costco": "pages/costco.html",
@@ -929,7 +935,9 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'daiso',
   'mcdonalds',
   'openai',
-  'toss'
+  'toss',
+  'baemin',
+  'gym'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>배달의민족은 어떻게 돈을 버나 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F1F5F3;
+    --paper-2:#E5EDE9;
+    --paper-3:#D8E4DE;
+    --ink:#0E2623;
+    --ink-soft:#2B443F;
+    --muted:#7C928C;
+    --line:#D2E0DA;
+    --line-strong:#B7CBC2;
+    --brew:#1FA79F;
+    --brew-deep:#157F79;
+    --green:#2E8B57;
+    --green-deep:#1F6440;
+    --rust:#C0392B;
+    --gold:#D9A441;
+    --stage:#081826;
+    --stage-2:#102A40;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .mono{font-family:"DM Mono",ui-monospace,monospace}
+  .eyebrow{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--brew);display:inline-block}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:560;line-height:1.08;letter-spacing:-.01em}
+  .serif-it{font-family:"Fraunces",serif;font-style:italic;font-weight:480}
+  a{color:inherit}
+
+  .topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(8px)}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
+  .topbar .brand{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .topbar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brew);margin-right:8px;vertical-align:middle}
+  .topbar nav{display:flex;gap:22px}
+  .topbar nav a{font-family:"DM Mono",monospace;font-size:.72rem;letter-spacing:.05em;color:var(--muted);text-decoration:none;transition:color .2s}
+  .topbar nav a:hover{color:var(--brew)}
+  @media(max-width:760px){.topbar nav{display:none}}
+
+  .hero{padding:72px 0 36px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}}
+  .hero h1{font-size:clamp(2.6rem,6.4vw,5rem);margin:18px 0 0}
+  .hero h1 em{color:var(--brew);font-style:normal}
+  .hero .lede{margin-top:22px;font-size:clamp(1.02rem,1.7vw,1.18rem);color:var(--ink-soft);max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:600}
+  .hero-figure{border:1px solid var(--line-strong);background:linear-gradient(180deg,var(--paper-2),var(--paper));border-radius:3px;padding:18px 18px 10px;position:relative}
+  .hero-figure .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+  .jbox{height:300px;position:relative}
+  .legend-row{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap}
+  .legend-row span{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+  .swatch{width:16px;height:3px;border-radius:2px;display:inline-block}
+
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px;background:var(--paper-2)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:26px 22px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+  .stat .num{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1;letter-spacing:-.02em}
+  .stat .num.r{color:var(--rust)} .stat .num.g{color:var(--green)} .stat .num.b{color:var(--brew)} .stat .num.o{color:var(--gold)}
+  .stat .lab{font-family:"DM Mono",monospace;font-size:.72rem;color:var(--ink-soft);margin-top:9px;line-height:1.5}
+  .stat .sub{font-size:.74rem;color:var(--muted);margin-top:3px}
+
+  section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:16px;align-items:baseline;margin-bottom:8px}
+  .sec-no{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--brew);letter-spacing:.1em}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.6rem)}
+  .sec-intro{max-width:42em;color:var(--ink-soft);margin:14px 0 34px;font-size:1.04rem}
+  .sec-intro b{color:var(--ink);font-weight:600}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}}
+
+  .card{border:1px solid var(--line-strong);border-radius:3px;background:var(--paper);padding:22px}
+  .card .cap{font-family:"DM Mono",monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-h{height:300px;position:relative}
+  .chart-h.tall{height:340px}
+  .note{font-size:.82rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .note b{color:var(--ink-soft)}
+
+  /* compare table */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden;margin-top:6px}
+  @media(max-width:680px){.cmp{grid-template-columns:1fr}}
+  .cmp-col{padding:22px 24px;background:var(--paper)}
+  .cmp-col.hl{background:linear-gradient(180deg,color-mix(in srgb,var(--brew) 8%,transparent),transparent);border-left:1px solid var(--line)}
+  @media(max-width:680px){.cmp-col.hl{border-left:none;border-top:1px solid var(--line)}}
+  .cmp-col h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.2rem;margin-bottom:4px}
+  .cmp-col .tagline{font-family:"DM Mono",monospace;font-size:.7rem;color:var(--muted);margin-bottom:14px}
+  .cmp-row{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line-strong);padding:8px 0;font-size:.88rem}
+  .cmp-row span:first-child{color:var(--muted);font-family:"DM Mono",monospace;font-size:.74rem}
+  .cmp-row span:last-child{font-family:"DM Mono",monospace;color:var(--ink);font-weight:500;text-align:right}
+  .cmp-row .g{color:var(--green)} .cmp-row .r{color:var(--rust)}
+
+  /* cost waterfall */
+  .costbar{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .crow{display:grid;grid-template-columns:140px 1fr 64px;align-items:center;gap:12px}
+  @media(max-width:560px){.crow{grid-template-columns:104px 1fr 50px}}
+  .crow .cl{font-size:.86rem;color:var(--ink-soft)}
+  .crow .ctrack{height:18px;background:var(--paper-3);border-radius:2px;overflow:hidden}
+  .crow .cfill{height:100%;border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .crow .cv{font-family:"DM Mono",monospace;font-size:.82rem;text-align:right;color:var(--ink)}
+
+  /* streams */
+  .streams{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+  @media(max-width:760px){.streams{grid-template-columns:1fr}}
+  .stream{padding:22px 24px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);background:var(--paper)}
+  .stream:nth-child(2n){border-right:none}
+  .stream .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .stream .si{font-family:"DM Mono",monospace;font-size:.78rem;color:var(--brew);width:26px}
+  .stream .st{font-family:"Fraunces",serif;font-size:1.22rem;font-weight:560}
+  .stream p{font-size:.92rem;color:var(--ink-soft);margin:0}
+  .tag{display:inline-block;font-family:"DM Mono",monospace;font-size:.66rem;letter-spacing:.05em;padding:2px 8px;border-radius:30px;border:1px solid var(--line-strong);color:var(--ink-soft);margin-top:10px}
+  .tag.hot{color:var(--rust);border-color:var(--rust);background:color-mix(in srgb,var(--rust) 8%,transparent)}
+  .tag.money{color:var(--green-deep);border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,transparent)}
+
+  /* dark stage */
+  .stagewrap{background:var(--stage);color:var(--paper);border-bottom:1px solid var(--stage)}
+  .stagewrap .eyebrow{color:#F2C572}
+  .stagewrap h2{color:var(--paper)}
+  .stagewrap .sec-intro{color:#B9CBC5}
+  .stagewrap .sec-intro b{color:#fff}
+  .gacha{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-top:14px}
+  @media(max-width:760px){.gacha{grid-template-columns:1fr}}
+  .gcell{background:var(--stage);padding:30px 24px}
+  .gcell .gnum{font-family:"Fraunces",serif;font-size:clamp(2rem,4.4vw,3rem);font-weight:600;color:#fff;line-height:1}
+  .gcell .gnum .accent{color:#F2C572}
+  .gcell .glab{font-family:"DM Mono",monospace;font-size:.74rem;color:#8FA39C;margin-top:10px;line-height:1.55}
+  .stagewrap .spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px 280px at 78% 12%, rgba(31,167,159,.22), transparent 70%)}
+
+  /* flow steps */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+  @media(max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+  .fstep{border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:18px;background:var(--stage-2);position:relative}
+  .fstep .fn{font-family:"DM Mono",monospace;font-size:.72rem;color:#F2C572}
+  .fstep h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.05rem;margin:8px 0 6px;color:#fff}
+  .fstep p{font-size:.83rem;color:#A9BAB3;margin:0}
+
+  .keys{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+  @media(max-width:760px){.keys{grid-template-columns:1fr}}
+  .key{border-left:3px solid var(--brew);padding:6px 0 6px 18px}
+  .key h4{font-family:"Fraunces",serif;font-weight:560;font-size:1.18rem;margin-bottom:6px}
+  .key p{font-size:.92rem;color:var(--ink-soft)}
+
+  .pull{font-family:"Fraunces",serif;font-style:italic;font-weight:420;font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.35;color:var(--ink);max-width:26em;margin:0 auto;text-align:center}
+  .pull .mk{color:var(--brew);font-style:normal}
+
+  footer{padding:48px 0 64px;color:var(--muted)}
+  footer h4{font-family:"DM Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+  footer .src{font-size:.78rem;line-height:1.85;columns:2;column-gap:36px}
+  @media(max-width:680px){footer .src{columns:1}}
+  footer .disc{font-size:.76rem;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);max-width:48em}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.cfill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>플랫폼 이코노믹스 · 배달앱 · 2026</div>
+    <nav>
+      <a href="#surface">표면</a>
+      <a href="#cost">업주비용</a>
+      <a href="#ads">광고</a>
+      <a href="#war">전쟁</a>
+      <a href="#risk">리스크</a>
+      <a href="#keys">정리</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">플랫폼 경제 · 입점업주 · 유닛 이코노믹스</span>
+      <h1>배달의민족은<br>어떻게 <em>돈을 버나</em></h1>
+      <p class="lede">소비자에게 배달의민족은 '무료'에 가깝다 — 배달비 지원, 쿠폰, 1+1. 그런데 운영사 우아한형제들은 2025년 매출 <b>5조 2,830억원</b>을 찍었다. 공짜처럼 보이는 서비스가 어떻게 조 단위 매출을 만드나. 답은 소비자가 아니라 <b>입점 업주</b>에게 있다 — 중개수수료·배달비·광고, 세 겹으로 걷는 구조다.</p>
+    </div>
+    <div class="hero-figure reveal">
+      <div class="cap"><span>우아한형제들 매출 vs 영업이익률</span><span>연결 · 조원/%</span></div>
+      <div class="jbox"><canvas id="heroChart"></canvas></div>
+      <div class="legend-row">
+        <span><i class="swatch" style="background:#1FA79F"></i>매출 (조원)</span>
+        <span><i class="swatch" style="background:#C0392B;height:8px;width:8px;border-radius:50%"></i>영업이익률 (%)</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="band">
+  <div class="wrap">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="num b">5.28<span style="font-size:.5em">조원</span></div>
+        <div class="lab">2025년 매출(연결) · 첫 5조 돌파</div>
+        <div class="sub">전년비 +22%, 영업이익은 -7%</div>
+      </div>
+      <div class="stat">
+        <div class="num r">2.0~9.8<span style="font-size:.5em">%</span></div>
+        <div class="lab">입점 업주 중개수수료 변천</div>
+        <div class="sub">2024.8 9.8% 인상 → 2025.2 차등제</div>
+      </div>
+      <div class="stat">
+        <div class="num o">약 9,500<span style="font-size:.5em">억원</span></div>
+        <div class="lab">2년간(2023~24) 독일 본사 배당</div>
+        <div class="sub">딜리버리히어로(DH)로 송금</div>
+      </div>
+      <div class="stat">
+        <div class="num g">58~60<span style="font-size:.5em">%</span></div>
+        <div class="lab">국내 배달앱 시장 점유율(MAU)</div>
+        <div class="sub">쿠팡이츠가 빠르게 격차 축소</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 SURFACE -->
+<section class="block" id="surface">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>표면 — 소비자에겐 공짜처럼 보인다</h2></div>
+    <p class="sec-intro">배민 앱을 열면 '무료배달' 배너와 쿠폰이 먼저 보인다. 결제창엔 배달비 0원이 뜨기도 한다. 그런데 그 돈이 사라진 게 아니라, 결제 순간 소비자 눈에 보이지 않는 곳으로 옮겨갈 뿐이다. 소비자가 낸 주문금액 1만원이 실제로 어디로 흩어지는지 추적하면, 배민의 진짜 수익원이 드러난다 — 그리고 중개수수료율 자체도 지난 2년 사이 요동쳤다.</p>
+    <div class="cols">
+      <div class="card reveal">
+        <div class="cap"><span>소비자가 낸 1만원의 행선지</span><span>대표값 · 개념도</span></div>
+        <div class="chart-h"><canvas id="orderFlowChart"></canvas></div>
+        <p class="note">1만원 결제액 중 업주 몫(원가·인건비 포함)은 <b>약 62%</b>, 라이더 배달비 <b>약 22%</b>, 배민이 가져가는 수수료·광고 몫 <b>약 12%</b>, 카드·PG 결제수수료 <b>약 4%</b> 순이다. 소비자가 안 낸 배달비는 사라진 게 아니라 업주 몫에서 이미 빠져나간 뒤다.</p>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>중개수수료율 변천</span><span>%</span></div>
+        <div class="chart-h"><canvas id="feeHistoryChart"></canvas></div>
+        <p class="note">2024년 8월 배민은 수수료를 6.8%에서 <b>9.8%</b>로 전격 인상했다가 자영업자·정치권 반발에 부딪혔다. 2025년 2월부터는 거래액 상위 구간 <b>7.8%</b>, 하위 구간 <b>2.0%</b>로 갈리는 차등수수료제가 3년간 시행 중이다. 표시된 숫자만 보면 인하지만, 다음 장의 배달비·광고비를 더하면 얘기가 달라진다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 COST -->
+<section class="block" id="cost">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>업주가 내는 돈 — 수수료·배달비·광고의 삼중 과금</h2></div>
+    <p class="sec-intro">입점 업주 입장에서 배민은 한 건의 주문에 세 번 청구서를 보낸다. 주문이 성사될 때마다 떼는 <b>중개수수료</b>, 소비자 대신 상당액을 부담해야 하는 <b>배달비</b>, 순위 경쟁에서 밀리지 않기 위한 <b>광고비</b>다. 차등수수료제로 표시 수수료율은 낮아졌지만, 배달비·광고비까지 더하면 실제 부담은 표시된 수수료율보다 훨씬 크다는 게 업계의 공통된 체감이다.</p>
+    <div class="cols">
+      <div class="card">
+        <div class="cap"><span>주문금액 10,000원의 분해 · 기본형 요금제</span><span>원</span></div>
+        <div class="costbar" id="costbar">
+          <div class="crow"><span class="cl">주문금액</span><div class="ctrack"><div class="cfill" data-w="100" style="background:var(--brew)"></div></div><span class="cv">100</span></div>
+          <div class="crow"><span class="cl">중개수수료</span><div class="ctrack"><div class="cfill" data-w="7" style="background:var(--rust)"></div></div><span class="cv">−7</span></div>
+          <div class="crow"><span class="cl">결제대행수수료</span><div class="ctrack"><div class="cfill" data-w="3" style="background:var(--gold)"></div></div><span class="cv">−3</span></div>
+          <div class="crow"><span class="cl">배달비(업주부담분)</span><div class="ctrack"><div class="cfill" data-w="29" style="background:var(--ink-soft)"></div></div><span class="cv">−29</span></div>
+          <div class="crow"><span class="cl">광고비(평균)</span><div class="ctrack"><div class="cfill" data-w="4" style="background:var(--muted)"></div></div><span class="cv">−4</span></div>
+          <div class="crow"><span class="cl">업주 순수령*</span><div class="ctrack"><div class="cfill" data-w="57" style="background:var(--green)"></div></div><span class="cv">57</span></div>
+        </div>
+        <p class="note">*재료 원가·인건비 등 식당 운영비를 빼기 <b>전</b> 금액. 무료배달을 전액 업주가 떠안는 극단적 사례에선 7,500원 주문에 91원만 입금됐다는 보도도 있다 — 대표값이 아니라 상한선에 가까운 사례다.</p>
+      </div>
+      <div>
+        <div class="pull" style="text-align:left;margin:8px 0 0">'무료배달'은 <span class="mk">누가 대신 낸다</span>는 뜻이지,<br>비용이 <span class="mk">사라진다</span>는 뜻이 아니다.</div>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:20px">그 증거가 요금제 자체에 있다. 배민의 <b style="color:var(--ink)">기본형</b> 요금제는 중개이용료 6.8%(VAT포함 7.48%)에 배달비 6,000원을 업주·소비자가 나눠 낸다 — 업주 최소 부담분은 2,500~3,000원이다. 반면 소비자에게 '완전 무료'로 보이는 <b style="color:var(--ink)">통합형</b> 요금제는 배달비를 업주에게 따로 청구하지 않는 대신, 수수료율을 <b style="color:var(--ink)">27%</b>까지 끌어올린다.</p>
+        <p style="color:var(--ink-soft);font-size:1rem;margin-top:14px">즉 '무료배달'의 실체는 배달비 항목이 수수료율 안으로 흡수된 것에 가깝다. 표시 수수료가 낮아 보이는 요금제일수록 배달비 청구서가 별도로 날아온다.</p>
+      </div>
+    </div>
+    <div class="cmp" style="margin-top:34px">
+      <div class="cmp-col">
+        <h4>기본형 요금제</h4>
+        <div class="tagline">수수료는 낮게, 배달비는 별도로</div>
+        <div class="cmp-row"><span>중개이용료</span><span>6.8% (VAT포함 7.48%)</span></div>
+        <div class="cmp-row"><span>배달비(업주부담)</span><span>최소 2,500~3,000원</span></div>
+        <div class="cmp-row"><span>소비자 노출</span><span>배달비 일부 표시</span></div>
+        <div class="cmp-row"><span>업주 체감</span><span class="r">건당 청구서 2개</span></div>
+      </div>
+      <div class="cmp-col hl">
+        <h4>통합형(무료배달) 요금제</h4>
+        <div class="tagline">배달비를 수수료 안으로</div>
+        <div class="cmp-row"><span>중개이용료</span><span class="r">최대 27%</span></div>
+        <div class="cmp-row"><span>배달비(업주부담)</span><span class="g">별도 청구 없음</span></div>
+        <div class="cmp-row"><span>소비자 노출</span><span class="g">'배달비 0원' 표시</span></div>
+        <div class="cmp-row"><span>업주 체감</span><span>청구서는 1개, 총액은 유사·상회</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ADS -->
+<section class="block" id="ads">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>광고 전쟁 — 오픈리스트 vs 울트라콜</h2></div>
+    <p class="sec-intro">수수료·배달비만으로 부족하면 마지막 관문이 광고다. 배민은 오랫동안 <b>울트라콜</b>(월 8만8,000원 정액, 이른바 '깃발꽂기')과 <b>오픈리스트</b>(주문건당 6.8% 정률)를 함께 운영해왔다. 2025년 2월부터는 과당경쟁 논란이 컸던 울트라콜을 순차 종료하고 오픈리스트 중심으로 재편 중이다. 여기에 클릭당 과금되는 <b>우리가게클릭</b>까지 더하면, 업계는 이를 '삼중 과금'이라 부른다.</p>
+    <div class="cols">
+      <div class="cmp" style="margin-top:0">
+        <div class="cmp-col">
+          <h4>울트라콜 (정액제)</h4>
+          <div class="tagline">깃발꽂기 · 2025년 순차 종료</div>
+          <div class="cmp-row"><span>과금 방식</span><span>월 88,000원/개(VAT포함)</span></div>
+          <div class="cmp-row"><span>가입 제한</span><span class="r">업소당 제한 없음</span></div>
+          <div class="cmp-row"><span>노출 위치</span><span>지역 기반 리스트</span></div>
+          <div class="cmp-row"><span>논란</span><span class="r">과당경쟁·깃발 수 경쟁</span></div>
+        </div>
+        <div class="cmp-col hl">
+          <h4>오픈리스트 (정률제)</h4>
+          <div class="tagline">주문 성사 시에만 과금</div>
+          <div class="cmp-row"><span>과금 방식</span><span class="g">주문건당 6.8%</span></div>
+          <div class="cmp-row"><span>노출 위치</span><span>카테고리 상단 3슬롯 롤링</span></div>
+          <div class="cmp-row"><span>결정 요소</span><span>배달시간·주문수·찜수 등</span></div>
+          <div class="cmp-row"><span>특징</span><span>매출 늘수록 광고비도 비례</span></div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="cap"><span>광고비 대비 파생매출 사례</span><span>만원 · 특정 사례</span></div>
+        <div class="chart-h"><canvas id="adCaseChart"></canvas></div>
+        <p class="note">언론에 보도된 한 사례에서는 '우리가게클릭' 광고비 <b>1,131만원</b>을 써 파생매출 <b>3,531만원</b>을 냈다 — 광고비가 파생매출의 <b>약 32%</b>를 차지한다. 개별 업소·업종에 따라 편차가 커 대표값으로 일반화할 수는 없지만, 광고비 부담을 둘러싼 논란의 근거로 자주 인용된다.</p>
+      </div>
+    </div>
+    <div style="margin-top:34px">
+      <div class="pull">정률 오픈리스트 + 정액 울트라콜 + 클릭당 우리가게클릭 —<br><span class="mk">업주는 같은 주문에 세 번 낸다.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WAR (dark) -->
+<section class="block stagewrap" id="war" style="position:relative">
+  <div class="spotlight"></div>
+  <div class="wrap" style="position:relative">
+    <div class="sec-head"><span class="sec-no" style="color:#F2C572">▶</span><h2>쿠팡이츠와의 무료배달 전면전 — 점유율 사수의 비용</h2></div>
+    <p class="sec-intro">2024년부터 쿠팡이츠가 와우멤버십과 묶은 '무료배달'로 치고 올라왔다. 2024년 10월 883만명이던 쿠팡이츠 MAU는 2025년 10월 <b>1,242만명</b>으로 40% 급증한 반면, 배민 MAU는 2,207만→2,225만명으로 사실상 제자리였다. 배민도 맞불을 놨다 — '한그릇' 배달비 지원 연장, 무료배달 확대. 문제는 이 비용이 하늘에서 떨어지지 않는다는 것이다. 결국 배민이 흡수하거나, 앞서 본 27% '통합형' 수수료처럼 업주에게 다시 넘어간다.</p>
+    <div class="gacha">
+      <div class="gcell">
+        <div class="gnum"><span class="accent">40</span>%↑</div>
+        <div class="glab">쿠팡이츠 MAU 증가폭(2024.10→2025.10)<br>883만명 → 1,242만명</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum">58~60<span style="font-size:.5em">%</span></div>
+        <div class="glab">배민 여전한 1위 점유율(2026.1, MAU 기준)<br>다만 격차는 계속 축소</div>
+      </div>
+      <div class="gcell">
+        <div class="gnum"><span class="accent">−7</span>%</div>
+        <div class="glab">2025년 영업이익 증감률<br>배달팁 부담 확대가 주요 원인</div>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:28px">
+      <div class="card reveal">
+        <div class="cap"><span>국내 배달앱 시장 점유율</span><span>2026.1 · MAU 기준</span></div>
+        <div class="chart-h"><canvas id="marketShareChart"></canvas></div>
+        <p class="note" style="color:#8FA39C">배달의민족이 여전히 절반 이상을 지키고 있지만, 2024~2025년 사이 쿠팡이츠가 요기요를 제치고 단독 2위로 올라서며 '1강 다중' 구도가 '양자 대결'로 재편됐다.</p>
+      </div>
+      <div class="flow" style="margin-top:0">
+        <div class="fstep"><div class="fn">STEP 1</div><h4>쿠팡이츠 무료배달 공세</h4><p>와우멤버십과 연계한 '하나만 담아도 무료배달'로 소액 주문 시장까지 공략.</p></div>
+        <div class="fstep"><div class="fn">STEP 2</div><h4>배민 맞대응</h4><p>'한그릇' 카테고리 배달비 지원 연장, 무료배달 확대로 점유율 방어.</p></div>
+        <div class="fstep"><div class="fn">STEP 3</div><h4>비용은 어디로</h4><p>배민이 흡수하거나, 통합형 27% 요금제처럼 업주 수수료로 재전가.</p></div>
+        <div class="fstep"><div class="fn">STEP 4</div><h4>이익률 하락</h4><p>영업이익률이 2023년 20.5%에서 2025년 11.2%로 떨어졌다.</p></div>
+      </div>
+    </div>
+    <p style="color:#B9CBC5;font-size:.92rem;margin-top:22px;max-width:48em">무료배달은 소비자에게만 공짜다. 점유율 전쟁의 청구서는 결국 라이더 배달비 보조, 업주 수수료율, 혹은 본사 이익률 어딘가로 돌아간다. <span class="serif-it" style="color:#fff">경쟁은 배달앱끼리 하지만, 값은 업주가 나눠 낸다.</span></p>
+  </div>
+</section>
+
+<!-- 04 RISK -->
+<section class="block" id="risk">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>반발과 규제 — 상생협의체에서 공정위까지</h2></div>
+    <p class="sec-intro">2024년 8월 배민이 수수료를 6.8%에서 9.8%로 전격 인상하자 자영업자·정치권이 일제히 반발했다. 정부가 꾸린 배달플랫폼-입점업체 상생협의체는 115일 회의 끝에 2024년 11월 차등수수료(2.0~7.8%)에 합의했지만, 정작 당사자인 한국외식산업협회·전국가맹점주협의회는 퇴장한 채 통과된 '반쪽 합의'였다. 이후 공정위는 시장지배적 지위 남용 혐의로 별도 조사에 들어갔고, 2026년 6월 배민·쿠팡이츠가 낸 수천억원대 자진시정안을 모두 기각했다.</p>
+    <div class="streams">
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">반쪽짜리 상생안</span></div>
+        <p>115일 협의 끝에 차등수수료(2.0~7.8%)엔 합의했지만, 정작 입점업체 측 단체는 퇴장한 채 소상공인연합회·공익위원만으로 가결됐다.</p>
+        <span class="tag hot">115일 협의</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">공정위 동의의결 기각</span></div>
+        <p>2026년 6월 공정위는 배민 3,000억원, 쿠팡이츠 600억원 규모의 자진시정안을 모두 퇴짜 놨다. 혐의가 인정되면 배민 최대 5,100억원, 쿠팡이츠 최대 420억원의 과징금이 예상된다.</p>
+        <span class="tag hot">최대 5,100억 과징금</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">!</span><span class="st">삼중과금 논란</span></div>
+        <p>중개수수료+배달비+오픈리스트·울트라콜·우리가게클릭 광고가 겹치며, 업주가 주문 매출의 상당액을 배민에 낸다는 언론 보도가 이어졌다.</p>
+        <span class="tag">업계 비판</span>
+      </div>
+      <div class="stream">
+        <div class="sh"><span class="si">+</span><span class="st">배당 국부유출 논란</span></div>
+        <p>2023~2024 회계연도에 걸쳐 독일 본사 딜리버리히어로로 약 9,500억원(2년 합산)이 배당됐다. 영업이익보다 큰 배당성향(최대 81.5%)이 국정감사에서도 도마에 올랐다.</p>
+        <span class="tag money">국부유출 지적</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYS -->
+<section class="block" id="keys" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>정리 — 무료의 반대편</h2></div>
+    <div class="keys">
+      <div class="key"><h4>① 표면은 무료, 청구서는 업주</h4><p>소비자가 안 내는 배달비·광고비는 사라지지 않고 입점 업주에게 옮겨간다. '무료배달'은 비용 소멸이 아니라 청구 대상의 이동이다.</p></div>
+      <div class="key"><h4>② 삼중 과금 구조</h4><p>중개수수료(2.0~27%, 요금제별 상이)+배달비(업주부담분)+광고(오픈리스트·울트라콜·우리가게클릭)가 겹쳐 부과된다.</p></div>
+      <div class="key"><h4>③ 무료배달 전쟁의 청구서</h4><p>쿠팡이츠 추격에 맞선 배달비 지원·무료배달 확대는 영업이익률을 2023년 20.5%에서 2025년 11.2%로 끌어내렸다.</p></div>
+      <div class="key"><h4>④ 반발은 현재진행형</h4><p>상생협의체 반쪽 합의, 공정위 기각과 최대 5,100억원 과징금 가능성, 배당 국부유출 논란까지 — 규제·여론 리스크는 아직 끝나지 않았다.</p></div>
+    </div>
+    <div style="margin-top:48px">
+      <div class="pull">배달의민족이 파는 건 배달이 아니라,<br><span class="mk">'업주가 대신 낸 무료'</span>다.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>데이터 출처</h4>
+    <div class="src">
+      글로벌에픽·플래텀·투데이밀드 「우아한형제들, 2024년 매출 4조3226억원, 영업이익 6408억원 기록」(2025.04) · 바이라인네트워크 「매출 늘고 이익 준 배민, 2년 간 DH로 1조 갔다」(2025.04) · 딜사이트·한국경제·포쓰저널 「우아한형제들 매출 5조 첫 돌파…영업이익 7% 감소」(2026.04) · 뉴스스페이스 「5조 매출 배민의 그늘…수익성 역주행·5700억 본사 송금·공정위 칼날 '삼중고'」(2026.04) · 이지경제·한국경제 「배민, 3년 연속 적자 끝…영업익 4241억」(2023.03) · 한국경제·한국일보·뉴스핌·포춘코리아 「배민·쿠팡 중개수수료 9.8%→2.0~7.8% 인하, 2025.2.26 시행」 · MBC뉴스데스크 「'차등 수수료'로 극적 상생안…"반쪽짜리 합의" 반발도」(2024.11) · ZDNet Korea 「배민 중개수수료 인상에 국회·자영업자·라이더 반발」(2024.07) · 뉴스후플러스 「[단독] 배달의민족, 광고비 '삼중 과금'에 소상공인 매출 '절반' 꿀꺽」·「배달의민족, 소상공인 '광고비' 빨대?」(2024.10) · 비즈워치 「배민, 10년 효자 '깃발꽂기' 왜 없애나」(2025.02) · 블로터 「배민, '업주 부담' 수수료 올리고 배달비 내린다」 · 파이낸셜뉴스 「한집만 배달하는 '배민1' 가게 수수료 절반 인하」 · 전자신문 「무료배달 1년 쿠팡이츠, 또 역대 최대 사용자 수…배달 시장 양자 대결로 재편」(2025.04) · 디지털투데이 「흔들리는 배달앱 시장...쿠팡이츠-배민 격차 '확' 줄었다」·「배민·쿠팡이츠, 점유율 경쟁 속 커지는 수익성 부담」 · 배달핏·한성쇼케이스 블로그 「2026 배달앱 총정리·시장 점유율」 · 비즈한국·천지일보·파이낸셜뉴스·인사이트·이코노미스트 「공정위, 배민·쿠팡이츠 자진시정 기각」(2026.06) · 데일리팝 「배민, 국부유출 현실로..서프라이즈한 배당 챙긴 DH」 · 디지털투데이 「[국감2025] '독일 배당·수수료 논란' 질타」 · CEO스코어데일리 「[빅테크 규제, 10년째 역주행] ③ 배민, 2년간 1조원 해외로」
+    </div>
+    <p class="disc">방법론 노트 — 우아한형제들 매출·영업이익(2022~2025, 연결 기준)은 공시 및 언론 보도 기준이며, 2025년 실적은 2026년 4월 발표된 잠정치입니다. 중개수수료·배달비·광고 단가(오픈리스트 6.8%, 울트라콜 월 8만8,000원, 기본형·통합형 요금제)는 배민 공식 요금제 발표 및 언론 보도(2024~2025) 기준으로, 실제 정산은 거래액 구간·지역·프로모션에 따라 달라집니다. '소비자가 낸 1만원의 행선지'와 '주문금액 10,000원 분해'는 대표 요금제를 바탕으로 한 <b>대표값·개념도</b>이며 특정 업체의 감사 재무제표가 아닙니다. 시장 점유율·MAU는 조사기관·매체 인용 보도 기준으로 표본·집계방식에 따라 오차가 있을 수 있습니다. 이 페이지는 배달 라이더의 건당 배달료·실수령을 다룬 <b>rider.html과 달리, 플랫폼 본사가 입점 업주로부터 얻는 수익구조</b>를 다룹니다 — 같은 배달 한 건이라도 관점에 따라 다른 숫자가 남습니다. 본 자료는 정보 제공 목적이며 투자·창업 권유가 아닙니다.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  if(typeof Chart==='undefined') return;
+  const ink='#0E2623', soft='#2B443F', muted='#7C928C', line='#D2E0DA';
+  const brew='#1FA79F', green='#2E8B57', rust='#C0392B', gold='#D9A441';
+  Chart.defaults.font.family="'DM Mono', monospace";
+  Chart.defaults.font.size=11.5;
+  Chart.defaults.color=soft;
+  const tip={backgroundColor:'#0E2623',titleColor:'#fff',bodyColor:'#E5EDE9',padding:10,cornerRadius:4};
+
+  /* HERO — revenue up, margin down (dual axis) */
+  new Chart(document.getElementById('heroChart'),{
+    data:{labels:['2022','2023','2024','2025'],datasets:[
+      {type:'bar',label:'매출',data:[2.95,3.42,4.32,5.28],backgroundColor:'rgba(31,167,159,.55)',borderRadius:4,yAxisID:'yA'},
+      {type:'line',label:'영업이익률',data:[14.4,20.5,14.8,11.2],borderColor:rust,backgroundColor:'transparent',borderWidth:2.6,tension:.3,pointRadius:4,pointBackgroundColor:rust,pointHoverRadius:6,yAxisID:'yB'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1500},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>c.dataset.yAxisID==='yA'?' 매출 '+c.parsed.y+'조원':' 영업이익률 '+c.parsed.y+'%'}}},
+      scales:{
+        x:{grid:{display:false}},
+        yA:{position:'left',grid:{color:line},ticks:{callback:v=>v+'조'},title:{display:true,text:'매출(조원)',color:muted}},
+        yB:{position:'right',grid:{display:false},min:0,max:25,ticks:{callback:v=>v+'%'}}
+      }}
+  });
+
+  /* 01 ORDER FLOW — doughnut */
+  new Chart(document.getElementById('orderFlowChart'),{
+    type:'doughnut',
+    data:{labels:['업주 몫 62%','라이더 배달비 22%','배민 몫(수수료+광고) 12%','결제수수료 4%'],datasets:[{
+      data:[62,22,12,4],backgroundColor:[green,gold,brew,muted],borderColor:'#F1F5F3',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:9,font:{size:10.5}}},
+        tooltip:{...tip,callbacks:{label:c=>' '+c.parsed+'%'}}}}
+  });
+
+  /* 01 FEE HISTORY — bar */
+  new Chart(document.getElementById('feeHistoryChart'),{
+    type:'bar',
+    data:{labels:['~2022 표준','2024.08 인상','2025.02 차등 상위35%','2025.02 차등 하위20%'],datasets:[{
+      label:'중개수수료율',data:[6.8,9.8,7.8,2.0],
+      backgroundColor:[muted,rust,gold,green],borderRadius:4
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1300},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>' 수수료율 '+c.parsed.y+'%'}}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:9.5}}},
+        y:{grid:{color:line},min:0,max:11,ticks:{callback:v=>v+'%'}}
+      }}
+  });
+
+  /* 03 AD CASE — bar */
+  new Chart(document.getElementById('adCaseChart'),{
+    type:'bar',
+    data:{labels:['우리가게클릭 광고비','파생 매출액'],datasets:[{
+      label:'금액(만원)',data:[1131,3531],
+      backgroundColor:[rust,brew],borderRadius:4
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1300},
+      plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>' '+c.parsed.x.toLocaleString()+'만원'}}},
+      scales:{
+        x:{grid:{color:line},ticks:{callback:v=>v.toLocaleString()+'만'}},
+        y:{grid:{display:false}}
+      }}
+  });
+
+  /* WAR — market share doughnut */
+  new Chart(document.getElementById('marketShareChart'),{
+    type:'doughnut',
+    data:{labels:['배달의민족 58%','쿠팡이츠 27%','요기요 13%','기타 2%'],datasets:[{
+      data:[58,27,13,2],backgroundColor:[brew,gold,muted,'#4A5F58'],borderColor:'#F1F5F3',borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'56%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,boxHeight:11,usePointStyle:true,pointStyle:'circle',padding:9,font:{size:10.5}}},
+        tooltip:{...tip,callbacks:{label:c=>' '+c.parsed+'%'}}}}
+  });
+
+  /* reveal */
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* cost bars */
+  const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.cfill').forEach(f=>{f.style.transform='scaleX('+(f.dataset.w/100)+')';});cio.unobserve(e.target);}
+  })},{threshold:.3});
+  const cb=document.getElementById('costbar'); if(cb) cio.observe(cb);
+})();
+</script>
+</body>
+</html>
