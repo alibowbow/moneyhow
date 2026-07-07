@@ -713,6 +713,7 @@ let NAV = [
     {id:'mrvl',label:'마벨'},
     {id:'amd',label:'AMD'},
     {id:'openai',label:'오픈AI'},
+    {id:'github',label:'깃헙'},
   ]},
   { cat:'자영업', items:[
     {id:'chicken',label:'치킨집'},
@@ -769,6 +770,7 @@ const PAGE_META = {
   'daiso':             { icon:'🛍️', blurb:'1,000원에 어떻게 남기나 — 균일가 박리다매의 극한' },
   'mcdonalds':         { icon:'🍔', blurb:'햄버거는 미끼 — 가맹점 임대료로 버는 부동산 제국' },
   'openai':            { icon:'🤖', blurb:'쓸수록 적자인데 몸값은 폭등 — 토큰 경제의 역설' },
+  'github':            { icon:'🐙', blurb:'무료 코드 창고로 1억 개발자를 모아 Copilot으로 환금' },
   'skhynix':           { icon:'💾', blurb:'HBM이 다시 그린 메모리 반도체 수익 지도' },
   'samsung':           { icon:'📱', blurb:'반도체·스마트폰·가전을 합친 거대 포트폴리오' },
   'sanil':             { icon:'⚡', blurb:'전력망 슈퍼사이클을 탄 변압기 제조사' },
@@ -875,6 +877,7 @@ const PAGE_FILE_MAP = {
   "toss": "pages/toss.html",
   "baemin": "pages/baemin.html",
   "gym": "pages/gym.html",
+  "github": "pages/github.html",
   "tether": "pages/tether.html",
   "starbucks": "pages/starbucks.html",
   "costco": "pages/costco.html",
@@ -937,7 +940,8 @@ const DETAIL_SHELL_EMBED_IDS = new Set([
   'openai',
   'toss',
   'baemin',
-  'gym'
+  'gym',
+  'github'
 ]);
 const HOME_FILE = "index.html";
 const STATIC_PAGE = null;
